@@ -235,33 +235,34 @@ BOSINIA $ HE.. <?php echo date('h:i A F jS ');?>
 <h5>Applications</h5>
        </div>
        <div>
-       <a href="add_project.php">Add Application</a>
+       <a href="add_application.php">Add Application</a>
        <div class="row" style="margin-bottom:10px;margin-top:20px;">
 
        <?php
         //   $user_id = $_SESSION['user_id'];
       
-          $project="select * from projects WHERE user_id='$user_id'";   
+          $app="select * from application WHERE user_id='$user_id'";   
 
 
 
-          if($project_data = mysqli_query($dbC,$project)){
+          if($app_data = mysqli_query($dbC,$app)){
 
-            while($row_project = mysqli_fetch_array($project_data)){
-            $project_photo = "../images/award/".$row_project['project_award'];
-        $project_name = $row_project['name'];
-        $project_id = $row_project['project_id'];
-        $award = $row_project['award'];
+            while($row_app = mysqli_fetch_array($app_data)){
+            $app_photo = "../images/applications/".$row_app['app_logo'];
+        $app_name = $row_app['name'];
+        $app_id = $row_app['application_id'];
+        // $_SESSION['project_id'] = $project_id;
+        // $award = $row_project['award'];
         // $from = $row_project['award_from'];
         // echo $row_['message'];
         // echo $row_['date'];
         
         echo '
         <div class="col-4">
-        <img src='.$project_photo.' alt="award"  height=50><br>
-        <form  method="POST" action="project.php">
-        <input type= "text" hidden name="id" value="'.$project_id.'">
-        <button type="submit" class="btn btn-link">'.$project_name.'</button><br>
+        <img src='.$app_photo.' alt="award"  height=50><br>
+        <form  method="POST" action="">
+        <input type= "text" hidden name="id" value="'.$app_id.'">
+        <button type="submit" class="btn btn-link">'.$app_name.'</button><br>
         </form>
         
        </div>
@@ -284,41 +285,43 @@ BOSINIA $ HE.. <?php echo date('h:i A F jS ');?>
 <h5>Images</h5>
        </div>
        <div>
-       <a href="add_project.php">Add Image</a>
+       <a href="add_images.php">Add Image</a>
        <div class="row" style="margin-bottom:10px;margin-top:20px;">
 
        <?php
         //   $user_id = $_SESSION['user_id'];
       
-          $project="select * from projects WHERE user_id='$user_id'";   
-
-
-
-          if($project_data = mysqli_query($dbC,$project)){
-
-            while($row_project = mysqli_fetch_array($project_data)){
-            $project_photo = "../images/award/".$row_project['project_award'];
-        $project_name = $row_project['name'];
-        $project_id = $row_project['project_id'];
-        $award = $row_project['award'];
-        // $from = $row_project['award_from'];
+        $gallery="select * from gallery WHERE user_id='$user_id'";   
+        if($result_gallery = mysqli_query($dbC,$gallery)){
+        
+            while($row_gallery = mysqli_fetch_array($result_gallery)){
+        $gallery_photo = $row_gallery['photo'];
+     
+            $photo_gallery = "../images/gallery/".$gallery_photo;
+        $text = $row_gallery['text'];
+        $id = $row_gallery['id'];
+     
+        $_SESSION['photo_id']=$id;
+       //  $from = $row_['award_from'];
         // echo $row_['message'];
         // echo $row_['date'];
-        
+       //  echo $photo;
         echo '
-        <div class="col-4">
-        <img src='.$project_photo.' alt="award"  height=50><br>
-        <form  method="POST" action="project.php">
-        <input type= "text" hidden name="id" value="'.$project_id.'">
-        <button type="submit" class="btn btn-link">'.$project_name.'</button><br>
+        <div class="col-6">
+        <form method="POST" action="view_gallery.php" >
+        <input type="text" name="photo" value="'.$id.'" hidden>
+     <button type="submit" class="btn btn-link"> <img src='.$photo_gallery.' height="100" width="150"></button>
+     
+       
         </form>
-        
-       </div>
-           
+        </div>
+        <br>
+        <br>
+        <br>
         ';
         // echo $row_['message'];
             }
-        } 
+        }
          
          
        ?>

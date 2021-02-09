@@ -71,7 +71,7 @@ input[type="radio"]:checked + input {
                             <label for="name" class="col-md-3 col-form-label text-md-right">Application Name</label>
 
                             <div class="col-md-3  reveal-if-active"" >
-                                <input  type="text" class="form-control" name="application_name" required autocomplete="application_name" autofocus>
+                                <input  type="text" class="form-control" name="app_name" required autocomplete="application_name" autofocus>
 
                              
                                   
@@ -79,12 +79,24 @@ input[type="radio"]:checked + input {
                             <label for="email" class="col-md-3 col-form-label text-md-right">Application logo</label>
 
                             <div class="col-md-3">
-                                <input  type="file" class="form-control" name="application" >
+                                <input  type="file" class="form-control" name="app" >
 
                              
                                   
                             </div>
                             
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="name" class="col-md-3 col-form-label text-md-right">Date</label>
+
+                            <div class="col-md-3  reveal-if-active"" >
+                                <input  type="date" class="form-control" name="date" required autofocus>
+
+                             
+                                  
+                            </div>
+                                                        
                         </div>
 
 
