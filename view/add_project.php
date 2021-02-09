@@ -137,73 +137,47 @@ input[type="radio"]:checked + input {
 
                          Team Members:
                         <div class="form-group row">
-                            <label for="member_name" class="col-md-3 col-form-label text-md-right">Member name</label>
+                            <label for="member_name" class="col-md-3 col-form-label text-md-right">Select Partner</label>
 
                             <div class="col-md-3">
-                                <input  type="text" class="form-control" name="member1" required autocomplete="member1" autofocus>
+                            <select multiple name="partner[]"  class="form-control" id="exampleFormControlSelect2" required>
+                            <?php
+    include("../config/config.php");   
 
+ $app="select * from user";   
+
+
+
+ if($app_data = mysqli_query($dbC,$app)){
+
+   while($row_app = mysqli_fetch_array($app_data)){
+//    $app_photo = "../images/applications/".$row_app['app_logo'];
+$app_name = $row_app['first_name'];
+$lname = $row_app['last_name'];
+$user_id = $row_app['user_id'];
+echo
+'
+<option>
+   '.$app_name.' '.$lname.'    
+      
+</option>
+';
+} 
+}
+
+?>
+     
+    </select>
                              
                                   
                             </div>
-                            <label for="title" class="col-md-3 col-form-label text-md-right">title</label>
-
-                            <div class="col-md-3">
-                            <input  type="text" class="form-control" name="title1" required autocomplete="title1" autofocus>
-
-
-                             
-                                  
-                            </div>
+                            
                         </div>
 
-                        <div class="form-group row">
-                            <label for="memeber2" class="col-md-3 col-form-label text-md-right">Member name</label>
+                      
+                       
 
-                            <div class="col-md-3">
-                                <input  type="text" class="form-control" name="member2" required autocomplete="member2" autofocus>
-
-                             
-                                  
-                            </div>
-                            <label for="title" class="col-md-3 col-form-label text-md-right">title</label>
-
-                            <div class="col-md-3">
-                            <input  type="text" class="form-control" name="title2" required autocomplete="title2" autofocus>
-                            </div>  
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="memeber3" class="col-md-3 col-form-label text-md-right">Member name</label>
-
-                            <div class="col-md-3">
-                                <input  type="text" class="form-control" name="member3" required autocomplete="member3" autofocus>
-
-                             
-                                  
-                            </div>
-                            <label for="title" class="col-md-3 col-form-label text-md-right">title</label>
-
-                            <div class="col-md-3">
-                            <input  type="text" class="form-control" name="title3" required autocomplete="title3" autofocus>
-                            </div>  
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="memeber" class="col-md-3 col-form-label text-md-right">Member name</label>
-
-                            <div class="col-md-3">
-                                <input  type="text" class="form-control" name="member4" required autocomplete="member4" autofocus>
-
-                             
-                                  
-                            </div>
-                            <label for="title" class="col-md-3 col-form-label text-md-right">title</label>
-
-                            <div class="col-md-3">
-                            <input  type="text" class="form-control" name="title4" required autocomplete="title4" autofocus>
-                            </div>  
-                        </div>
-
+                       
 
                         <div class="form-group row mb-0">
                         <label for="password" class="col-md-4 col-form-label text-md-right"></label>

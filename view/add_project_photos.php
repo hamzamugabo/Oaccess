@@ -28,7 +28,9 @@
                 // Get files upload path
                 $fileName        = $_FILES['fileUpload']['name'][$id];
                 $tempLocation    = $_FILES['fileUpload']['tmp_name'][$id];
-                $targetFilePath  = $uploadsDir . $fileName;
+                $fileName_trim =str_replace(' ', '', $fileName);
+
+                $targetFilePath  = $uploadsDir . $fileName_trim;
                 $fileType        = strtolower(pathinfo($targetFilePath, PATHINFO_EXTENSION));
                 $uploadDate      = date('Y-m-d H:i:s');
                 $project_id = $_SESSION['project_id'];
@@ -37,7 +39,7 @@
 
                 if(in_array($fileType, $allowedFileType)){
                         if(move_uploaded_file($tempLocation, $targetFilePath)){
-                            $sqlVal = "('".$fileName."', '".$project_id."')";
+                            $sqlVal = "('".$fileName_trim."', '".$project_id."')";
                         } else {
                             $response = array(
                                 "status" => "alert-danger",

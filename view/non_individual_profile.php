@@ -110,79 +110,44 @@ BOSINIA $ HE.. <?php echo date('h:i A F jS ');?>
 <h5>Relationship Partners</h5>
        </div>
        <div>
-       <a href="">add Partners</a>
+       <a href="add_partners.php">add Partners</a>
        <?php
         //   $user_id = $_SESSION['user_id'];
          
           $check_partner="select * from relatioship_partners WHERE user_id='$user_id'";   
          
-          $run1=mysqli_query($dbC,$check_partner);   
-          $row1 = mysqli_fetch_assoc($run1);
-          $names = $row1['name'];
 
-          
-          $photos = $row1['image'];
-          $photo_array =explode(',',$photos);
-          $name_array =explode(',',$names);
-    $photo1 = "../images/relationship_partners/".$photo_array[0];
-    $photo2 = "../images/relationship_partners/".$photo_array[1];
-    $photo3 = "../images/relationship_partners/".$photo_array[2];
-    $photo4 = "../images/relationship_partners/".$photo_array[3];
-    $photo5 = "../images/relationship_partners/".$photo_array[4];
+          if($project_data = mysqli_query($dbC,$check_partner)){
 
-        //   echo $row1['image'];
-  
-       ?>
-       <div class="row" style="margin-bottom:10px;margin-top:20px;">
-       <div class="col-md-4"><?php 
-        echo "<img src=".$photo1." height=50>";
+            while($row_partner = mysqli_fetch_array($project_data)){
+            // $project_photo = "../images/relationship_partners/".$row_partner['project_award'];
+        $partner_name = $row_partner['team_members'];
+        // $project_id = $row_partner['project_id'];
+        // $award = $row_partner['award'];
+        // $from = $row_project['award_from'];
+        // echo $row_['message'];
+        // echo $row_['date'];
+        $user_partner="select * from user WHERE user_id='$user_id'";   
+        
+        echo '
+        <div class="col-6">
        
-       ?>
-        <a href="">
-        <?php echo $name_array[0]; ?>
-        </a>
-       </div>
-       <div class="col-md-4"><?php 
-        echo "<img src=".$photo2." height=50>";
-       
-       ?>
-       <a href="">
-        <?php echo $name_array[1]; ?>
-        </a>
-       </div>
-       <div class="col-md-4"><?php
-        echo "<img src=".$photo3." height=50>";
-        ?>
-        <a href="">
-        <?php echo $name_array[2]; ?>
-        </a>
-        </div>
+        <form  method="POST" action="project.php">
+        <input type= "text" hidden name="id" value="">
+        <button type="submit" class="btn btn-link">'.$partner_name.'</button><br>
+        </form>
         
        </div>
+           
+        ';
+        // echo $row_['message'];
+            }
+        } 
+  
+       ?>
+       
 
-       <div class="row" style="margin-bottom:10px;margin-top:20px;">
-       <div class="col-md-4"><?php 
-        echo "<img src=".$photo4." height=50>";
        
-       ?>
-       <a href="">
-        <?php echo $name_array[3]; ?>
-        </a>
-       </div>
-       <div class="col-md-4"><?php 
-        echo "<img src=".$photo5." height=50>";
-       
-       ?>
-       <a href="">
-        <?php echo $name_array[4]; ?>
-        </a>
-       </div>
-       <div class="col-md-4">
-       <?php
-        // echo "<img src=".$photo3.">";
-        ?>
-        </div>
-       </div>
        </div>
 
        <div style="background-color: black; color:white; text-align:center;margin-top:50px;">
@@ -211,7 +176,7 @@ BOSINIA $ HE.. <?php echo date('h:i A F jS ');?>
         // echo $row_['date'];
         
         echo '
-        <div class="col-4">
+        <div class="col-6">
         <img src='.$project_photo.' alt="award"  height=50><br>
         <form  method="POST" action="project.php">
         <input type= "text" hidden name="id" value="'.$project_id.'">
@@ -258,7 +223,7 @@ BOSINIA $ HE.. <?php echo date('h:i A F jS ');?>
         // echo $row_['date'];
         
         echo '
-        <div class="col-4">
+        <div class="col-6">
         <img src='.$app_photo.' alt="award"  height=50><br>
         <form  method="POST" action="">
         <input type= "text" hidden name="id" value="'.$app_id.'">

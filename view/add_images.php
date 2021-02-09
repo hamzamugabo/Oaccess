@@ -28,16 +28,20 @@
                 // Get files upload path
                 $fileName        = $_FILES['fileUpload']['name'][$id];
                 $tempLocation    = $_FILES['fileUpload']['tmp_name'][$id];
-                $targetFilePath  = $uploadsDir . $fileName;
+                $fileName_trim =str_replace(' ', '', $fileName);
+                $targetFilePath  = $uploadsDir . $fileName_trim;
                 $fileType        = strtolower(pathinfo($targetFilePath, PATHINFO_EXTENSION));
                 $uploadDate      = date('Y-m-d H:i:s');
-                $project_id = $_SESSION['project_id'];
+                $user_id = $_SESSION['user_id'];
+                $text = $_POST['text'];
 
                 $uploadOk = 1;
 
                 if(in_array($fileType, $allowedFileType)){
                         if(move_uploaded_file($tempLocation, $targetFilePath)){
-                            $sqlVal = "('".$fileName."', '".$project_id."')";
+                            $sqlVal = "('".$text."','".$fileName_trim."', '".$user_id."')";
+                            // echo $sqlVal;
+                            echo $fileName_trim;
                         } else {
                             $response = array(
                                 "status" => "alert-danger",
@@ -53,13 +57,13 @@
                 }
                 // Add into MySQL database
                 if(!empty($sqlVal)) {
-                    $insert = $conn->query("INSERT INTO project_images (file_name,project_id) VALUES $sqlVal");
+                    $insert = $conn->query("INSERT INTO gallery (text,photo,user_id) VALUES $sqlVal");
                     if($insert) {
                         $response = array(
                             "status" => "alert-success",
                             "message" => "Files successfully uploaded."
                         );
-    echo "<script>window.open('project.php','_self')</script>";   
+    echo "<script>window.open('non_individual_profile.php','_self')</script>";   
 
                     } else {
                         $response = array(
