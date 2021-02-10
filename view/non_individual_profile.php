@@ -66,6 +66,7 @@ BOSINIA $ HE.. <?php echo date('h:i A F jS ');?>
         // $first_name = $row['first_name'];
         // $last_name = $row['last_name'];
         $user_id = $row['user_id'];
+        $_SESSION['profile_id'] = $row['profile_non_individual_id'];
         // $past_job_position = $row['employement_past_position'];
         // $past_job_name = $row['employement_past_name'];
 // $_SESSION[$user_id];
@@ -110,32 +111,47 @@ BOSINIA $ HE.. <?php echo date('h:i A F jS ');?>
 <h5>Relationship Partners</h5>
        </div>
        <div>
-       <a href="add_partners.php">add Partners</a>
+       <a href="add_partner.php">add Partners</a><br><br>
+       <div class="row">
+
        <?php
         //   $user_id = $_SESSION['user_id'];
          
-          $check_partner="select * from relatioship_partners WHERE user_id='$user_id'";   
+          $check_partner="select * from relatioship_partners";   
          
 
           if($project_data = mysqli_query($dbC,$check_partner)){
 
             while($row_partner = mysqli_fetch_array($project_data)){
             // $project_photo = "../images/relationship_partners/".$row_partner['project_award'];
-        $partner_name = $row_partner['team_members'];
-        // $project_id = $row_partner['project_id'];
-        // $award = $row_partner['award'];
-        // $from = $row_project['award_from'];
-        // echo $row_['message'];
-        // echo $row_['date'];
-        $user_partner="select * from user WHERE user_id='$user_id'";   
-        
+        $partner_name = $row_partner['name'];
+        $partner_profile_id= $row_partner['user_id'];
+        $user_type= $row_partner['user_type'];
+        $user_one_sepa = explode(" ", $partner_name);
+        $fname = $user_one_sepa[0];
+  
+        $lname = $user_one_sepa[1];
+
+        if($user_type === 'individual'){
+            $ind="select * from profile_individual WHERE first_name='$fname' AND last_name='$lname'";   
+            $ind_data=mysqli_query($dbC,$ind);  
+            $row_ind = mysqli_fetch_assoc($ind_data);
+            $ind_photo = $row_ind['photo'];
+
+        }else{
+            $non_ind="select * from profile_non_individual WHERE name='$fname'";   
+            $non_ind_data=mysqli_query($dbC,$non_ind);  
+            $row_non_ind = mysqli_fetch_assoc($non_ind_data);
+            $ind_photo = $row_non_ind['photo'];
+        }
+        $display_photo = "../images/dp/".$ind_photo;
+        // echo $display_photo;
         echo '
-        <div class="col-6">
+        <div class="col-4">
+        <img src='.$display_photo.' alt="award" height="60px" width="70"><br>
        
-        <form  method="POST" action="project.php">
-        <input type= "text" hidden name="id" value="">
-        <button type="submit" class="btn btn-link">'.$partner_name.'</button><br>
-        </form>
+       <a href ="">'.$partner_name.'</a><br>
+      
         
        </div>
            
@@ -146,7 +162,7 @@ BOSINIA $ HE.. <?php echo date('h:i A F jS ');?>
   
        ?>
        
-
+       </div>
        
        </div>
 
@@ -170,6 +186,7 @@ BOSINIA $ HE.. <?php echo date('h:i A F jS ');?>
             $project_photo = "../images/award/".$row_project['project_award'];
         $project_name = $row_project['name'];
         $project_id = $row_project['project_id'];
+        $_SESSION['project_id']=$project_id;
         $award = $row_project['award'];
         // $from = $row_project['award_from'];
         // echo $row_['message'];
@@ -300,20 +317,18 @@ BOSINIA $ HE.. <?php echo date('h:i A F jS ');?>
         <h1> <?php echo $name; ?></h1>
         </div>
        
-        <div style="border: 1px solid black">   
+        <div style="border: 1px solid black;margin-top:300px;">   
         <form method="POST" action="wall.php" enctype="multipart/form-data">
 
         <br>
-        <input type="text" name="news" placeholder="Communicate">
+        <input type="text" name="news" placeholder="Post on your wall" required>
 <br>
 <br>
-      <strong> upload photo:</strong> <input type="file" name="news_photo"><br>
+      <input type="file" name="news_photo"><br>
 <br>
         <input type="submit" value="submit" name="submit">
         </form > 
             </div>
-            <br>
-            <br>
             <br>
             <br>
             <br>
@@ -323,90 +338,74 @@ BOSINIA $ HE.. <?php echo date('h:i A F jS ');?>
 //     if($_SESSION['email'])   
 // {
     
-    $image = $row['logo'];
-    $image_array =explode(',',$image);
-    $image_name1 = $image_array[1];
-    // $image1 = $image_array[1];
-    $image1 = "../images/logo/".$image_array[1];
-        // echo $image1;
-        echo "<img src=".$image1." width=90 height=100>
-        
-        ";
-
-  
-        
-    // }
-    ?>
-    <a href="">
-    <?php
-
-    echo $image_name1;
-    ?>
-    </a>
-            </div>
-            <div class="col">
-            <?php 
-             $image2 = "../images/logo/".$image_array[2];
-    $image_name2 = $image_array[2];
-
-                //  echo $image_name2;
-                 echo "<img src=".$image2." width=90 height=100>
-                 ";
-            ?>
-        <!-- <img src="images/bou.jpg" alt="user" width="90" height="100"> -->
-        <a href=""> 
-        <?php
-        echo $image_name2;
+ 
         ?>
         </a>
             </div>
             <div class="col">
             <?php 
-             $image3 = "../images/logo/".$image_array[3];
-    $image_name3 = $image_array[3];
-
-                //  echo $3;
-                 echo "<img src=".$image3." width=90 height=100>
-                 ";
-            ?>
-        <!-- <img src="images/igg.png" alt="user" width="90" height="100"> -->
-        <a href="">
-        <?php
-        echo $image_name3;
+            
         ?>
         </a>
             </div>
             
         </div>
-        <br>
-        <br>
         <h5 style="color: green;">RECENT ACTIVITY</h5>
 
         <div style="padding-left:50px;">
         
         <?php
 $id=$_SESSION['user_id'];
-$wall="select * from wall WHERE user_id='$id'";   
+// $wall="select * from wall ";   
+
+$wall="select * from wall ";   
 if($result = mysqli_query($dbC,$wall)){
 
     while($row_ = mysqli_fetch_array($result)){
+        $photo_name = $row_['photo'];
     $news_photo = "../images/wall/".$row_['photo'];
 $date = $row_['date'];
 $message = $row_['message'];
-// echo $row_['message'];
-// echo $row_['date'];
+$poster = $row_['user_id'];
+$wall_id = $row_['wall_id'];
 
+
+$count_comments = "SELECT wall_id FROM comment WHERE wall_id = $wall_id"; 
+      
+    // Execute the query and store the result set 
+    $count_result = mysqli_query($dbC, $count_comments); 
+      
+     
+        $row_count = mysqli_num_rows($count_result); 
+          
+        
+$all="select * from user WHERE user_id='$poster' ";   
+$all_result = mysqli_query($dbC,$all);
+$all_row_ = mysqli_fetch_array($all_result);
+$poster_fname = $all_row_['first_name'];
+$poster_lname = $all_row_['last_name'];
+$space = '';
 echo '
-<div class="row">
-<div class="col-2">
-
-            
-<img src='.$news_photo.' width=80 height=80>
-
-
+<a href=""> '.$poster_fname.'  '.$poster_lname.' </a>Posted on his wall <br>
+<div class="row" style="margin-top:10px;">
+<div class="col-2">';
+if($photo_name !=''){
+    echo'        
+<img src='.$news_photo.' width=80 height=80>';
+}else{
+    // echo '<a href="pass.php?link=' . $a . '>Link 1</a>';
+    echo'     ';
+}
+echo'
             </div>
             <div class="col-8"><p>'.$message.'.</p>
-          <strong> posted at</strong>  '.$date.'
+          <strong> posted at</strong>  '.$date.' &nbsp&nbsp&nbsp
+          <form  method="POST" action="comment.php">
+<input type="text" name="wall_id" value="'.$wall_id.'" hidden>
+<button type="submit" class="btn btn-link">Comment '.$row_count.'</button>
+          </form>
+          <a href="">Like</a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+          <a href="">Share</a>
     </div>
     
     </div>

@@ -54,38 +54,87 @@ $photo = $_FILES['award']['name'];
   
     // Check extension
     if( in_array($imageFileType,$extensions_arr) ){
-      foreach ($_POST['partner'] as $icon) 
-      {
-       ///your insert code//
-      //  echo  $icon.',';
-      $pizza  = $icon.',';
-$pieces = explode(",", $pizza);
+//       foreach ($_POST['partner'] as $icon) 
+//       {
+//        ///your insert code//
+//       //  echo  $icon.',';
+//       $pizza  = $icon.',';
+// $pieces = explode(",", $pizza);
       
-      // echo $pieces[0];
-      // echo "</br>";  
-      // echo $pieces[1];
+//       // echo $pieces[0];
+//       // echo "</br>";  
+//       // echo $pieces[1];
 
 //       $user_one = $pieces[0];
 // $user_one_sepa = explode(" ", $user_one);
-// echo $user_one_sepa[0];
+// // echo $user_one_sepa[0];
+// $fname = $user_one_sepa[0];
+
+// // echo "</br>";  
+// // echo $user_one_sepa[1];
+// // echo "</br>";  
+// $lname = $user_one_sepa[1];
+
+// echo $user_one;
 // echo "</br>";  
-// echo $user_one_sepa[1];
-// echo "</br>";  
 
-      $sql ="INSERT INTO projects (name,team_members,timeline,purpose,status,project_award,award,user_id)
-VALUES ( '$name', '$icon','$timeline','$purpose', '$status','$photo','$award','$user_id')";
+// $check_user="select * from user WHERE first_name='$fname'AND last_name='$lname'";   
+      
+// $run=mysqli_query($dbC,$check_user);   
+// if($run){
+//       $row = mysqli_fetch_assoc($run);
 
-$query="mysql_num_rows($sql)";
-if(mysqli_query($dbC, $sql)){
-    echo "<script>window.open('project.php','_self')</script>";   
+//       $userid = $row['user_id'];
+//       $user_type = $row['user_type'];
+//       // $user_photo = $row['user_id'];
+      
+//       $check_user_image="select 'photo' from profile_non_individual WHERE user_id='$userid'";   
+            
+      // $run_user_image=mysqli_query($dbC,$check_user_image);  
+      // if($run_user_image){
+      //       $row_ = mysqli_fetch_assoc($run_user_image);
+      //       $user_photo = $row_['photo'];
+      //       $profile_id = $_SESSION['profile_id'];
+            
+            
+            
+            // $sql1 = "INSERT INTO relatioship_partners (name,user_id,user_type)
+            // VALUES ('$user_one','$userid','$user_type')";
+            // if(mysqli_query($dbC,$sql1)){
+                  $sql ="INSERT INTO projects (name,timeline,purpose,status,project_award,award,user_id)
+                  VALUES ( '$name','$timeline','$purpose', '$status','$photo','$award','$user_id')";
+                  
+                  $query="mysql_num_rows($sql)";
+                  if(mysqli_query($dbC, $sql)){
 
-} else{
-   echo "ERROR: Could not able to execute $sql. " . mysqli_error($dbC);
-}
-    
-       move_uploaded_file($_FILES['award']['tmp_name'],$target_dir.$photo);
-//        echo "<script>window.open('project.php','_self')</script>";   
-}
+      $chek_project="select 'photo' from profile_non_individual WHERE user_id='$userid'";   
+
+
+
+
+
+                      echo "<script>window.open('project.php','_self')</script>";   
+                  
+                  } else{
+                     echo "ERROR: Could not able to execute $sql. " . mysqli_error($dbC);
+                  }
+                      
+                         move_uploaded_file($_FILES['award']['tmp_name'],$target_dir.$photo);
+                         echo "<script>window.open('project.php','_self')</script>"; 
+            
+            // }else{ echo "ERROR: Could not able to execute $sql1. " . mysqli_error($dbC);}
+      // }else{
+      //       echo "ERROR: Could not able to execute $check_user_image. " . mysqli_error($dbC);
+      // }
+      
+     
+// }else{
+//       echo "ERROR: Could not able to execute $check_user. " . mysqli_error($dbC);
+
+// }
+
+        
+// }
     }
 
 

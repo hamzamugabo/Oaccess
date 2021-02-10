@@ -123,6 +123,18 @@ input[type="radio"]:checked + input {
                                   
                             </div>
                         </div>
+
+                        <div class="form-group row">
+                            <label for="award" class="col-md-3 col-form-label text-md-right">Date</label>
+
+                            <div class="col-md-3">
+                                <input  type="date" class="form-control" name="date"   autofocus>
+
+                             
+                                  
+                            </div>
+                            
+                        </div>
                         <!-- <div class="form-group row">
                            
                             <label for="email" class="col-md-3 col-form-label text-md-right">Project photos</label>
@@ -135,35 +147,35 @@ input[type="radio"]:checked + input {
                             </div>
                         </div> -->
 
-                         Team Members:
+                         <!-- Team Members:
                         <div class="form-group row">
                             <label for="member_name" class="col-md-3 col-form-label text-md-right">Select Partner</label>
 
                             <div class="col-md-3">
                             <select multiple name="partner[]"  class="form-control" id="exampleFormControlSelect2" required>
                             <?php
-    include("../config/config.php");   
+    // include("../config/config.php");   
 
- $app="select * from user";   
+//  $app="select * from user";   
 
 
 
- if($app_data = mysqli_query($dbC,$app)){
+//  if($app_data = mysqli_query($dbC,$app)){
 
-   while($row_app = mysqli_fetch_array($app_data)){
+//    while($row_app = mysqli_fetch_array($app_data)){
 //    $app_photo = "../images/applications/".$row_app['app_logo'];
-$app_name = $row_app['first_name'];
-$lname = $row_app['last_name'];
-$user_id = $row_app['user_id'];
-echo
-'
-<option>
-   '.$app_name.' '.$lname.'    
+// $app_name = $row_app['first_name'];
+// $lname = $row_app['last_name'];
+// $user_id = $row_app['user_id'];
+// echo
+// '
+// <option>
+//    '.$app_name.' '.$lname.'    
       
-</option>
-';
-} 
-}
+// </option>
+// ';
+// } 
+// }
 
 ?>
      
@@ -172,7 +184,7 @@ echo
                                   
                             </div>
                             
-                        </div>
+                        </div> -->
 
                       
                        

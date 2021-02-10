@@ -38,7 +38,10 @@ if(isset($_POST['submit'])){
      $query="mysql_num_rows($sql)";
      if(mysqli_query($con, $sql)){
   
-        echo "<script>window.open('individual_profile.php','_self')</script>";  
+      if($user_type === 'individual')
+      echo "<script>window.open('individual_profile.php','_self')</script>";
+      else  
+      echo "<script>window.open('non_individual_profile.php','_self')</script>";
 
   
      

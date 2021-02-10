@@ -27,7 +27,9 @@ if(isset($_POST['submit'])){
   $extensions_arr = array("jpg","jpeg","png","gif");
 
   // Check extension
-  if( in_array($imageFileType,$extensions_arr) ){
+  // if( 
+    in_array($imageFileType,$extensions_arr); 
+  // ){
  
      // Insert record
      $sql = "INSERT INTO wall(user_id,date,photo,message) VALUES('$user_id','$date','$name','$message')";
@@ -37,8 +39,14 @@ if(isset($_POST['submit'])){
      move_uploaded_file($_FILES['news_photo']['tmp_name'],$target_dir.$name);
      $query="mysql_num_rows($sql)";
      if(mysqli_query($con, $sql)){
-  
-      echo "<script>window.open('individual_profile.php','_self')</script>";  
+
+      $user_type= $_SESSION['user_type'];
+
+      if($user_type === 'individual')
+      echo "<script>window.open('individual_profile.php','_self')</script>";
+      else  
+      echo "<script>window.open('non_individual_profile.php','_self')</script>";
+
   
 
   
@@ -48,7 +56,7 @@ if(isset($_POST['submit'])){
      }
 
 
-  }
+  // }else{echo'no photo';}
  
-}
+}else{echo'not submittd';}
 ?>

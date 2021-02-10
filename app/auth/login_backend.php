@@ -15,6 +15,7 @@ session_start();//session starts here
        $row = mysqli_fetch_assoc($run);
        $_SESSION['email']=$user_email;
            $_SESSION['user_id']=$row['user_id'];
+           $_SESSION['user_type']=$row['user_type'];
       //  $_SESSION['user_id'];
        if(mysqli_num_rows($run))   
        {

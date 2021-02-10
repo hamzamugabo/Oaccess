@@ -12,46 +12,40 @@ if(!$_POST['id']){
 <title>Projects</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link type="text/css" rel="stylesheet" href="../css\style.css">    
-   <link type="text/css" rel="stylesheet" href="../css\bootstrap.css">   
+ <link type="text/css" rel="stylesheet" href="../css/bootstrap.css">   
+    <link type="text/css" rel="stylesheet" href="../css\layout.css">   
    
 
 </head>
 <body >
-<div style="margin-bottom: 10px;margin-top:10px;">
-profile of ministry of East African Community Affairs>>Projects
-<span style="float: right;"><a href="">Profile</a> </span>
-<span style="float: right;">&nbsp</span>
+<body class="home" >   
+<div id="login-header">
+             <div class="container" >
+                 <div class="row">
+                     <div class="col-md-3 logo"><img src="../images/official-access-logo.png"/></div>
+          <div class="pull-right col-md-6" style="float: right;">
+        <!-- <div class="loginform"> -->
+        <form method="POST" action="../app/auth/logout.php" style="float:right">
+        <div class="row">
+        <!-- <div style="float:right"> -->
 
-<span style="float: right;"><a href="">Home </a> </span>
-</div>
-<div style="background-color: black; margin-bottom:15px;color:white;">
-<div style="text-align:right;">  
-THE REPUBLIC OF KENYA(
-    <?php
-    
-    echo date('h:i A l F jS ');
-        ?>
-)
-</div>
-<div style="text-align:center;margin-top: 0px;">  
-<form>
-    <input type="text">
-</form>
-</div>
-<!-- <span style="float: right; ">Profile</span> -->
+                                <button type="submit" class="btn btn-primary">
+                                   Logout
+                                </button>
+                            <!-- </div> -->
+                            
+                        </div>
+        </form>
 
-</div>
-
-
-<div class="cont" style="margin-bottom:20px;">
-<span style="border-right: 1px solid black;">Enlarge>></span>
-<span style="border-right: 1px solid black;">Print Preview>></span>
-<span style="border-right: 1px solid black;">Save>></span>
-<span style="border-right: 1px solid black;">Send>></span>
-Projects
-<!-- <span style="border-right: 1px solid black;">Projects</span> -->
-
- </div>
+        <!-- </div> -->
+         
+         </div>
+         
+                 </div>
+         
+              
+             </div>
+         </div> 
 
  <!-- project map -->
  <div class="row" style="margin-bottom: 30px;">
@@ -59,7 +53,7 @@ Projects
      <div class="mapouter"><div class="gmap_canvas"><iframe width="1080" height="325" id="gmap_canvas" src="https://maps.google.com/maps?q=kireka&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe><a href="https://soap2day-to.com">soap2day</a><br><style>.mapouter{position:relative;text-align:right;height:325px;width:1080px;}</style><a href="https://www.embedgooglemap.net">google maps insert</a><style>.gmap_canvas {overflow:hidden;background:none!important;height:325px;width:1080px;}</style></div></div>
 
      </div>
-     <div class="col-md-4">
+     <!-- <div class="col-md-4">
      <table class="table">
   <thead>
     <tr class="bg-info">
@@ -77,13 +71,13 @@ Projects
     
   </tbody>
 </table>
-     </div>
+     </div> -->
  </div>
 <!-- project section -->
      <div class="row">
 
      <div class="col-1">
-<h4 style="color:blue;">PROJECT ID 
+<h5 style="color:blue;">PROJECT ID 
 <?php
     include("../config/config.php");   
     // $_SESSION['project_id'] = $_POST['id'];
@@ -101,7 +95,7 @@ if(isset($_POST['id']))
        $query=mysqli_query($dbC,$project_sql);   
        $results = mysqli_fetch_assoc($query);
        $purpose =$results['purpose'];
-       $team =$results['team_members'];
+      //  $team =$results['team_members'];
        $status =$results['status'];
        $award =$results['project_award'];
        $pro_award =$results['award'];
@@ -111,13 +105,13 @@ if(isset($_POST['id']))
 }
 ?>
 
-</h4>
+</h5>
 <br>
 <?php echo $pro_award; ?>
      </div>
 
      <div class="col-2">
-     <h4 style="color:blue;">PURPOSE</h4>
+     <h5 style="color:blue;">PURPOSE</h5>
          <br>
          <?php
          echo $purpose;
@@ -129,11 +123,79 @@ the possibility of manipulating the table styles. -->
 
      </div>
 
-     <div class="col-2">
-     <h4 style="color:blue;">TEAM MEMBERS</h4>
-         <br>
+     <div class="col-3">
+     <h5 style="color:blue;">TEAM MEMBERS</h5>
+         
+
          <?php
-         echo $team;
+          echo '
+          <div >
+         
+          <a href="add_project_team_members.php">Add Team Members</a><br>
+          
+         </div>
+         <br>
+          ';
+        //  echo $team;
+?>
+<div class="row">
+<?php
+       
+        //   $user_id = $_SESSION['user_id'];
+        $pro_id =$_SESSION['project_id'];
+          $check_partner="select * from project_team  WHERE project_id='$pro_id'";   
+         
+
+          if($project_data = mysqli_query($dbC,$check_partner)){
+
+            while($row_partner = mysqli_fetch_array($project_data)){
+            // $project_photo = "../images/relationship_partners/".$row_partner['project_award'];
+        $member_name = $row_partner['name'];
+        $partner_profile_id= $row_partner['user_id'];
+        // $user_type= $row_partner['user_type'];
+        $user_one_sepa = explode(" ", $member_name);
+        $fname = $user_one_sepa[0];
+  
+        $lname = $user_one_sepa[1];
+        $check_user_type="select user_type from user WHERE user_id='$partner_profile_id'";   
+         
+
+        if($user_data = mysqli_query($dbC,$check_user_type)){
+          $row_user = mysqli_fetch_array($user_data);
+          $user_type = $row_user['user_type'];
+        if($user_type === 'individual'){
+            $ind="select * from profile_individual WHERE first_name='$fname' AND last_name='$lname'";   
+            $ind_data=mysqli_query($dbC,$ind);  
+            $row_ind = mysqli_fetch_assoc($ind_data);
+            $ind_photo = $row_ind['photo'];
+
+        }else{
+            $non_ind="select * from profile_non_individual WHERE name='$fname'";   
+            $non_ind_data=mysqli_query($dbC,$non_ind);  
+            $row_non_ind = mysqli_fetch_assoc($non_ind_data);
+            $ind_photo = $row_non_ind['photo'];
+        }
+        $display_photo = "../images/dp/".$ind_photo;
+        // echo $display_photo;
+        echo '
+        
+        <div class="col-4">
+        <img src='.$display_photo.' alt="award height="60px" width="80px"
+       
+        
+        <a href="">'.$member_name.'</a><br>
+        
+        
+       </div>
+       
+           
+        ';
+        // echo $row_['message'];
+      }
+            }
+        } 
+  
+       
          ?>
 <!-- Tables allow you to aggregate a huge amount of data and present it in a clear and orderly way. 
 MDB tables provide additional benefits like responsiveness and 
@@ -141,9 +203,10 @@ the possibility of manipulating the table styles. -->
     
 
      </div>
+     </div>
 
      <div class="col-1">
-     <h4 style="color:blue;">STATUS OF PROJECT</h4>
+     <h5 style="color:blue;">STATUS OF PROJECT</h5>
          <br>
 
          <?php
@@ -157,17 +220,18 @@ the possibility of manipulating the table styles. -->
      </div>
 
      <div class="col-2">
+     <h5 style="color:blue;">Award</h5>
      <?php
          echo '
-         <h4>'.$pro_award.'</h4>
+         <h5>'.$pro_award.'</h5>
          <img src='.$project_photo.' alt="award" height="200px" width="220px">
          
          ';
          ?>
        </div>
 
-     <div class="col-4">
-     <h4 style="color:blue;">PROJECT PHOTOS</h4>
+     <div class="col-3">
+     <h5 style="color:blue;">PROJECT PHOTOS</h5>
      <!-- <div style="border: 1px solid black">    -->
         <form method="POST" action="add_project_photos.php" enctype="multipart/form-data">
         <!-- <input type="text" hidden name="id" value="<?php $project_id ?>"> -->

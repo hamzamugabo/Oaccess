@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 08, 2021 at 03:27 PM
+-- Generation Time: Feb 10, 2021 at 03:12 PM
 -- Server version: 10.3.16-MariaDB
 -- PHP Version: 7.3.6
 
@@ -100,8 +100,18 @@ CREATE TABLE `anniversaries` (
 CREATE TABLE `application` (
   `application_id` int(255) NOT NULL,
   `user_id` int(255) NOT NULL,
-  `date` date NOT NULL
+  `date` date NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `app_logo` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `application`
+--
+
+INSERT INTO `application` (`application_id`, `user_id`, `date`, `name`, `app_logo`) VALUES
+(1, 3, '2021-02-09', 'mtn', 'mtn.png'),
+(2, 3, '2021-02-09', 'Africel', 'africel.png');
 
 -- --------------------------------------------------------
 
@@ -134,9 +144,19 @@ INSERT INTO `award` (`id`, `name_of_award`, `award_from`, `award_picture`, `user
 
 CREATE TABLE `comment` (
   `comment_id` int(255) NOT NULL,
-  `content_id` int(255) NOT NULL,
-  `date` date NOT NULL
+  `date` varchar(255) NOT NULL,
+  `user_id` int(255) NOT NULL,
+  `wall_id` int(255) NOT NULL,
+  `comment` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `comment`
+--
+
+INSERT INTO `comment` (`comment_id`, `date`, `user_id`, `wall_id`, `comment`) VALUES
+(2, '02:29 PM Wednesday February 10th ', 3, 1, 'We  all know it'),
+(3, '02:48 PM Wednesday February 10th ', 3, 1, ' good to know\r\n');
 
 -- --------------------------------------------------------
 
@@ -214,6 +234,14 @@ CREATE TABLE `gallery` (
   `user_id` int(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `gallery`
+--
+
+INSERT INTO `gallery` (`id`, `text`, `photo`, `user_id`) VALUES
+(1, 'jj', 'badman.jpg', 3),
+(2, 'jj', 'designthiswebpage.jpg', 3);
+
 -- --------------------------------------------------------
 
 --
@@ -239,27 +267,6 @@ INSERT INTO `image` (`id`, `filename`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `images`
---
-
-CREATE TABLE `images` (
-  `id` int(11) NOT NULL,
-  `file_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `project_id` int(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `images`
---
-
-INSERT INTO `images` (`id`, `file_name`, `project_id`) VALUES
-(1, 'car (2).png', 1),
-(2, 'car (3).png', 1),
-(3, 'car (4).png', 1);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `individual`
 --
 
@@ -277,8 +284,10 @@ CREATE TABLE `individual` (
 
 CREATE TABLE `like` (
   `like_id` int(255) NOT NULL,
-  `order_id` int(255) NOT NULL,
-  `date` date NOT NULL
+  `date` date NOT NULL,
+  `wall_id` int(255) NOT NULL,
+  `user_id` int(255) NOT NULL,
+  `count` int(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -410,7 +419,7 @@ CREATE TABLE `profile_non_individual` (
 --
 
 INSERT INTO `profile_non_individual` (`profile_non_individual_id`, `name`, `division`, `license_no`, `photo`, `user_id`, `tin`, `mission`) VALUES
-(1, 'Nastar Technologies', 'Kireka Shopping mall\r\n', '15548', 'Dailgo-Square.png', 3, '554444', 'the future of tech');
+(1, 'Nastar ', 'Kireka Shopping mall\r\n', '15548', 'Dailgo-Square.png', 3, '554444', 'the future of tech');
 
 -- --------------------------------------------------------
 
@@ -421,23 +430,50 @@ INSERT INTO `profile_non_individual` (`profile_non_individual_id`, `name`, `divi
 CREATE TABLE `projects` (
   `project_id` int(255) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `team_members` varchar(255) NOT NULL,
   `timeline` varchar(255) NOT NULL,
   `purpose` text NOT NULL,
   `status` varchar(255) NOT NULL,
-  `team_member_title` varchar(255) DEFAULT NULL,
   `project_award` varchar(255) DEFAULT NULL,
   `award` varchar(1200) NOT NULL,
-  `user_id` int(255) NOT NULL
+  `user_id` int(255) NOT NULL,
+  `date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `projects`
 --
 
-INSERT INTO `projects` (`project_id`, `name`, `team_members`, `timeline`, `purpose`, `status`, `team_member_title`, `project_award`, `award`, `user_id`) VALUES
-(1, 'Office Access', 'Mugabo Hamza,cedric,Michael,Brian', '2 months', 'connect offices', 'on track', 'developer,developer,supervisor,supervisor', 'order.jpg', 'Best project in the sector', 3),
-(2, 'Office Access0', 'Mugabo Hamza,cedric,Michael,Brian', '2 months', 'connect offices', 'on track', 'developer,developer,supervisor,supervisor', 'freezer_truck.png', 'runners up ', 3);
+INSERT INTO `projects` (`project_id`, `name`, `timeline`, `purpose`, `status`, `project_award`, `award`, `user_id`, `date`) VALUES
+(1, 'Office Access', '2 months', 'connect offices', 'on track', 'award.jpg', 'best in the central region', 3, '0000-00-00'),
+(2, 'Office Access0', '2 months', 'connect offices', 'on track', 'award2.jpg', 'best project', 3, '0000-00-00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `project_images`
+--
+
+CREATE TABLE `project_images` (
+  `id` int(11) NOT NULL,
+  `file_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `project_id` int(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `project_images`
+--
+
+INSERT INTO `project_images` (`id`, `file_name`, `project_id`) VALUES
+(1, 'form2.PNG', 1),
+(2, 'form3.PNG', 1),
+(3, 'ffff.PNG', 1),
+(4, 'firebase android config2.PNG', 1),
+(5, 'form1.PNG', 1),
+(6, 'token 200.PNG', 1),
+(7, 'token 422.PNG', 1),
+(8, 'jaridah1.jpg', 1),
+(9, 'jaridah2.jpg', 1),
+(10, 'jaridah3.jpg', 1);
 
 -- --------------------------------------------------------
 
@@ -448,8 +484,20 @@ INSERT INTO `projects` (`project_id`, `name`, `team_members`, `timeline`, `purpo
 CREATE TABLE `project_team` (
   `project_team_id` int(255) NOT NULL,
   `project_id` int(255) NOT NULL,
-  `date` date NOT NULL
+  `date` date NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `user_id` int(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `project_team`
+--
+
+INSERT INTO `project_team` (`project_team_id`, `project_id`, `date`, `name`, `user_id`) VALUES
+(1, 1, '2021-02-10', 'Hamza Mugabo', 1),
+(2, 1, '2021-02-10', 'Nastar Kireka', 3),
+(3, 2, '2021-02-11', 'Hamza Mugabo', 1),
+(4, 2, '2021-02-11', 'Nastar Kireka', 3);
 
 -- --------------------------------------------------------
 
@@ -471,18 +519,20 @@ CREATE TABLE `recommendation` (
 
 CREATE TABLE `relatioship_partners` (
   `relationship_id` int(255) NOT NULL,
-  `image` varchar(255) DEFAULT NULL,
   `name` varchar(255) NOT NULL,
-  `user_id` int(255) NOT NULL
+  `project_id` int(255) NOT NULL,
+  `date` date NOT NULL,
+  `user_id` int(255) NOT NULL,
+  `user_type` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `relatioship_partners`
 --
 
-INSERT INTO `relatioship_partners` (`relationship_id`, `image`, `name`, `user_id`) VALUES
-(1, 'alao-babajide.png,amuru.png,coumba-deng.jpg,gary-wigmore.jpg,kls.png', 'alao-babajide,amuru,coumba-deng,gary-wigmore,kls', 1),
-(2, 'alao-babajide.png,amuru.png,coumba-deng.jpg,gary-wigmore.jpg,kls.png', 'alao-babajide,amuru,coumba-deng,gary-wigmore,kls', 3);
+INSERT INTO `relatioship_partners` (`relationship_id`, `name`, `project_id`, `date`, `user_id`, `user_type`) VALUES
+(1, 'Hamza Mugabo', 1, '2021-02-10', 1, 'individual'),
+(2, 'Nastar Kireka', 1, '2021-02-10', 3, 'non_individual');
 
 -- --------------------------------------------------------
 
@@ -575,7 +625,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `first_name`, `last_name`, `email`, `password`, `user_type`, `gender`, `dob`, `contact`) VALUES
-(1, 'Hamza', 'Mugabo', 'ham@gmail.com', '123', 'individual', 'male', '2021-02-08', '123'),
+(1, 'Hamza', 'Mugabo', 'ham@gmail.com', '1234', 'individual', 'male', '2021-02-08', '123'),
 (3, 'Nastar', 'Kireka', 'nastar@gmail.com', '123', 'non_individual', '', '2021-02-09', '123');
 
 -- --------------------------------------------------------
@@ -629,7 +679,9 @@ INSERT INTO `wall` (`wall_id`, `user_id`, `date`, `photo`, `message`) VALUES
 (1, 1, '11:21 AM Friday February 5th ', 'Capture1.PNG', 'HTML is the standard markup language for creating Web pages'),
 (2, 1, '11:52 AM Friday February 5th ', 'freezer_truck.png', 'php is pretty good'),
 (3, 1, '11:55 AM Friday February 5th ', 'freezer_truck.png', 'java is good'),
-(4, 1, '02:35 PM Friday February 5th ', 'pro.png', 'how about react native');
+(4, 1, '02:35 PM Friday February 5th ', 'pro.png', 'how about react native'),
+(5, 3, '12:26 PM Wednesday February 10th ', '', 'im loving this wall'),
+(6, 3, '12:30 PM Wednesday February 10th ', '', 'testing again');
 
 --
 -- Indexes for dumped tables
@@ -667,7 +719,8 @@ ALTER TABLE `award`
 --
 ALTER TABLE `comment`
   ADD PRIMARY KEY (`comment_id`),
-  ADD KEY `content_id` (`content_id`);
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `wall_id` (`wall_id`);
 
 --
 -- Indexes for table `configuration`
@@ -706,13 +759,6 @@ ALTER TABLE `gallery`
 --
 ALTER TABLE `image`
   ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `images`
---
-ALTER TABLE `images`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `project_id` (`project_id`);
 
 --
 -- Indexes for table `individual`
@@ -777,11 +823,19 @@ ALTER TABLE `projects`
   ADD KEY `user_id` (`user_id`);
 
 --
+-- Indexes for table `project_images`
+--
+ALTER TABLE `project_images`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `project_id` (`project_id`);
+
+--
 -- Indexes for table `project_team`
 --
 ALTER TABLE `project_team`
   ADD PRIMARY KEY (`project_team_id`),
-  ADD KEY `project_id` (`project_id`);
+  ADD KEY `project_id` (`project_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `recommendation`
@@ -793,7 +847,9 @@ ALTER TABLE `recommendation`
 -- Indexes for table `relatioship_partners`
 --
 ALTER TABLE `relatioship_partners`
-  ADD PRIMARY KEY (`relationship_id`);
+  ADD PRIMARY KEY (`relationship_id`),
+  ADD KEY `project_id` (`project_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `reports`
@@ -860,7 +916,7 @@ ALTER TABLE `anniversaries`
 -- AUTO_INCREMENT for table `application`
 --
 ALTER TABLE `application`
-  MODIFY `application_id` int(255) NOT NULL AUTO_INCREMENT;
+  MODIFY `application_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `award`
@@ -872,7 +928,7 @@ ALTER TABLE `award`
 -- AUTO_INCREMENT for table `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `comment_id` int(255) NOT NULL AUTO_INCREMENT;
+  MODIFY `comment_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `contact_us`
@@ -896,19 +952,13 @@ ALTER TABLE `event`
 -- AUTO_INCREMENT for table `gallery`
 --
 ALTER TABLE `gallery`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `image`
 --
 ALTER TABLE `image`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT for table `images`
---
-ALTER TABLE `images`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `individual`
@@ -965,10 +1015,16 @@ ALTER TABLE `projects`
   MODIFY `project_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT for table `project_images`
+--
+ALTER TABLE `project_images`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
 -- AUTO_INCREMENT for table `project_team`
 --
 ALTER TABLE `project_team`
-  MODIFY `project_team_id` int(255) NOT NULL AUTO_INCREMENT;
+  MODIFY `project_team_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `recommendation`
@@ -1022,7 +1078,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `wall`
 --
 ALTER TABLE `wall`
-  MODIFY `wall_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `wall_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables
@@ -1050,7 +1106,8 @@ ALTER TABLE `award`
 -- Constraints for table `comment`
 --
 ALTER TABLE `comment`
-  ADD CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`content_id`) REFERENCES `content` (`content_id`);
+  ADD CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
+  ADD CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`wall_id`) REFERENCES `wall` (`wall_id`);
 
 --
 -- Constraints for table `configuration`
@@ -1063,12 +1120,6 @@ ALTER TABLE `configuration`
 --
 ALTER TABLE `gallery`
   ADD CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
-
---
--- Constraints for table `images`
---
-ALTER TABLE `images`
-  ADD CONSTRAINT `images_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `projects` (`project_id`);
 
 --
 -- Constraints for table `individual`
@@ -1101,10 +1152,24 @@ ALTER TABLE `projects`
   ADD CONSTRAINT `projects_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
 
 --
+-- Constraints for table `project_images`
+--
+ALTER TABLE `project_images`
+  ADD CONSTRAINT `project_images_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `projects` (`project_id`);
+
+--
 -- Constraints for table `project_team`
 --
 ALTER TABLE `project_team`
-  ADD CONSTRAINT `project_team_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `projects` (`project_id`);
+  ADD CONSTRAINT `project_team_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `projects` (`project_id`),
+  ADD CONSTRAINT `project_team_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
+
+--
+-- Constraints for table `relatioship_partners`
+--
+ALTER TABLE `relatioship_partners`
+  ADD CONSTRAINT `relatioship_partners_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `projects` (`project_id`),
+  ADD CONSTRAINT `relatioship_partners_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
 
 --
 -- Constraints for table `share`
