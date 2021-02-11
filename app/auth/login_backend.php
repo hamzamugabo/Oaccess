@@ -29,7 +29,7 @@ session_start();//session starts here
         $run_ind=mysqli_query($dbC,$check_user_ind);  
         $count=mysqli_num_rows($run_ind);
         if($count == 1)
-            echo "<script>window.open('../../view/individual_profile.php','_self')</script>";  
+            echo "<script>window.open('../../index.php','_self')</script>";  
 else
             echo "<script>window.open('individual_register.php','_self')</script>";  
            }  
@@ -42,7 +42,7 @@ $run_non=mysqli_query($dbC,$check_user_non);
 $count=mysqli_num_rows($run_non);
 
 if($count === 1)
-    echo "<script>window.open('../../view/non_individual_profile.php','_self')</script>";  
+    echo "<script>window.open('../../index.php','_self')</script>";  
 else
     echo "<script>window.open('non_individual_register.php','_self')</script>";
 

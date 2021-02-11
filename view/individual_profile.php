@@ -95,6 +95,7 @@ input[type="radio"]:checked + input {
     // }
         ?>
         <div style="margin-top: 40px;">
+        <a href="../index.php"> Home</a><br>
         About Me<br>
         Documents & Reports 23<br>
         Work Applications<br>
@@ -104,77 +105,57 @@ input[type="radio"]:checked + input {
 <h5>Relationship Partners</h5>
        </div>
        <div>
+       <a href="add_partner.php">add Partners</a><br><br>
+       <div class="row">
+
        <?php
-        //   $user_id = $_SESSION['user_id'];
+          $uid = $_SESSION['user_id'];
          
-          $check_partner="select * from relatioship_partners WHERE user_id='$user_id'";   
+          $check_partner="select * from relatioship_partners WHERE add_by='$uid'";   
          
-          $run1=mysqli_query($dbC,$check_partner);   
-          $row1 = mysqli_fetch_assoc($run1);
-          $names = $row1['name'];
 
-          
-          $photos = $row1['image'];
-          $photo_array =explode(',',$photos);
-          $name_array =explode(',',$names);
-    $photo1 = "../images/relationship_partners/".$photo_array[0];
-    $photo2 = "../images/relationship_partners/".$photo_array[1];
-    $photo3 = "../images/relationship_partners/".$photo_array[2];
-    $photo4 = "../images/relationship_partners/".$photo_array[3];
-    $photo5 = "../images/relationship_partners/".$photo_array[4];
+          if($project_data = mysqli_query($dbC,$check_partner)){
 
-        //   echo $row1['image'];
+            while($row_partner = mysqli_fetch_array($project_data)){
+            // $project_photo = "../images/relationship_partners/".$row_partner['project_award'];
+        $partner_name = $row_partner['name'];
+        $partner_profile_id= $row_partner['user_id'];
+        $user_type= $row_partner['user_type'];
+        $user_one_sepa = explode(" ", $partner_name);
+        $fname = $user_one_sepa[0];
   
-       ?>
-       <div class="row" style="margin-bottom:10px;margin-top:20px;">
-       <div class="col-md-4"><?php 
-        echo "<img src=".$photo1." height=50>";
+        $lname = $user_one_sepa[1];
+
+        if($user_type === 'individual'){
+            $ind="select * from profile_individual WHERE first_name='$fname' AND last_name='$lname'";   
+            $ind_data=mysqli_query($dbC,$ind);  
+            $row_ind = mysqli_fetch_assoc($ind_data);
+            $ind_photo = $row_ind['photo'];
+
+        }else{
+            $non_ind="select * from profile_non_individual WHERE name='$fname'";   
+            $non_ind_data=mysqli_query($dbC,$non_ind);  
+            $row_non_ind = mysqli_fetch_assoc($non_ind_data);
+            $ind_photo = $row_non_ind['photo'];
+        }
+        $display_photo = "../images/dp/".$ind_photo;
+        // echo $display_photo;
+        echo '
+        <div class="col-4">
+        <img src='.$display_photo.' alt="award" height="60px" width="70"><br>
        
-       ?>
-        <a href="">
-        <?php echo $name_array[0]; ?>
-        </a>
-       </div>
-       <div class="col-md-4"><?php 
-        echo "<img src=".$photo2." height=50>";
-       
-       ?>
-       <a href="">
-        <?php echo $name_array[1]; ?>
-        </a>
-       </div>
-       <div class="col-md-4"><?php
-        echo "<img src=".$photo3." height=50>";
-        ?>
-        <a href="">
-        <?php echo $name_array[2]; ?>
-        </a>
-        </div>
+       <a href ="">'.$partner_name.'</a><br>
+      
         
        </div>
-
-       <div class="row" style="margin-bottom:10px;margin-top:20px;">
-       <div class="col-md-4"><?php 
-        echo "<img src=".$photo4." height=50>";
-       
+           
+        ';
+        // echo $row_['message'];
+            }
+        } 
+  
        ?>
-       <a href="">
-        <?php echo $name_array[3]; ?>
-        </a>
-       </div>
-       <div class="col-md-4"><?php 
-        echo "<img src=".$photo5." height=50>";
        
-       ?>
-       <a href="">
-        <?php echo $name_array[4]; ?>
-        </a>
-       </div>
-       <div class="col-md-4">
-       <?php
-        // echo "<img src=".$photo3.">";
-        ?>
-        </div>
        </div>
        </div>
         </div>

@@ -34,7 +34,7 @@ input[type="radio"]:checked + input {
 <div class="col-3"></div>
 <div class="col-6"></div>
 <div class="col-3" style="margin-right:0%;">
-<a href=""><span style="color:black;">Home</span ></a>  <a href=""><span  style="color:black;"> Profile</span></a>  <a href=""><span style="color:black;"> Account</span></a>
+<a href="../index.php"><span style="color:black;">Home</span ></a>  <a href="non_individual_profile.php"><span  style="color:black;"> Profile</span></a>  <a href=""><span style="color:black;"> Account</span></a>
 <br>
 <div style="margin-top:10px;margin-bottom:10px; color:white; background-color:black;">
 BOSINIA $ HE.. <?php echo date('h:i A F jS ');?>
@@ -115,9 +115,9 @@ BOSINIA $ HE.. <?php echo date('h:i A F jS ');?>
        <div class="row">
 
        <?php
-        //   $user_id = $_SESSION['user_id'];
+          $uid = $_SESSION['user_id'];
          
-          $check_partner="select * from relatioship_partners";   
+          $check_partner="select * from relatioship_partners WHERE add_by='$uid'";   
          
 
           if($project_data = mysqli_query($dbC,$check_partner)){

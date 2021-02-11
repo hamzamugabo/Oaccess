@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 10, 2021 at 03:12 PM
+-- Generation Time: Feb 11, 2021 at 03:17 PM
 -- Server version: 10.3.16-MariaDB
 -- PHP Version: 7.3.6
 
@@ -156,7 +156,8 @@ CREATE TABLE `comment` (
 
 INSERT INTO `comment` (`comment_id`, `date`, `user_id`, `wall_id`, `comment`) VALUES
 (2, '02:29 PM Wednesday February 10th ', 3, 1, 'We  all know it'),
-(3, '02:48 PM Wednesday February 10th ', 3, 1, ' good to know\r\n');
+(3, '02:48 PM Wednesday February 10th ', 3, 1, ' good to know\r\n'),
+(4, '02:36 PM Thursday February 11th ', 1, 2, ' The mostly user for web apps');
 
 -- --------------------------------------------------------
 
@@ -436,16 +437,19 @@ CREATE TABLE `projects` (
   `project_award` varchar(255) DEFAULT NULL,
   `award` varchar(1200) NOT NULL,
   `user_id` int(255) NOT NULL,
-  `date` date NOT NULL
+  `date` date NOT NULL,
+  `location` varchar(255) NOT NULL,
+  `lat` float(10,6) NOT NULL,
+  `log` float(10,6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `projects`
 --
 
-INSERT INTO `projects` (`project_id`, `name`, `timeline`, `purpose`, `status`, `project_award`, `award`, `user_id`, `date`) VALUES
-(1, 'Office Access', '2 months', 'connect offices', 'on track', 'award.jpg', 'best in the central region', 3, '0000-00-00'),
-(2, 'Office Access0', '2 months', 'connect offices', 'on track', 'award2.jpg', 'best project', 3, '0000-00-00');
+INSERT INTO `projects` (`project_id`, `name`, `timeline`, `purpose`, `status`, `project_award`, `award`, `user_id`, `date`, `location`, `lat`, `log`) VALUES
+(1, 'Office Access', '2 months', 'connect offices', 'on track', 'award.jpg', 'best in the central region', 3, '0000-00-00', 'kireka shopping center', 0.347500, 32.649170),
+(2, 'Office Access0', '2 months', 'connect offices', 'on track', 'award2.jpg', 'best project', 3, '0000-00-00', 'makerere university', 0.349999, 32.567165);
 
 -- --------------------------------------------------------
 
@@ -523,16 +527,17 @@ CREATE TABLE `relatioship_partners` (
   `project_id` int(255) NOT NULL,
   `date` date NOT NULL,
   `user_id` int(255) NOT NULL,
-  `user_type` varchar(255) NOT NULL
+  `user_type` varchar(255) NOT NULL,
+  `add_by` int(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `relatioship_partners`
 --
 
-INSERT INTO `relatioship_partners` (`relationship_id`, `name`, `project_id`, `date`, `user_id`, `user_type`) VALUES
-(1, 'Hamza Mugabo', 1, '2021-02-10', 1, 'individual'),
-(2, 'Nastar Kireka', 1, '2021-02-10', 3, 'non_individual');
+INSERT INTO `relatioship_partners` (`relationship_id`, `name`, `project_id`, `date`, `user_id`, `user_type`, `add_by`) VALUES
+(1, 'Hamza Mugabo', 1, '2021-02-10', 1, 'individual', 3),
+(2, 'Nastar Kireka', 1, '2021-02-10', 3, 'non_individual', 3);
 
 -- --------------------------------------------------------
 
@@ -928,7 +933,7 @@ ALTER TABLE `award`
 -- AUTO_INCREMENT for table `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `comment_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `comment_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `contact_us`

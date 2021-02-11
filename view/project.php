@@ -1,4 +1,6 @@
 <?php  
+    include("../config/config.php");   
+
 session_start();
 if(!$_POST['id']){
      echo "<script>window.open('non_individual_profile.php','_self')</script>";   
@@ -50,8 +52,85 @@ if(!$_POST['id']){
  <!-- project map -->
  <div class="row" style="margin-bottom: 30px;">
      <div class="col-md-8">
-     <div class="mapouter"><div class="gmap_canvas"><iframe width="1080" height="325" id="gmap_canvas" src="https://maps.google.com/maps?q=kireka&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe><a href="https://soap2day-to.com">soap2day</a><br><style>.mapouter{position:relative;text-align:right;height:325px;width:1080px;}</style><a href="https://www.embedgooglemap.net">google maps insert</a><style>.gmap_canvas {overflow:hidden;background:none!important;height:325px;width:1080px;}</style></div></div>
+     <div class="mapouter">
+     
+     <div class="gmap_canvas">
+     <?php
+     if(isset($_POST['id']))
+{
+  $my_array = [];
+  $loti = [];
+  $logi = [];
+     $project_id=$_POST['id'];
 
+     $_SESSION['project_id'] = $project_id;
+
+    //  echo $_POST['id'];
+     // $user_pass=$_POST['password'];  
+       $project_sql_loc="select * from projects WHERE project_id = '$project_id'";   
+      
+      if($query_loc=mysqli_query($dbC,$project_sql_loc))  {
+      //  $result = mysqli_query($dbC,$wall)  
+    //  while(  
+       $results_loc = mysqli_fetch_array($query_loc );
+      //  ) {
+       $lat =$results_loc['lat'];
+       $log =$results_loc['log'];
+       $loc_name =$results_loc['location'];
+       $icon = 'location.png';
+    $project_location = "../images/".$icon;
+
+      //  $my_array[] = $results_loc;
+      //  $lati[] = $lat;
+      //  $logi[] = $log;
+      // }
+      // $js_array = json_encode($my_array);
+      // $js_array_lat = json_encode($lati);
+      // $js_array_log = json_encode($logi);
+      // echo $js_array_lat;
+    }
+    else{
+
+        echo "ERROR: Could not able to execute $project_sql_loc. " . mysqli_error($dbC);
+      }
+       }?>
+     <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script>
+// // alert(javascript_array_lati);
+    var myMap;
+    var lat = "<?php echo $lat ?>";
+    var log = "<?php echo $log ?>";
+//     var cord1 ={
+// lati1:0.3475,
+// long1:32.64917
+
+//     };
+    var cord2 =(0.3475,32.64917);
+    var coord ={};
+    var myLatlng = new google.maps.LatLng(lat,log);
+    function initialize() {
+        var mapOptions = {
+            zoom: 15,
+            center: myLatlng,
+            mapTypeId: google.maps.MapTypeId.TERRAIN  ,
+            scrollwheel: false
+        }
+        myMap = new google.maps.Map(document.getElementById('map'), mapOptions);
+        var marker = new google.maps.Marker({
+            position: myLatlng,
+            map: myMap,
+            title: '<?php echo $loc_name?>',
+            icon: 'http://www.google.com/intl/en_us/mapfiles/ms/micons/red-dot.png'
+            // icon:'<?php echo $project_location?>'
+        });
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+
+<div id="map" style="width:100%; height: 300px;">
+
+</div>
+     
      </div>
      <!-- <div class="col-md-4">
      <table class="table">
@@ -72,14 +151,13 @@ if(!$_POST['id']){
   </tbody>
 </table>
      </div> -->
- </div>
+ </div></div></div>
 <!-- project section -->
      <div class="row">
 
      <div class="col-1">
 <h5 style="color:blue;">PROJECT ID 
 <?php
-    include("../config/config.php");   
     // $_SESSION['project_id'] = $_POST['id'];
 
 if(isset($_POST['id']))

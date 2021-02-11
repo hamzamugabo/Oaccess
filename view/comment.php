@@ -221,15 +221,24 @@ input[type="radio"]:checked + input {
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
                                    Comment
-                                </button>
+                                </button>&nbsp&nbsp&nbsp
                                 <?php
 
                                 $user_type = $_SESSION['user_type'];
 
-                                    if($user_type === 'individual')
-                                    echo ' <a href="individual_profile.php">back to profile</a>';
-                                    else  
-                                    echo ' <a href="non_individual_profile.php">back to profile</a>';
+                                    if($user_type === 'individual'){
+
+                                        echo ' <a href="individual_profile.php">profile</a>';
+                                        echo '&nbsp&nbsp&nbsp';
+                                        echo ' <a href="../index.php">Home</a>';
+                                    }
+                                    else  {
+                                        echo ' <a href="non_individual_profile.php">profile</a>';
+                                        echo '&nbsp&nbsp&nbsp';
+
+                                        echo ' <a href="../index.php">Home</a>';
+
+                                    }
                                 ?>
                                  
                               
