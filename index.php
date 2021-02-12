@@ -5,6 +5,7 @@ session_start();//session starts here
 if (!isset($_SESSION['user_id'])) {
     echo "<script>window.open('app/auth/login.php','_self')</script>";  
 }
+$_SESSION['index'] = 'index';
 $user_type =$_SESSION['user_type'];
 $who_posted = '';
 ?>
@@ -13,7 +14,11 @@ $who_posted = '';
     <meta charset="UTF-8">   
     <link type="text/css" rel="stylesheet" href="css/bootstrap.css">   
     <link type="text/css" rel="stylesheet" href="css\layout.css"> 
+    <link type="text/css" rel="stylesheet" href="css\modal.css"> 
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <title>Home</title>   
 </head>   
 <style>   
@@ -60,11 +65,13 @@ input[type="radio"]:checked + input {
               
              </div>
          </div> 
-         <div id="map"></div>
+         <div id="map">
 <script type="text/javascript" src="scripts/index.js"></script>
-<script async defer
-    src="https://maps.googleapis.com/maps/api/js?callback=initMap">
-</script>
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCP5mkhNYD-bOxcNX1wOTCCKVh0CUBbdkc&sensor=false"></script>
+
+<!-- <script async defer
+    src="http://maps.googleapis.com/maps/api/js?sensor=false">
+</script> -->
 <?php
     
     include("config/config.php");   
@@ -99,7 +106,7 @@ while($row_map = mysqli_fetch_array($run_map)){
 
       
 <script>
-     function initMap() {
+    //  function initMap() {
       var javascript_array = <?php 
       // $js_array = $arr;
       echo json_encode($js_array) ?>;
@@ -132,8 +139,12 @@ google.maps.event.addListener(marker, 'click', (function (marker, count) {
       }
     })(marker, count));
   }
-}
+// }
  </script>
+ </div>
+ <span style=" border-right: 1px solid black;"><a href=""> Projects  </a></span> &nbsp
+ <span style=" border-right: 1px solid black;"><a href=""> Relationship Partners  </a></span>&nbsp
+ <span style=" border-right: 1px solid black;"><a href=""> Reports  </a></span>&nbsp
 <div class="container" style="margin-top:30px">
     <div class="row">
     <div class="col-3" style="margin-right:0px;">
@@ -201,23 +212,10 @@ google.maps.event.addListener(marker, 'click', (function (marker, count) {
         // $last_name = $row_non['last_name'];
         $user_id = $row_non['user_id'];
         $_SESSION['profile_id'] = $row_non['profile_non_individual_id'];
-        // $past_job_position = $row_non['employement_past_position'];
-        // $past_job_name = $row_non['employement_past_name'];
-// $_SESSION[$user_id];
-// echo $_SESSION['user_id'];
+        
         echo '<img src='.$img_path.' height="200" width=""200>';
     
-    //     echo "
-    //     <div >
-    //     <strong> $first_name $last_name</strong> <br>
-    //   Fmr $past_job_position  <br>
-    //    <strong> $past_job_name 
-    //        & 3 OTHER JOBS
-    //    </strong>
-    //    </div>
-    //     ";
-       
-    // }
+   
 
     echo'<div style="text-align:center"> '.$name.' <br>
     '.$division.'  License No  '.$license.' <br>
@@ -225,10 +223,7 @@ google.maps.event.addListener(marker, 'click', (function (marker, count) {
    <i><h5><a href=""> '.$mission.' </a></h5></i>
     </div>
     ';
-    // echo $division. '  License No.' .$license. '<br>';
-    // echo 'TIN  ' .$tin. '<br><br><br>';
-
-    // echo '<i><h5><a href=""> '.$mission.' </a></h5></i>'
+  
         
     }
         
@@ -257,7 +252,7 @@ echo'
        
         </div>
         <div class="col-6">
-        <div style="border: 1px solid black">   
+        <!-- <div style="border: 1px solid black">    -->
         <!-- <form method="POST" action="wall.php" enctype="multipart/form-data">
 
         <br>
@@ -268,7 +263,7 @@ echo'
 <br>
         <input type="submit" value="submit" name="submit">
         </form >  -->
-            </div>
+            <!-- </div> -->
             <br>
             <br>
             <br>
@@ -280,7 +275,34 @@ echo'
         <h5 style="color: green;">RECENT ACTIVITY</h5>
 
         <div style="padding-left:50px;">
-        
+        <script>
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>
+
         <?php
 $id=$_SESSION['user_id'];
 // $wall="select * from wall ";   
@@ -297,15 +319,31 @@ $poster = $row_['user_id'];
 $wall_id = $row_['wall_id'];
 
 
-$count_comments = "SELECT wall_id FROM comment WHERE wall_id = $wall_id"; 
+
+
+// like section
+$count_likes = "SELECT wall_id FROM likes WHERE wall_id = $wall_id"; 
+      
+    // Execute the query and store the result set 
+    $count_result_like = mysqli_query($dbC, $count_likes); 
+      
+     
+        $row_count_like = mysqli_num_rows($count_result_like); 
+
+
+          
+    //    comment section
+    $count_comments = "SELECT wall_id FROM comment WHERE wall_id = $wall_id"; 
       
     // Execute the query and store the result set 
     $count_result = mysqli_query($dbC, $count_comments); 
       
      
         $row_count = mysqli_num_rows($count_result); 
-          
-        
+    
+
+
+
 $all="select * from user WHERE user_id='$poster' ";   
 $all_result = mysqli_query($dbC,$all);
 $all_row_ = mysqli_fetch_array($all_result);
@@ -332,7 +370,40 @@ if($user_type === 'individual'){
     <div class="row" style="margin-top:10px;">
     <div class="col-2">';
 }
+// get comments
+$commented_users="select user_id from comment WHERE wall_id='$wall_id'";   
+if($commented_users_result = mysqli_query($dbC,$commented_users)){
 
+    while($commented_users_row_ = mysqli_fetch_array($commented_users_result)){
+        $commented_users_ids = $commented_users_row_['user_id'];
+        // $ids = json_encode($commented_users_ids);
+    // echo $ids;
+    // echo  ;
+
+$commented_user_names="select first_name,last_name from user WHERE user_id='$commented_users_ids'";   
+if($commented_users_names_result = mysqli_query($dbC,$commented_user_names)){
+
+    while($commented_users_names_row_ = mysqli_fetch_array($commented_users_names_result)){
+        $commented_users_fname = $commented_users_names_row_['first_name'];
+        $commented_users_lname = $commented_users_names_row_['last_name'];
+// echo $commented_users_fname;
+
+// $ids = json_encode($commented_users_fname,$commented_users_lname );
+//     echo $ids;
+
+
+
+    }
+}else{
+    echo "ERROR: Could not able to execute $commented_user_names. " . mysqli_error($dbC);
+ 
+ }
+}
+
+}else{
+   echo "ERROR: Could not able to execute $commented_users. " . mysqli_error($dbC);
+
+}
 if($photo_name !=''){
     echo'        
 <img src='.$news_photo.' width=80 height=80>';
@@ -342,14 +413,25 @@ if($photo_name !=''){
 }
 echo'
             </div>
-            <div class="col-8"><p>'.$message.'.</p>
+            
+            <div class="col-8">'.$message.'.<br>
           <strong> posted at</strong>  '.$date.' &nbsp&nbsp&nbsp
-          <form  method="POST" action="comment.php">
+          <form  method="POST" action="view/comment.php" style="float:left;">
 <input type="text" name="wall_id" value="'.$wall_id.'" hidden>
-<button type="submit" class="btn btn-link">Comment '.$row_count.'</button>
+<button type="submit" class="btn btn-link"><span style="color:blue;">Comment</span></button>
           </form>
-          <a href="">Like</a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-          <a href="">Share</a>
+          <button type="button"  data-toggle="modal" data-target="#myModal" class="btn btn-link" style="float:left;"><span style="color:blue;">'.$row_count.'</span></button>
+          
+          <form  method="POST" action="view/like.php" style="float:left;">
+          <input type="text" name="wall_id" value="'.$wall_id.'" hidden>
+          <button type="submit" class="btn btn-link"><span style="color:blue;">Like</span></button>
+                    </form>
+          <button type="submit" class="btn btn-link" style="float:left;"><span style="color:blue;">'.$row_count_like.'</span></button>
+
+                    <form  method="POST" action="view/like.php" style="float:left;">
+                    <input type="text" name="wall_id" value="'.$wall_id.'" hidden>
+                    <button type="submit" class="btn btn-link"><span style="color:blue;">Share</span></button>
+                              </form>
     </div>
     
     </div>
@@ -366,58 +448,94 @@ echo'
         
         <!-- <div class="col-1"></div> -->
         <div class="col-3" style="text-align:center;float:right;">
-        <button onclick="myFunction()">Add Award</button>
+       <h3>Relationship Partners</h3>
         <br>
         <br>
-        <div id="myDIV" style="border: 1px solid black;" >   
-
-        <!-- <form method="POST" action="award.php" enctype="multipart/form-data">
-
-        <br>
-        <input type="text" name="title" placeholder="enter award title">
-<br>
-<br>
-<input type="text" name="from" placeholder="award From">
-<br>
-<br>
-      <strong> award photo:</strong> <input type="file" name="award"><br>
-<br>
-        <input type="submit" value="submit" name="submit">
-        </form > -->
-        </div>
+        
         <?php
 $award_user_id=$_SESSION['user_id'];
-$award_="select * from award WHERE user_id='$award_user_id'";   
+$confirm_status =0;
+$award_="select * from relatioship_partners WHERE user_id='$award_user_id' AND confirm_status=$confirm_status";   
 if($award_result = mysqli_query($dbC,$award_)){
 
     while($row_ = mysqli_fetch_array($award_result)){
-    $award_photo = "images/award/".$row_['award_picture'];
-$name = $row_['name_of_award'];
-$from = $row_['award_from'];
+
+        $who_added_you = $row_['add_by'];
+        $parnership_id = $row_['relationship_id'];
+        $parnership_project = $row_['project_id'];
+
+        // user bio
+        $adder_bio="select user_type,first_name,last_name from user WHERE user_id='$who_added_you'";   
+        $adder_results = mysqli_query($dbC,$adder_bio);
+        $adder_row_ = mysqli_fetch_array($adder_results);
+        $adder_fname = $adder_row_['first_name'];
+        $adder_lname = $adder_row_['last_name'];
+        $adder_user_type = $adder_row_['user_type'];
+
+
+        // project bio
+ // user bio
+ $project_bio="select name from projects WHERE project_id='$parnership_project'";   
+ $project_results = mysqli_query($dbC,$project_bio);
+ $project_row_ = mysqli_fetch_array($project_results);
+
+ $project_name = $project_row_['name'];
+
+
+
+        // echo $adder_fname;
+        // echo $adder_lname;
+        // echo $adder_user_type;
+if($adder_user_type === 'individual'){
+    $adder_profile="select photo from profile_individual WHERE user_id='$who_added_you'";   
+    $adder_profile_results = mysqli_query($dbC,$adder_profile);
+    $adder_profile_row_ = mysqli_fetch_array($adder_profile_results);
+$adder_photo = "images/dp/".$adder_profile_row_['photo'];
+}else{
+    $adder_profile="select photo from profile_non_individual WHERE user_id='$who_added_you'";   
+    $adder_profile_results = mysqli_query($dbC,$adder_profile);
+    $adder_profile_row_ = mysqli_fetch_array($adder_profile_results);
+$adder_photo = "images/dp/".$adder_profile_row_['photo'];
+}
+      
+
+
+
+//     $award_photo = "images/dp/".$row_['award_picture'];
+// $name = $row_['name_of_award'];
+// $from = $row_['award_from'];
 // echo $row_['message'];
 // echo $row_['date'];
 
 echo '
-<img src='.$award_photo.' alt="award"><br>
-'.$name.'<br>
-'.$from.'
-<hr style="border-width: 15px;padding-left:30px;padding-right:30px;background-color:black;width:50%;">
+<div class ="row">
+<div class = col-4>
+<img src='.$adder_photo.' alt="profile photo" height="70" width="80"><br>
+
+</div>
+<div class = col-8>
+<a href="">'.$adder_fname.'  '.$adder_lname.'</a><br>
+inculded you on project <a href ="">'.$project_name.'</a>
+<form  method="POST" action="view/confirm_partner.php" style="float:left;">
+<input type="text" name="parnership_id" value="'.$parnership_id.'" hidden>
+<button type="submit" class="btn btn-link"><span style="color:blue;">Confirm Relationship</span></button>
+          </form>
+</div>
+
+</div>
+
+<hr style="border-width: 15px;padding-left:30px;padding-right:30px;background-color:black;width:80%;">
     
-';
+ ';
 // echo $row_['message'];
     }
+}else{
+    echo "ERROR: Could not able to execute $award_. " . mysqli_error($dbC);
+
 }
             ?>
 
-           
-
-        <!-- <img src="images/award.png" alt="user""><br>
-        2nd Runers up best entreprenuer enterprize
-        <hr style="border-width: 15px;padding-left:30px;padding-right:30px;background-color:black;width:50%;">
-        <img src="images/award.png" alt="user""><br>
-        2nd Runers up best entreprenuer enterprize
-        <hr style="border-width: 15px;padding-left:30px;padding-right:30px;background-color:black;width:50%;"> -->
-
+         
         </div>
     </div>
 </div>

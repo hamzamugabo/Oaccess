@@ -94,7 +94,7 @@ if(!$_POST['id']){
         echo "ERROR: Could not able to execute $project_sql_loc. " . mysqli_error($dbC);
       }
        }?>
-     <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+     <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCP5mkhNYD-bOxcNX1wOTCCKVh0CUBbdkc&sensor=false"></script>
 <script>
 // // alert(javascript_array_lati);
     var myMap;
@@ -127,8 +127,12 @@ if(!$_POST['id']){
     google.maps.event.addDomListener(window, 'load', initialize);
 </script>
 
-<div id="map" style="width:100%; height: 300px;">
+<div id="map" style="width:100%; height: 300px; ">
 
+</div>
+<br>
+<div style="float: left;">
+<span><a href="../index.php">Home</a></span> &nbsp&nbsp&nbsp<span><a href="../index.php">Account</a></span>
 </div>
      
      </div>

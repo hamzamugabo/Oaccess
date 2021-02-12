@@ -152,15 +152,28 @@ input[type="radio"]:checked + input {
                     // $news_photo = "../images/wall/".$all_row_['photo'];
                     $date = $all_row_['date'];
                     $message = $all_row_['comment'];
+                    $iids = $all_row_['user_id'];
+
+                    $user_bio = "select first_name,last_name from user WHERE user_id='$iids' ";
+                    $all_result_user_bio = mysqli_query($dbC,$user_bio);
+                    $all_row_user_bio = mysqli_fetch_array($all_result_user_bio);
+
+                    $user_fname =  $all_row_user_bio['first_name'];
+                    $user_lname =  $all_row_user_bio['last_name'];
+
+
 
                     echo '
                         <div class="row" style="margin-top:10px;">
-                        <div class="col-2">';
+                        <div class="col-2"> '.$user_fname.'  '.$user_lname.'
+                        
+                        
+                        ';
                         
                         echo'
                                     </div>
                                     <div class="col-8"><p>'.$message.'.</p>
-                                <strong> posted at</strong>  '.$date.' &nbsp&nbsp&nbsp
+                                <strong> commented at</strong>  '.$date.' &nbsp&nbsp&nbsp
                                 
                             </div>
                             
@@ -170,7 +183,74 @@ input[type="radio"]:checked + input {
 
                     
                 }
-            }else
+            $fnames = [];
+            $lnames = [];
+
+   
+                // $commented_users="select user_id from comment WHERE wall_id='$wall_id'";   
+                // // if(
+                //     $commented_users_result = mysqli_query($dbC,$commented_users) ;
+                // // ){
+                
+                //     while($commented_users_row_ = mysqli_fetch_array($commented_users_result)){
+                //         $commented_users_ids = $commented_users_row_['user_id'];
+                //         // $ids = json_encode($commented_users_ids);
+                //     // echo $ids;
+                //     // echo  ;
+                
+                // $commented_user_names="select first_name,last_name from user WHERE user_id='$commented_users_ids'";   
+                // if($commented_users_names_result = mysqli_query($dbC,$commented_user_names)){
+                
+                //     while($commented_users_names_row_ = mysqli_fetch_array($commented_users_names_result)){
+                //         $commented_users_fname = $commented_users_names_row_['first_name'];
+                //         $commented_users_lname = $commented_users_names_row_['last_name'];
+                
+                //         $fnames[]= $commented_users_fname;
+                //         $lnames[]= $commented_users_lname;
+
+                //         $json_fname = json_encode($fnames);
+                //         $json_lname = json_encode($lnames);
+
+
+               
+                
+                // // echo'
+               
+                // //         <div>
+                // //           <p>'.$commented_users_fname.' '.$commented_users_lname.', commented on the post</p>
+                // //         </div>
+                       
+                // // ';
+                
+                //     }
+                // }else{
+                //     echo "ERROR: Could not able to execute $commented_user_names. " . mysqli_error($dbC);
+                 
+                //  }
+                // //  echo $json_lname;
+                // }
+                // $dd = $json_fname;
+                // $rmv1 = str_replace("[", "", $dd );
+                // $rmv2= str_replace("]", "", $rmv1 );
+                // $rmv3= str_replace('"', "", $rmv2 );
+
+                // // echo $rmv3;
+                // $fruits_ar = explode(', ', $rmv3);
+                // $result = array_unique($fruits_ar);
+
+                // foreach ($result as $value) {
+                //     $commented =$value;
+                // }
+                // // echo $fruits_ar;
+
+                // echo $commented. ' commented';
+
+                
+
+
+            }
+           
+            else
             {
 
                 $wall_id =$_SESSION['wall_id'];
@@ -182,10 +262,23 @@ input[type="radio"]:checked + input {
                 // $news_photo = "../images/wall/".$all_row_['photo'];
                 $date = $all_row_['date'];
                 $message = $all_row_['comment'];
+                $iids = $all_row_['user_id'];
+
+                $user_bio = "select first_name,last_name from user WHERE user_id='$iids' ";
+                $all_result_user_bio = mysqli_query($dbC,$user_bio);
+                $all_row_user_bio = mysqli_fetch_array($all_result_user_bio);
+
+                $user_fname =  $all_row_user_bio['first_name'];
+                $user_lname =  $all_row_user_bio['last_name'];
+
+
 
                 echo '
                     <div class="row" style="margin-top:10px;">
-                    <div class="col-2">';
+                    <div class="col-2"> '.$user_fname.'  '.$user_lname.'
+                    
+                    
+                    ';
                     
                     echo'
                                 </div>
