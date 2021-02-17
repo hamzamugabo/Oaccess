@@ -26,7 +26,7 @@ session_start();//session starts here
    $contact = mysqli_real_escape_string($dbC, $_POST['contact']);
    $password = mysqli_real_escape_string($dbC, $_POST['pass']);
    $user_type = mysqli_real_escape_string($dbC, $_POST['user_type']);
-
+$hash_pass = password_hash($password,PASSWORD_DEFAULT);
 //    $user_type ='individual';
 $check_user="select * from user WHERE email='$email";   
       

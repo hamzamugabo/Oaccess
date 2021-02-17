@@ -6,18 +6,14 @@ if (!isset($_SESSION['user_id'])) {
     echo "<script>window.open('login.php','_self')</script>";  
     
 }
-if($_SESSION['user_type'] != 'non_individual'){
-    echo "<script>window.open('individual_register.php','_self')</script>";  
-
-}
 ?>
 <html>   
 <head lang="en">   
     <meta charset="UTF-8">   
-    <link type="text/css" rel="stylesheet" href="../../css/bootstrap.css">   
-    <link type="text/css" rel="stylesheet" href="../../css\layout.css"> 
+    <link type="text/css" rel="stylesheet" href="../css/bootstrap.css">   
+    <link type="text/css" rel="stylesheet" href="../css\layout.css"> 
 
-    <title>Non individual Registration</title>   
+    <title>Contact update</title>   
 </head>   
 <style>   
     .login-panel {   
@@ -34,7 +30,7 @@ input[type="radio"]:checked + input {
 <div id="login-header">
              <div class="container">
                  <div class="row">
-                     <div class="col-md-3 logo"><img src="../../images/official-access-logo.png"/></div>
+                     <div class="col-md-3 logo"><img src="../images/official-access-logo.png"/></div>
           <div class="pull-right col-md-6" style="float: right;">
         <!-- <div class="loginform"> -->
         <form method="POST" action="logout.php" style="float:right">
@@ -63,25 +59,25 @@ input[type="radio"]:checked + input {
     <div class="row justify-content-center" style="padding-top: 0px;">
         <div class="col-md-9">
             <div class="card">
-                <div class="card-header">Non Individual profile Registration</div>
+                <div class="card-header">Contact Us Form</div>
 
                 <div class="card-body">
-                    <form method="POST" action="non_individual_register_backend.php" enctype="multipart/form-data">
+                    <form method="POST" action="contact_us_backend.php"">
                   
 
-                        <!-- <div class="form-group row">
-                            <label for="email" class="col-md-3 col-form-label text-md-right">First Name</label>
+                       <div class="form-group row">
+                            <label for="pobox" class="col-md-3 col-form-label text-md-right">P O BOX</label>
 
                             <div class="col-md-3">
-                                <input  type="text" class="form-control " name="fname" required autocomplete="fname" autofocus>
+                                <input  type="text" class="form-control " name="pobox" required autocomplete="pobox" autofocus>
 
                              
                                   
                             </div>
-                            <label for="email" class="col-md-3 col-form-label text-md-right">Last Name</label>
+                            <label for="district" class="col-md-3 col-form-label text-md-right">District</label>
 
                             <div class="col-md-3">
-                                <input  type="text" class="form-control" name="lname" required autocomplete="lname" autofocus>
+                                <input  type="text" class="form-control" name="district" required autocomplete="district" autofocus>
 
                              
                                   
@@ -90,18 +86,18 @@ input[type="radio"]:checked + input {
                         </div>
 
                         <div class="form-group row">
-                            <label for="email" class="col-md-3 col-form-label text-md-right">E-Mail</label>
+                            <label for="place" class="col-md-3 col-form-label text-md-right">Place of Business</label>
 
                             <div class="col-md-3">
-                                <input  type="email" class="form-control" name="email" required autocomplete="email" autofocus>
+                                <input  type="text" class="form-control" name="place" required autocomplete="place" autofocus>
 
                              
                                   
                             </div>
-                            <label for="password" class="col-md-3 col-form-label text-md-right">Password</label>
+                            <label for="plot" class="col-md-3 col-form-label text-md-right">Plot Number</label>
 
 <div class="col-md-3">
-    <input id="password" type="password" class="form-control " name="password" required autocomplete="current-password">
+    <input id="password" type="text" class="form-control " name="plot" required autocomplete="plot">
 
   
         
@@ -110,7 +106,7 @@ input[type="radio"]:checked + input {
                             
                         </div>
 
-                        <div class="form-check">
+                        <!-- <div class="form-check">
                         <label for="email" class="col-md-3 col-form-label text-md-right">Gender:</label>
 
                             <input class="check-form-input" type="radio" name="gender" value="male">
@@ -119,8 +115,8 @@ input[type="radio"]:checked + input {
                             <label for="male" class="form-check-lebel">female</label>
 
 
-                        </div>-->
-<!-- 
+                        </div>
+
                         <div class="form-check">
                         <label for="email" class="col-md-3 col-form-label text-md-right">Current Status:</label>
 
@@ -130,26 +126,10 @@ input[type="radio"]:checked + input {
                             <label for="male" class="form-check-lebel">Employed</label>
 
 
-                        </div>  -->
-                        <!-- <div class="form-group row">
-                            <label for="email" class="col-md-3 col-form-label text-md-right">Current Employment:</label>
-                            <div class="col-md-3">
-                            <label for="email" class="col-md-3 col-form-label text-md-right"></label>
-
-                            </div>
-
-                            
-                            <label for="email" class="col-md-3 col-form-label text-md-right">Past Employment:</label>
-                            <div class="col-md-3">
-                            <label for="email" class="col-md-3 col-form-label text-md-right"></label>
-
-                            </div>
-                           
-                            
-                        </div> -->
+                        </div>   -->
                         
-                        <!-- <div class="form-check">
-                        <label for="email" class="col-md-3 col-form-label text-md-right">Current Status:</label>
+                       <!-- <div class="form-check"> -->
+                        <!-- <label for="email" class="col-md-3 col-form-label text-md-right">Current Status:</label>
 
                             <input class="check-form-input" type="radio" name="status" value="self employed">
                             <label for="male" class="form-check-lebel">Self Employed</label>
@@ -180,18 +160,18 @@ input[type="radio"]:checked + input {
                             
                         </div> -->
                         <div class="form-group row">
-                            <label for="email" class="col-md-3 col-form-label text-md-right">Company/Organistaion</label>
+                            <label for="street" class="col-md-3 col-form-label text-md-right">Street Name</label>
 
                             <div class="col-md-3  reveal-if-active"" >
-                                <input  type="text" class="form-control" name="name" required autocomplete="name" autofocus>
+                                <input  type="text" class="form-control" name="street" required autocomplete="street" autofocus>
 
                              
                                   
                             </div>
-                            <label for="email" class="col-md-3 col-form-label text-md-right">Location</label>
+                            <label for="building" class="col-md-3 col-form-label text-md-right">Building Name</label>
 
                             <div class="col-md-3">
-                                <input  type="text" class="form-control" name="location" required autocomplete="location" autofocus>
+                                <input  type="text" class="form-control" name="building" required autocomplete="building" autofocus>
 
                              
                                   
@@ -199,18 +179,18 @@ input[type="radio"]:checked + input {
                             
                         </div>
                         <div class="form-group row">
-                            <label for="email" class="col-md-3 col-form-label text-md-right">License Number</label>
+                            <label for="city" class="col-md-3 col-form-label text-md-right">City</label>
 
                             <div class="col-md-3">
-                                <input  type="text" class="form-control" name="license" required autocomplete="license" autofocus>
+                                <input  type="text" class="form-control" name="city" required autocomplete="city" autofocus>
 
                              
                                   
                             </div>
-                            <label for="email" class="col-md-3 col-form-label text-md-right">TIN</label>
+                            <label for="state" class="col-md-3 col-form-label text-md-right">State Province</label>
 
                             <div class="col-md-3">
-                                <input  type="text" class="form-control" name="tin" required autocomplete="tin" autofocus>
+                                <input  type="text" class="form-control" name="state" required autocomplete="state" autofocus>
 
                              
                                   
@@ -218,55 +198,19 @@ input[type="radio"]:checked + input {
                             
                         </div>
                         <div class="form-group row">
-                            <label for="mission" class="col-md-3 col-form-label text-md-right">Mission</label>
+                            <label for="postal_code" class="col-md-3 col-form-label text-md-right">Zip Postal Code</label>
 
                             <div class="col-md-3">
-                                <input  type="text" class="form-control" name="mission" required autocomplete="mission" autofocus>
+                                <input  type="text" class="form-control" name="postal_code" required autocomplete="postal_code" autofocus>
 
                              
                                   
                             </div>
-                            <label for="email" class="col-md-3 col-form-label text-md-right">logo</label>
+                            <label for="tel" class="col-md-3 col-form-label text-md-right">Tell</label>
 
                             <div class="col-md-3">
-                                <input  type="file" class="form-control" name="logo" >
+                            <input  type="text" class="form-control" name="tel" required autocomplete="tel" autofocus>
 
-                             
-                                  
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="date" class="col-md-3 col-form-label text-md-right">Date when company was formed</label>
-
-                            <div class="col-md-3">
-                                <input  type="date" class="form-control" name="date" required autocomplete="date" autofocus>
-
-                             
-                                  
-                            </div>
-
-                             
-                                  
-                            </div>
-
-                        <!-- <div class="form-group row">
-                            <label for="email" class="col-md-3 col-form-label text-md-right">Education</label>
-
-                            <div class="col-md-3">
-                                <input  type="text" class="form-control" name="education" required autocomplete="email" autofocus>
-
-                             
-                                  
-                            </div>
-                            <label for="email" class="col-md-3 col-form-label text-md-right">Marital Status</label>
-
-                            <div class="col-md-3">
-                            <select class="form-select" aria-label="Default select example" name="marital_status">
-                            <option selected>Marital Status</option>
-                            <option value="single">Single</option>
-                            <option value="married">Married</option>
-                            <option value="devorced">Devorced</option>
-                            </select>
 
                              
                                   
@@ -274,40 +218,78 @@ input[type="radio"]:checked + input {
                         </div>
 
                         <div class="form-group row">
-                            <label for="email" class="col-md-3 col-form-label text-md-right">Specialities</label>
+                            <label for="fax" class="col-md-3 col-form-label text-md-right">Fax</label>
 
                             <div class="col-md-3">
-                                <input  type="text" class="form-control" name="specialisties" required autocomplete="email" autofocus>
+                                <input  type="text" class="form-control" name="fax" required autocomplete="fax" autofocus>
 
                              
                                   
                             </div>
-
-                            <label for="email" class="col-md-3 col-form-label text-md-right">Profile Photo</label>
+                            <label for="mobile" class="col-md-3 col-form-label text-md-right">Mobile</label>
 
                             <div class="col-md-3">
-                                <input  type="file" class="form-control" name="photo" >
+                            <input  type="text" class="form-control" name="mobile" required autocomplete="mobile" autofocus>
+
+
+                             
+                                  
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="email" class="col-md-3 col-form-label text-md-right">Email Address</label>
+
+                            <div class="col-md-3">
+                                <input  type="email" class="form-control" name="email" required autocomplete="email" autofocus>
+
+                             
+                                  
+                            </div>
+                            <label for="web" class="col-md-3 col-form-label text-md-right">Website</label>
+
+                            <div class="col-md-3">
+                            <input  type="text" class="form-control" name="web" required autocomplete="web" autofocus>
+
+
+                             
+                                  
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="postal_address" class="col-md-3 col-form-label text-md-right">Postal Address</label>
+
+                            <div class="col-md-3">
+                                <input  type="text" class="form-control" name="postal_address" required autocomplete="postal_address" autofocus>
+
+                             
+                                  
+                            </div>
+                            <label for="physical_address" class="col-md-3 col-form-label text-md-right">Physical Address</label>
+
+                            <div class="col-md-3">
+                            <input  type="text" class="form-control" name="physical_address" required autocomplete="physical_address" autofocus>
+
+
+                             
+                                  
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="goods" class="col-md-3 col-form-label text-md-right">Gooods/Services</label>
+
+                            <div class="col-md-3">
+                                <input  type="text" class="form-control" name="goods" required autocomplete="goods" autofocus>
 
                              
                                   
                             </div>
                            
-                            
-                        </div> -->
+                        </div>
 
-                        <!-- <div class="form-group row">
-                        <label for="password" class="col-md-4 col-form-label text-md-right"></label>
 
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
-                                       Remember Me
-                                    </label>
-                                </div>
-                            </div>
-                        </div> -->
 
                         <div class="form-group row mb-0">
                         <label for="password" class="col-md-4 col-form-label text-md-right"></label>
@@ -317,11 +299,6 @@ input[type="radio"]:checked + input {
                                    Register
                                 </button>
 
-                               
-                                    <!-- <a class="btn btn-link" href="{{ route('password.request">
-                                       Forgot Your Password?
-                                    </a> -->
-                                <!-- @endif -->
                             </div>
                         </div>
                     </form>

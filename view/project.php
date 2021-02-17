@@ -65,9 +65,15 @@ if(!$_POST['id']){
 
      $_SESSION['project_id'] = $project_id;
 
+     $project_session_id = $_SESSION['project_id'];
+
     //  echo $_POST['id'];
-     // $user_pass=$_POST['password'];  
-       $project_sql_loc="select * from projects WHERE project_id = '$project_id'";   
+     // $user_pass=$_POST['password']; 
+     if($project_id) 
+       $project_sql_loc="select * from projects WHERE project_id = '$project_id'";
+       else
+       $project_sql_loc="select * from projects WHERE project_id = '$project_session_id'";
+
       
       if($query_loc=mysqli_query($dbC,$project_sql_loc))  {
       //  $result = mysqli_query($dbC,$wall)  
@@ -160,7 +166,7 @@ if(!$_POST['id']){
      <div class="row">
 
      <div class="col-1">
-<h5 style="color:blue;">PROJECT ID 
+<h5 style="color:blue;">PROJECT ID <?php echo $_POST['id'];  ?>
 <?php
     // $_SESSION['project_id'] = $_POST['id'];
 
@@ -170,9 +176,16 @@ if(isset($_POST['id']))
 
      $_SESSION['project_id'] = $project_id;
 
-     echo $_POST['id'];
-     // $user_pass=$_POST['password'];  
-       $project_sql="select * from projects WHERE project_id='$project_id'";   
+     $project_session_id = $_SESSION['project_id'];
+
+     //  echo $_POST['id'];
+      // $user_pass=$_POST['password']; 
+      if($project_id) 
+        $project_sql="select * from projects WHERE project_id = '$project_id'";
+        else
+        $project_sql="select * from projects WHERE project_id = '$project_session_id'";
+   
+      //  $project_sql="select * from projects WHERE project_id='$project_id'";   
       
        $query=mysqli_query($dbC,$project_sql);   
        $results = mysqli_fetch_assoc($query);

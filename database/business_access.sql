@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 11, 2021 at 03:17 PM
+-- Generation Time: Feb 17, 2021 at 03:21 PM
 -- Server version: 10.3.16-MariaDB
 -- PHP Version: 7.3.6
 
@@ -60,7 +60,7 @@ CREATE TABLE `about_us` (
   `type` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   `abbrevation_name` varchar(255) NOT NULL,
-  `business_reg_doc` varchar(255) NOT NULL,
+  `business_reg_doc` varchar(255) DEFAULT NULL,
   `date` date NOT NULL,
   `statement_of_business_mission` varchar(255) NOT NULL,
   `area_served` varchar(255) DEFAULT NULL,
@@ -72,12 +72,17 @@ CREATE TABLE `about_us` (
   `key_people_name` varchar(50) DEFAULT NULL,
   `key_people_title` varchar(255) DEFAULT NULL,
   `key_people_official_contact` varchar(255) DEFAULT NULL,
-  `subsidiary_entity_account` tinyint(1) DEFAULT NULL,
-  `entity_name` varchar(50) DEFAULT NULL,
-  `entity_contact` varchar(50) DEFAULT NULL,
-  `entity_postal_address` varchar(255) DEFAULT NULL,
-  `entity_physical_address` varchar(255) DEFAULT NULL
+  `headquarters` varchar(255) NOT NULL,
+  `user_id` int(255) NOT NULL,
+  `number_of_locations` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `about_us`
+--
+
+INSERT INTO `about_us` (`id`, `classification`, `type`, `name`, `abbrevation_name`, `business_reg_doc`, `date`, `statement_of_business_mission`, `area_served`, `area_served_continent`, `area_served_country`, `revenue_year`, `revenue_currency`, `revenue_amount`, `key_people_name`, `key_people_title`, `key_people_official_contact`, `headquarters`, `user_id`, `number_of_locations`) VALUES
+(0, 'Government Organisation', 'Government sponsered', 'Uganda National Roads Authority', 'UNRA', NULL, '1992-12-15', 'UNRA', 'Uganda', 'Uganda', 'Uganda', '2020', 'UGX', 100, 'Kagyina', 'Minister', '+256789562345', 'kampala Uganda', 3, 'All districts');
 
 -- --------------------------------------------------------
 
@@ -157,7 +162,32 @@ CREATE TABLE `comment` (
 INSERT INTO `comment` (`comment_id`, `date`, `user_id`, `wall_id`, `comment`) VALUES
 (2, '02:29 PM Wednesday February 10th ', 3, 1, 'We  all know it'),
 (3, '02:48 PM Wednesday February 10th ', 3, 1, ' good to know\r\n'),
-(4, '02:36 PM Thursday February 11th ', 1, 2, ' The mostly user for web apps');
+(4, '02:36 PM Thursday February 11th ', 1, 2, ' The mostly user for web apps'),
+(5, '09:26 AM Friday February 12th ', 1, 1, ' i would like to learn html'),
+(6, '07:37 AM Wednesday February 17th ', 1, 3, ' java is a monster'),
+(7, '07:40 AM Wednesday February 17th ', 1, 4, ' The \"code once and run all\"');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `comment_comment`
+--
+
+CREATE TABLE `comment_comment` (
+  `comment_comment_id` int(255) NOT NULL,
+  `comment_id` int(255) NOT NULL,
+  `wall_id` int(255) NOT NULL,
+  `comment` text NOT NULL,
+  `date` varchar(255) NOT NULL,
+  `user_id` int(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `comment_comment`
+--
+
+INSERT INTO `comment_comment` (`comment_comment_id`, `comment_id`, `wall_id`, `comment`, `date`, `user_id`) VALUES
+(1, 2, 1, ' Alright', '11:49 AM Wednesday February 17th ', 1);
 
 -- --------------------------------------------------------
 
@@ -187,7 +217,7 @@ CREATE TABLE `contact_us` (
   `business_building_name` varchar(255) NOT NULL,
   `city` varchar(255) NOT NULL,
   `state_province` varchar(255) NOT NULL,
-  `zip_poststal_code` varchar(255) NOT NULL,
+  `zip_postal_code` varchar(255) NOT NULL,
   `tel` varchar(255) NOT NULL,
   `fax` varchar(255) NOT NULL,
   `mobile` varchar(255) NOT NULL,
@@ -195,8 +225,18 @@ CREATE TABLE `contact_us` (
   `website` varchar(255) NOT NULL,
   `postal_address` varchar(255) NOT NULL,
   `physical_address` varchar(255) NOT NULL,
-  `goods_services` varchar(255) NOT NULL
+  `goods_services` varchar(255) NOT NULL,
+  `user_id` int(255) NOT NULL,
+  `contact_person` varchar(255) NOT NULL,
+  `work_hours` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `contact_us`
+--
+
+INSERT INTO `contact_us` (`id`, `p_o_box`, `district_city`, `place_of_business`, `business_plot_number`, `business_street_name`, `business_building_name`, `city`, `state_province`, `zip_postal_code`, `tel`, `fax`, `mobile`, `email_address`, `website`, `postal_address`, `physical_address`, `goods_services`, `user_id`, `contact_person`, `work_hours`) VALUES
+(1, '15222', 'kampala ', 'Kireka', '14556', 'jinja high way', 'kireka shopping center', 'kampala city', 'nakawa  division', '54555', '+256709686326', '+256789526412', '+256789264512', 'admin@admin.com', 'www.officialaccess.com', '15222', 'kireka shopping center rm 108', 'IT and civil services', 3, 'Katerega Micheal', 'mon-fri 8am-5pm');
 
 -- --------------------------------------------------------
 
@@ -280,16 +320,26 @@ CREATE TABLE `individual` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `like`
+-- Table structure for table `likes`
 --
 
-CREATE TABLE `like` (
+CREATE TABLE `likes` (
   `like_id` int(255) NOT NULL,
   `date` date NOT NULL,
   `wall_id` int(255) NOT NULL,
   `user_id` int(255) NOT NULL,
-  `count` int(255) NOT NULL
+  `status` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `likes`
+--
+
+INSERT INTO `likes` (`like_id`, `date`, `wall_id`, `user_id`, `status`) VALUES
+(0, '0000-00-00', 2, 1, 'liked'),
+(0, '0000-00-00', 1, 1, 'liked'),
+(0, '0000-00-00', 3, 1, 'liked'),
+(0, '0000-00-00', 4, 1, 'liked');
 
 -- --------------------------------------------------------
 
@@ -373,14 +423,13 @@ CREATE TABLE `profile_individual` (
   `first_name` varchar(255) NOT NULL,
   `last_name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
   `gender` varchar(10) NOT NULL,
   `dob` date NOT NULL,
   `photo` varchar(255) DEFAULT NULL,
   `employement_current_status` varchar(255) DEFAULT NULL,
   `employement_position` varchar(255) DEFAULT NULL,
   `employement_name` varchar(255) DEFAULT NULL,
-  `address` varchar(255) DEFAULT NULL,
+  `current_address` varchar(255) DEFAULT NULL,
   `employement_past_position` varchar(255) DEFAULT NULL,
   `employement_past_name` varchar(255) DEFAULT NULL,
   `employement_past_address` varchar(255) DEFAULT NULL,
@@ -395,8 +444,8 @@ CREATE TABLE `profile_individual` (
 -- Dumping data for table `profile_individual`
 --
 
-INSERT INTO `profile_individual` (`profile_individual_id`, `first_name`, `last_name`, `email`, `password`, `gender`, `dob`, `photo`, `employement_current_status`, `employement_position`, `employement_name`, `address`, `employement_past_position`, `employement_past_name`, `employement_past_address`, `specialisties`, `education`, `marital_status`, `user_id`, `logo`) VALUES
-(1, 'hamza', 'mugabo', 'ham@gmail.com', '123', 'male', '2021-02-04', 'hamza.jpg', 'self employed', 'developer', 'developer', 'kireka', 'developer', 'developer', 'bukoto', 'software development', 'makerere univesity', 'single', 1, 'design this web page.jpg,bou.jpg,dba.jpg,upolice.png');
+INSERT INTO `profile_individual` (`profile_individual_id`, `first_name`, `last_name`, `email`, `gender`, `dob`, `photo`, `employement_current_status`, `employement_position`, `employement_name`, `current_address`, `employement_past_position`, `employement_past_name`, `employement_past_address`, `specialisties`, `education`, `marital_status`, `user_id`, `logo`) VALUES
+(1, 'hamza', 'mugabo', 'ham@gmail.com', 'male', '2021-02-04', 'hamza.jpg', 'Employed', 'web  developer', '  developer', '  kireka', 'android developer', '  developer', '  bukoto', 'software development', 'makerere univesity', 'single', 1, 'design this web page.jpg,bou.jpg,dba.jpg,upolice.png');
 
 -- --------------------------------------------------------
 
@@ -412,15 +461,16 @@ CREATE TABLE `profile_non_individual` (
   `photo` varchar(255) NOT NULL,
   `user_id` int(255) NOT NULL,
   `tin` varchar(255) NOT NULL,
-  `mission` text NOT NULL
+  `mission` text NOT NULL,
+  `date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `profile_non_individual`
 --
 
-INSERT INTO `profile_non_individual` (`profile_non_individual_id`, `name`, `division`, `license_no`, `photo`, `user_id`, `tin`, `mission`) VALUES
-(1, 'Nastar ', 'Kireka Shopping mall\r\n', '15548', 'Dailgo-Square.png', 3, '554444', 'the future of tech');
+INSERT INTO `profile_non_individual` (`profile_non_individual_id`, `name`, `division`, `license_no`, `photo`, `user_id`, `tin`, `mission`, `date`) VALUES
+(1, 'Nastar ', 'Kireka Shopping mall', '15548', 'logo.png', 3, '1111111', 'the future of tech', '2009-02-17');
 
 -- --------------------------------------------------------
 
@@ -528,16 +578,18 @@ CREATE TABLE `relatioship_partners` (
   `date` date NOT NULL,
   `user_id` int(255) NOT NULL,
   `user_type` varchar(255) NOT NULL,
-  `add_by` int(255) NOT NULL
+  `add_by` int(255) NOT NULL,
+  `confirm_status` int(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `relatioship_partners`
 --
 
-INSERT INTO `relatioship_partners` (`relationship_id`, `name`, `project_id`, `date`, `user_id`, `user_type`, `add_by`) VALUES
-(1, 'Hamza Mugabo', 1, '2021-02-10', 1, 'individual', 3),
-(2, 'Nastar Kireka', 1, '2021-02-10', 3, 'non_individual', 3);
+INSERT INTO `relatioship_partners` (`relationship_id`, `name`, `project_id`, `date`, `user_id`, `user_type`, `add_by`, `confirm_status`) VALUES
+(1, 'Hamza Mugabo', 1, '2021-02-10', 1, 'individual', 3, 0),
+(2, 'Nastar Kireka', 1, '2021-02-10', 3, 'non_individual', 3, 0),
+(4, 'Hamza Mugabo', 2, '2021-02-17', 1, 'individual', 3, 0);
 
 -- --------------------------------------------------------
 
@@ -699,6 +751,12 @@ ALTER TABLE `about_me`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `about_us`
+--
+ALTER TABLE `about_us`
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- Indexes for table `anniversaries`
 --
 ALTER TABLE `anniversaries`
@@ -728,6 +786,15 @@ ALTER TABLE `comment`
   ADD KEY `wall_id` (`wall_id`);
 
 --
+-- Indexes for table `comment_comment`
+--
+ALTER TABLE `comment_comment`
+  ADD PRIMARY KEY (`comment_comment_id`),
+  ADD KEY `comment_id` (`comment_id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `wall_id` (`wall_id`);
+
+--
 -- Indexes for table `configuration`
 --
 ALTER TABLE `configuration`
@@ -738,7 +805,8 @@ ALTER TABLE `configuration`
 -- Indexes for table `contact_us`
 --
 ALTER TABLE `contact_us`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `content`
@@ -933,13 +1001,19 @@ ALTER TABLE `award`
 -- AUTO_INCREMENT for table `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `comment_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `comment_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `comment_comment`
+--
+ALTER TABLE `comment_comment`
+  MODIFY `comment_comment_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `contact_us`
 --
 ALTER TABLE `contact_us`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `content`
@@ -1041,7 +1115,7 @@ ALTER TABLE `recommendation`
 -- AUTO_INCREMENT for table `relatioship_partners`
 --
 ALTER TABLE `relatioship_partners`
-  MODIFY `relationship_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `relationship_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `reports`
@@ -1090,6 +1164,12 @@ ALTER TABLE `wall`
 --
 
 --
+-- Constraints for table `about_us`
+--
+ALTER TABLE `about_us`
+  ADD CONSTRAINT `about_us_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
+
+--
 -- Constraints for table `anniversaries`
 --
 ALTER TABLE `anniversaries`
@@ -1115,10 +1195,24 @@ ALTER TABLE `comment`
   ADD CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`wall_id`) REFERENCES `wall` (`wall_id`);
 
 --
+-- Constraints for table `comment_comment`
+--
+ALTER TABLE `comment_comment`
+  ADD CONSTRAINT `comment_comment_ibfk_1` FOREIGN KEY (`comment_id`) REFERENCES `comment` (`comment_id`),
+  ADD CONSTRAINT `comment_comment_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
+  ADD CONSTRAINT `comment_comment_ibfk_3` FOREIGN KEY (`wall_id`) REFERENCES `wall` (`wall_id`);
+
+--
 -- Constraints for table `configuration`
 --
 ALTER TABLE `configuration`
   ADD CONSTRAINT `configuration_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
+
+--
+-- Constraints for table `contact_us`
+--
+ALTER TABLE `contact_us`
+  ADD CONSTRAINT `contact_us_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
 
 --
 -- Constraints for table `gallery`

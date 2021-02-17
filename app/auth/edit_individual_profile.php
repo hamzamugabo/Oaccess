@@ -1,5 +1,6 @@
 
 <?php 
+include_once('../../config/config.php');
 session_start();//session starts here   
 // echo $_SESSION['email']
 if (!isset($_SESSION['user_id'])) {
@@ -7,9 +8,33 @@ if (!isset($_SESSION['user_id'])) {
     
 }
 if($_SESSION['user_type'] != 'individual'){
-    echo "<script>window.open('non_individual_register.php','_self')</script>";  
+    echo "<script>window.open('../../view/non_individual_profile.php','_self')</script>";  
 
 }
+$user_id = $_SESSION['user_id'];
+
+$check_user="select * from profile_individual WHERE user_id='$user_id'";   
+      
+$run=mysqli_query($dbC,$check_user);   
+$row = mysqli_fetch_assoc($run);
+$past_position = $row['employement_past_position'];
+$current_position = $row['employement_position'];
+$past_name = $row['employement_past_name'];
+$past_address = $row['employement_past_address'];
+$current_name = $row['employement_name'];
+$current_address = $row['current_address'];
+$education = $row['education'];
+$specialisties = $row['specialisties'];
+$marital = $row['marital_status'];
+$logo = $row['logo'];
+$fname = $row['first_name'];
+$lname = $row['last_name'];
+$email = $row['email'];
+$gender = $row['gender'];
+$dob = $row['dob'];
+$photo = $row['photo'];
+$id = $row['profile_individual_id'];
+// echo $user_id;
 ?>
 <html>   
 <head lang="en">   
@@ -17,7 +42,7 @@ if($_SESSION['user_type'] != 'individual'){
     <link type="text/css" rel="stylesheet" href="../../css/bootstrap.css">   
     <link type="text/css" rel="stylesheet" href="../../css\layout.css"> 
 
-    <title>individual Registration</title>   
+    <title>update profile</title>   
 </head>   
 <style>   
     .login-panel {   
@@ -63,74 +88,31 @@ input[type="radio"]:checked + input {
     <div class="row justify-content-center" style="padding-top: 0px;">
         <div class="col-md-9">
             <div class="card">
-                <div class="card-header">Individual profile Registration</div>
+                <div class="card-header">Individual profile update</div>
 
                 <div class="card-body">
-                    <form method="POST" action="individual_register_backend.php" enctype="multipart/form-data">
+                <?php
+                echo '
+                    <form method="POST" action="edit_individual_profile_backend.php" enctype="multipart/form-data">
                   
 
-                        <!-- <div class="form-group row">
-                            <label for="email" class="col-md-3 col-form-label text-md-right">First Name</label>
-
-                            <div class="col-md-3">
-                                <input  type="text" class="form-control " name="fname" required autocomplete="fname" autofocus>
-
-                             
-                                  
-                            </div>
-                            <label for="email" class="col-md-3 col-form-label text-md-right">Last Name</label>
-
-                            <div class="col-md-3">
-                                <input  type="text" class="form-control" name="lname" required autocomplete="lname" autofocus>
-
-                             
-                                  
-                            </div>
-                            
-                        </div>
-
                         <div class="form-group row">
-                            <label for="email" class="col-md-3 col-form-label text-md-right">E-Mail</label>
-
-                            <div class="col-md-3">
-                                <input  type="email" class="form-control" name="email" required autocomplete="email" autofocus>
-
-                             
-                                  
-                            </div>
-                            <label for="password" class="col-md-3 col-form-label text-md-right">Password</label>
-
-<div class="col-md-3">
-    <input id="password" type="password" class="form-control " name="password" required autocomplete="current-password">
-
-  
-        
-   
-</div>
+                           
+                        
+                               
+                                <input  required  type="text" hidden value="'.$fname.'" class="form-control" name="fname"  autocomplete="email" autofocus>
+                                <input  required  type="text" hidden value="'.$lname.'" class="form-control" name="lname"  autocomplete="email" autofocus>
+                                <input  required  type="text" hidden value="'.$email.'" class="form-control" name="email"  autocomplete="email" autofocus>
+                                <input  required  type="text" hidden value="'.$dob.'" class="form-control" name="dob"  autocomplete="email" autofocus>
+                                <input  required  type="text" hidden value="'.$gender.'" class="form-control" name="gender"  autocomplete="email" autofocus>
+                                <input  required  type="text" hidden value="'.$id.'" class="form-control" name="id"  autocomplete="email" autofocus>
+                                
+                                
+                               
                             
                         </div>
 
-                        <div class="form-check">
-                        <label for="email" class="col-md-3 col-form-label text-md-right">Gender:</label>
-
-                            <input class="check-form-input" type="radio" name="gender" value="male">
-                            <label for="male" class="form-check-lebel">male</label>
-                            <input class="check-form-input" type="radio" name="gender" value="female">
-                            <label for="male" class="form-check-lebel">female</label>
-
-
-                        </div>-->
-<!-- 
-                        <div class="form-check">
-                        <label for="email" class="col-md-3 col-form-label text-md-right">Current Status:</label>
-
-                            <input class="check-form-input" type="radio" name="status" value="self employed">
-                            <label for="male" class="form-check-lebel">Self Employed</label>
-                            <input class="check-form-input" type="radio" name="status" value="Employed">
-                            <label for="male" class="form-check-lebel">Employed</label>
-
-
-                        </div>  -->
+                        
                         <div class="form-group row">
                             <label for="email" class="col-md-3 col-form-label text-md-right">Current Employment:</label>
                             <div class="col-md-3">
@@ -148,23 +130,14 @@ input[type="radio"]:checked + input {
                             
                         </div>
                         
-                        <!-- <div class="form-check">
-                        <label for="email" class="col-md-3 col-form-label text-md-right">Current Status:</label>
-
-                            <input class="check-form-input" type="radio" name="status" value="self employed">
-                            <label for="male" class="form-check-lebel">Self Employed</label>
-                            <input class="check-form-input" type="radio" name="status" value="Employed">
-                            <label for="male" class="form-check-lebel">Employed</label>
-
-
-                        </div>  -->
+                      
                         <div class="form-group row">
                         <div class="form-check">
                         <label for="email" class="col-md-3 col-form-label text-md-right">Current Status:</label>
 
-                            <input class="check-form-input" type="radio" name="status" value="self employed"id="choice-animals-dogs"data-require-pair="#choice-animals-dogs">
+                            <input  required class="check-form-input" required type="radio" name="status" value="self employed"id="choice-animals-dogs"data-require-pair="#choice-animals-dogs">
                             <label for="male" class="form-check-lebel">Self Employed</label>
-                            <input class="check-form-input" type="radio" name="status" value="Employed" id="choice-animals-dogs"data-require-pair="#choice-animals-cats">
+                            <input  required class="check-form-input" required type="radio" name="status" value="Employed" id="choice-animals-dogs"data-require-pair="#choice-animals-cats">
                             <label for="male" class="form-check-lebel">Employed</label>
 
 
@@ -172,7 +145,8 @@ input[type="radio"]:checked + input {
                             <label for="email" class="col-md-3 col-form-label text-md-right">Past Job Postion</label>
 
                             <div class="col-md-3">
-                                <input  type="text" class="form-control" name="past_position" required autocomplete="email" autofocus>
+                                
+                                <input  required  type="text" class="form-control" name="past_position" value="'.$past_position.'"  autocomplete="email" autofocus>
 
                              
                                   
@@ -183,7 +157,7 @@ input[type="radio"]:checked + input {
                             <label for="email" class="col-md-3 col-form-label text-md-right">current Job Postion</label>
 
                             <div class="col-md-3  reveal-if-active"" >
-                                <input  type="text" class="form-control" name="current_position" required autocomplete="email" autofocus>
+                                <input  required  type="text" value=" '.$current_position.'" class="form-control" name="current_position"  autocomplete="email" autofocus>
 
                              
                                   
@@ -191,7 +165,7 @@ input[type="radio"]:checked + input {
                             <label for="email" class="col-md-3 col-form-label text-md-right">Past Job Name</label>
 
                             <div class="col-md-3">
-                                <input  type="text" class="form-control" name="past_name" required autocomplete="email" autofocus>
+                                <input  required  type="text" value=" '.$past_name.'" class="form-control" name="past_name"  autocomplete="email" autofocus>
 
                              
                                   
@@ -202,7 +176,7 @@ input[type="radio"]:checked + input {
                             <label for="email" class="col-md-3 col-form-label text-md-right">current Job Name</label>
 
                             <div class="col-md-3">
-                                <input  type="text" class="form-control" name="current_name" required autocomplete="email" autofocus>
+                                <input  required  type="text" value=" '.$current_name.'" class="form-control" name="current_name"  autocomplete="email" autofocus>
 
                              
                                   
@@ -210,7 +184,7 @@ input[type="radio"]:checked + input {
                             <label for="email" class="col-md-3 col-form-label text-md-right">Past Job Address</label>
 
                             <div class="col-md-3">
-                                <input  type="text" class="form-control" name="past_address" required autocomplete="email" autofocus>
+                                <input  required  type="text" value=" '.$past_address.'" class="form-control" name="past_address"  autocomplete="email" autofocus>
 
                              
                                   
@@ -221,7 +195,7 @@ input[type="radio"]:checked + input {
                             <label for="email" class="col-md-3 col-form-label text-md-right">current Job Address</label>
 
                             <div class="col-md-3">
-                                <input  type="text" class="form-control" name="current_address" required autocomplete="email" autofocus>
+                                <input  required  type="text" value=" '.$current_address.'" class="form-control" name="current_address"  autocomplete="email" autofocus>
 
                              
                                   
@@ -229,7 +203,7 @@ input[type="radio"]:checked + input {
                             <label for="email" class="col-md-3 col-form-label text-md-right">past job logo</label>
 
                             <div class="col-md-3">
-                                <input  type="file" class="form-control" name="logo" >
+                                <input  type="file" value="'.$logo.'" class="form-control" name="logo" >
 
                              
                                   
@@ -241,7 +215,12 @@ input[type="radio"]:checked + input {
                             <label for="email" class="col-md-3 col-form-label text-md-right">Education</label>
 
                             <div class="col-md-3">
-                                <input  type="text" class="form-control" name="education" required autocomplete="email" autofocus>
+                               
+                              
+                                <input  required  type="text" value="'.$education.'" class="form-control" name="education"  autocomplete="email" autofocus>
+                                
+                             
+                                
 
                              
                                   
@@ -249,8 +228,8 @@ input[type="radio"]:checked + input {
                             <label for="email" class="col-md-3 col-form-label text-md-right">Marital Status</label>
 
                             <div class="col-md-3">
-                            <select class="form-select" aria-label="Default select example" name="marital_status">
-                            <option selected>Marital Status</option>
+                            <select class="form-select" required aria-label="Default select example" required name="marital_status" values="'.$marital.'">
+                            <option selected></option>
                             <option value="single">Single</option>
                             <option value="married">Married</option>
                             <option value="devorced">Devorced</option>
@@ -265,7 +244,7 @@ input[type="radio"]:checked + input {
                             <label for="email" class="col-md-3 col-form-label text-md-right">Specialities</label>
 
                             <div class="col-md-3">
-                                <input  type="text" class="form-control" name="specialisties" required autocomplete="email" autofocus>
+                                <input  required  type="text" value="'.$specialisties.'" class="form-control" name="specialisties"  autocomplete="email" autofocus>
 
                              
                                   
@@ -274,7 +253,7 @@ input[type="radio"]:checked + input {
                             <label for="email" class="col-md-3 col-form-label text-md-right">Profile Photo</label>
 
                             <div class="col-md-3">
-                                <input  type="file" class="form-control" name="photo" >
+                                <input    type="file" class="form-control" name="photo" value="'.$photo.'">
 
                              
                                   
@@ -283,19 +262,7 @@ input[type="radio"]:checked + input {
                             
                         </div>
 
-                        <!-- <div class="form-group row">
-                        <label for="password" class="col-md-4 col-form-label text-md-right"></label>
-
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
-                                       Remember Me
-                                    </label>
-                                </div>
-                            </div>
-                        </div> -->
+                       
 
                         <div class="form-group row mb-0">
                         <label for="password" class="col-md-4 col-form-label text-md-right"></label>
@@ -305,14 +272,11 @@ input[type="radio"]:checked + input {
                                    Register
                                 </button>
 
-                               
-                                    <!-- <a class="btn btn-link" href="{{ route('password.request">
-                                       Forgot Your Password?
-                                    </a> -->
-                                <!-- @endif -->
                             </div>
                         </div>
                     </form>
+                    ';
+                    ?>
                 </div>
             </div>
         </div>

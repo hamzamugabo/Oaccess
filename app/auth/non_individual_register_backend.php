@@ -5,8 +5,8 @@ session_start();//session starts here
 include("../../config/config.php");//make connection here   
 $id=$_SESSION['user_id'];
 // $user_id = $_SESSION['user_id'];
-echo $_SESSION['user_id'];
-echo $id;
+// echo $_SESSION['user_id'];
+// echo $id;
 
 $check_user="select * from user WHERE user_id='$id'";   
       

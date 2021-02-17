@@ -7,6 +7,8 @@ if (!isset($_SESSION['user_id'])) {
     echo "<script>window.open('login.php','_self')</script>";  
     
 }
+
+$current_user_type = $_SESSION['user_type'];
 ?>
 <html>   
 <head lang="en">   
@@ -14,10 +16,6 @@ if (!isset($_SESSION['user_id'])) {
     <link type="text/css" rel="stylesheet" href="../css/bootstrap.css">   
     <link type="text/css" rel="stylesheet" href="../css\layout.css"> 
 
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <title>Comment</title>   
 </head>   
 <style>   
@@ -65,29 +63,52 @@ input[type="radio"]:checked + input {
         <div class="col-md-9">
             <div class="card">
                 <div class="card-header">
-                comment
+                comment on comment
                 <div class="row">
                 <?php
                 include("../config/config.php");   
 
-                if($_POST['wall_id']){
-                    $_SESSION['wall_id'] = $_POST['wall_id'];
+                if($_POST['comment_id']){
+                    $_SESSION['comment_id'] = $_POST['comment_id'];
                     // echo $_GET['link'];
-                    $wall_id =$_POST['wall_id'];
-                    $all="select * from wall WHERE wall_id='$wall_id' ";   
+                    $comment_id =$_POST['comment_id'];
+                    // echo $comment_id;
+
+                    $all="select * from comment WHERE comment_id='$comment_id' ";   
                     $all_result = mysqli_query($dbC,$all);
                     $all_row_ = mysqli_fetch_array($all_result);
-                    $photo_name = $all_row_['photo'];
-                    $news_photo = "../images/wall/".$all_row_['photo'];
+                    // $photo_name = $all_row_['photo'];
+                    // $news_photo = "../images/wall/".$all_row_['photo'];
                     $date = $all_row_['date'];
-                    $message = $all_row_['message'];
+                    $message = $all_row_['comment'];
+                    $comment_user = $all_row_['user_id'];
+                    $user="select * from user WHERE user_id=$comment_user "; 
+                    
+                    $user_results = mysqli_query($dbC,$user);
+                     $user_row = mysqli_fetch_array($user_results);
+                     $comment_user_type = $user_row['user_type'];
+
+                    if($comment_user_type === 'individual')
+                    $query_photo="select * from profile_individual WHERE user_id=$comment_user "; 
+                    else  
+                    $query_photo="select * from profile_non_individual WHERE user_id=$comment_user "; 
+
+                    $photo_result = mysqli_query($dbC,$query_photo);
+                     $photo_row_ = mysqli_fetch_array($photo_result);
+                    $photo = $photo_row_['photo'];
+                    // echo json_encode($photo_row_);
+
+                    $user_photo = "../images/dp/".$photo;
+                    
+                    // echo  $comment_user;
+                    
 
                     echo '
                         <div class="row" style="margin-top:10px;">
                         <div class="col-2">';
-                        if($photo_name !=''){
+                        if($user_photo !=''){
                             echo'        
-                        <img src='.$news_photo.' width=80 height=80>';
+                        <img src='.$user_photo.' class="rounded-circle" width=50 height=50>';
                         }else{
                             // echo '<a href="pass.php?link=' . $a . '>Link 1</a>';
                             echo'     ';
@@ -107,21 +128,42 @@ input[type="radio"]:checked + input {
                 }else{
                     //  = $_POST['wall_id'];
                     // echo $_GET['link'];
-                    $wall_id =$_SESSION['wall_id'];
-                    $all="select * from wall WHERE wall_id='$wall_id' ";   
+                    $comment_id =$_SESSION['comment_id'];
+                    $all="select * from comment WHERE comment_id='$comment_id' ";   
                     $all_result = mysqli_query($dbC,$all);
                     $all_row_ = mysqli_fetch_array($all_result);
-                    $photo_name = $all_row_['photo'];
-                    $news_photo = "../images/wall/".$all_row_['photo'];
+                    // $photo_name = $all_row_['photo'];
+                    // $news_photo = "../images/wall/".$all_row_['photo'];
                     $date = $all_row_['date'];
-                    $message = $all_row_['message'];
+                    $message = $all_row_['comment'];
+                    $comment_user = $all_row_['user_id'];
+                    $user="select * from user WHERE user_id=$comment_user "; 
+                    
+                    $user_results = mysqli_query($dbC,$user);
+                     $user_row = mysqli_fetch_array($user_results);
+                     $comment_user_type = $user_row['user_type'];
+
+                    if($comment_user_type === 'individual')
+                    $query_photo="select * from profile_individual WHERE user_id=$comment_user "; 
+                    else  
+                    $query_photo="select * from profile_non_individual WHERE user_id=$comment_user "; 
+
+                    $photo_result = mysqli_query($dbC,$query_photo);
+                     $photo_row_ = mysqli_fetch_array($photo_result);
+                    $photo = $photo_row_['photo'];
+                    // echo json_encode($photo_row_);
+
+                    $user_photo = "../images/dp/".$photo;
+                    
+                    // echo  $comment_user;
+                    
 
                     echo '
                         <div class="row" style="margin-top:10px;">
                         <div class="col-2">';
-                        if($photo_name !=''){
+                        if($user_photo !=''){
                             echo'        
-                        <img src='.$news_photo.' width=80 height=80>';
+                        <img src='.$user_photo.' class="rounded-circle" width=80 height=80>';
                         }else{
                             // echo '<a href="pass.php?link=' . $a . '>Link 1</a>';
                             echo'     ';
@@ -145,10 +187,10 @@ input[type="radio"]:checked + input {
 
                 <div class="card-body">
                 <?php
-                if($_POST['wall_id']){
+                if($_POST['comment_id']){
                     // echo $_GET['link'];
-                    $wall_id =$_POST['wall_id'];
-                    $all="select * from comment WHERE wall_id='$wall_id' ";   
+                    $comment_id =$_POST['comment_id'];
+                    $all="select * from comment_comment WHERE comment_id='$comment_id' ";   
                     $all_result = mysqli_query($dbC,$all);
                     while( $all_row_ = mysqli_fetch_array($all_result)){
                     // $all_row_ = mysqli_fetch_array($all_result);
@@ -157,7 +199,6 @@ input[type="radio"]:checked + input {
                     $date = $all_row_['date'];
                     $message = $all_row_['comment'];
                     $iids = $all_row_['user_id'];
-                    $comment_id = $all_row_['comment_id'];
 
                     $user_bio = "select first_name,last_name from user WHERE user_id='$iids' ";
                     $all_result_user_bio = mysqli_query($dbC,$user_bio);
@@ -179,13 +220,6 @@ input[type="radio"]:checked + input {
                                     </div>
                                     <div class="col-8"><p>'.$message.'.</p>
                                 <strong> commented at</strong>  '.$date.' &nbsp&nbsp&nbsp
-                                <br>
-                               
-                                <form  method="POST" action="comment_comment.php" style="float:left;">
-<input type="text" name="comment_id" value="'.$comment_id.'" hidden>
-<button type="submit" class="btn btn-link"><span style="color:blue;">Comment</span></button>
-          </form><br>
-
                                 
                             </div>
                             
@@ -265,8 +299,8 @@ input[type="radio"]:checked + input {
             else
             {
 
-                $wall_id =$_SESSION['wall_id'];
-                $all="select * from comment WHERE wall_id='$wall_id' ";   
+                $comment_id =$_SESSION['comment_id'];
+                $all="select * from comment_comment WHERE comment_id='$comment_id' ";   
                 $all_result = mysqli_query($dbC,$all);
                 while( $all_row_ = mysqli_fetch_array($all_result)){
                 // $all_row_ = mysqli_fetch_array($all_result);
@@ -275,7 +309,6 @@ input[type="radio"]:checked + input {
                 $date = $all_row_['date'];
                 $message = $all_row_['comment'];
                 $iids = $all_row_['user_id'];
-                $comment_id = $all_row_['comment_id'];
 
                 $user_bio = "select first_name,last_name from user WHERE user_id='$iids' ";
                 $all_result_user_bio = mysqli_query($dbC,$user_bio);
@@ -298,13 +331,6 @@ input[type="radio"]:checked + input {
                                 <div class="col-8"><p>'.$message.'.</p>
                             <strong> posted at</strong>  '.$date.' &nbsp&nbsp&nbsp
                             
-                            <form  method="POST" action="comment_comment.php" style="float:left;">
-<input type="text" name="comment_id" value="'.$comment_id.'" hidden>
-<button type="submit" class="btn btn-link"><span style="color:blue;">Comment</span></button>
-
-          </form>
-          
-                            
                         </div>
                         
                         </div>
@@ -317,7 +343,7 @@ input[type="radio"]:checked + input {
                 <div style="bottom: 0px;">
 
 
-                    <form method="POST" action="comment_backend.php" >
+                    <form method="POST" action="comment_comment_backend.php" >
                   
                         
                        
@@ -361,7 +387,6 @@ input[type="radio"]:checked + input {
                         </div>
                     </form>
                     </div>
-                    
                 </div>
             </div>
         </div>

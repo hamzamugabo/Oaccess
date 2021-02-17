@@ -6,6 +6,8 @@ if (!isset($_SESSION['user_id'])) {
     echo "<script>window.open('login.php','_self')</script>";  
     
 }
+$current_user_id = $_SESSION['user_id'];
+$current_user_type = $_SESSION['user_type'];
 ?>
 <html>   
 <head lang="en">   
@@ -77,7 +79,7 @@ input[type="radio"]:checked + input {
                             <?php
     include("../config/config.php");   
 
- $app="select * from user";   
+ $app="select * from user WHERE user_id !=$current_user_id ";   
 
 
 
@@ -104,7 +106,7 @@ echo
                              
                                   
                             </div>
-                            <label for="member_name" class="col-md-3 col-form-label text-md-right">Select Partner</label>
+                            <label for="member_name" class="col-md-3 col-form-label text-md-right">Select Project</label>
 
 <div class="col-md-3">
 <select  name="project"  class="form-control" id="exampleFormControlSelect2" required>
@@ -163,8 +165,23 @@ echo
                                 <button type="submit" class="btn btn-primary">
                                    Add
                                 </button>
-                                
+                                <?php
+                                if($current_user_type === 'individual')
+                                {
+                                    echo '
+                                    <a href="individual_profile.php">back to profile</a>
+                                      
+                                      ';
+                                }
+                                else{
+                                    echo '
                                   <a href="non_individual_profile.php">back to profile</a>
+                                    
+                                    ';
+
+                                }
+                                ?>
+                                
                               
                                
                                   
@@ -229,12 +246,19 @@ if($run){
       
      
             
-            $sql1 = "INSERT INTO relatioship_partners (name,project_id,date,user_id,user_type)
-            VALUES ('$icon','$pro_id','$date','$userid','$user_type')";
+            $sql1 = "INSERT INTO relatioship_partners (name,project_id,date,user_id,user_type,add_by)
+            VALUES ('$icon','$pro_id','$date','$userid','$user_type','$current_user_id')";
             if(mysqli_query($dbC,$sql1)){
                  
+                if($current_user_type === 'non_individual')
+                {
+                    echo "<script>window.open('non_individual_profile.php','_self')</script>";   
+
+                }else{
+                    echo "<script>window.open('individual_profile.php','_self')</script>";   
+
+                }
                  
-                      echo "<script>window.open('non_individual_profile.php','_self')</script>";   
                   
                  
             

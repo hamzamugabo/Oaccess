@@ -14,9 +14,11 @@ session_start();//session starts here
        $run=mysqli_query($dbC,$check_user);   
        $row = mysqli_fetch_assoc($run);
        $_SESSION['email']=$user_email;
+       
            $_SESSION['user_id']=$row['user_id'];
            $_SESSION['user_type']=$row['user_type'];
       //  $_SESSION['user_id'];
+    //   if (password_verify($user_pass, $row['password'])) {
        if(mysqli_num_rows($run))   
        {
 
@@ -58,6 +60,11 @@ else
          echo "<script>window.open('login.php','_self')</script>";  
 
        }   
+
+    // }else{
+    //     echo "<script>alert(' password is incorrect!')</script>";  
+
+    // }
    } 
     else{echo "<script>alert('not set email n pass')</script>";
         echo "<script>window.open('login.php','_self')</script>";  

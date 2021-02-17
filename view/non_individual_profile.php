@@ -6,6 +6,10 @@ if (!isset($_SESSION['user_id'])) {
     echo "<script>window.open('../app/auth/login.php','_self')</script>";  
     
 }
+if($_SESSION['user_type'] != 'non_individual'){
+    echo "<script>window.open('../view/individual_profile.php','_self')</script>";  
+
+}
 ?>
 <html>   
 <head lang="en">   
