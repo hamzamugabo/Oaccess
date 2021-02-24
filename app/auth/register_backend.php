@@ -20,7 +20,11 @@ session_start();//session starts here
    // Escape user inputs for security
    $fname = mysqli_real_escape_string($dbC, $_POST['fname']);
    $lname = mysqli_real_escape_string($dbC, $_POST['lname']);
+   if($_POST['gender'])
    $gender = mysqli_real_escape_string($dbC, $_POST['gender']);
+   else
+   $gender ='';
+
     $dob= mysqli_real_escape_string($dbC, $_POST['dob']);
    $email = mysqli_real_escape_string($dbC, $_POST['email']);
    $contact = mysqli_real_escape_string($dbC, $_POST['contact']);
@@ -44,18 +48,19 @@ $run=mysqli_query($dbC,$check_user);
 
    
    } else{
-    if(!$run){
-        $_SESSION['email_exists']= $email;
-     echo "<script>alert('Email already exists')</script>";
+      echo "ERROR: Could not able to execute $sql. " . mysqli_error($dbC);
+   //  if(!$run){
+   //      $_SESSION['email_exists']= $email;
+   //   echo "<script>alert('Email already exists')</script>";
 
-        echo "<script>window.open('login.php','_self')</script>"; 
-        }else{
-        $_SESSION['email_exists']= 'Server Error';
-     echo "<script>alert('Server Error, try again')</script>";
+   //      echo "<script>window.open('login.php','_self')</script>"; 
+   //      }else{
+   //      $_SESSION['email_exists']= 'Server Error';
+   //   echo "<script>alert('Server Error, try again')</script>";
 
-        echo "<script>window.open('login.php','_self')</script>"; 
+   //      echo "<script>window.open('login.php','_self')</script>"; 
 
-        }
+   //      }
     //    echo "ERROR: Could not able to execute $sql. " . mysqli_error($dbC);
    }
 // }else{

@@ -166,7 +166,13 @@ input[type="radio"]:checked + input {
                     $user_fname =  $all_row_user_bio['first_name'];
                     $user_lname =  $all_row_user_bio['last_name'];
 
-
+                    $count_comments = "SELECT comment_id FROM comment_comment WHERE comment_id = $comment_id"; 
+      
+                    // Execute the query and store the result set 
+                    $count_result = mysqli_query($dbC, $count_comments); 
+                      
+                     
+                        $row_count = mysqli_num_rows($count_result); 
 
                     echo '
                         <div class="row" style="margin-top:10px;">
@@ -184,7 +190,10 @@ input[type="radio"]:checked + input {
                                 <form  method="POST" action="comment_comment.php" style="float:left;">
 <input type="text" name="comment_id" value="'.$comment_id.'" hidden>
 <button type="submit" class="btn btn-link"><span style="color:blue;">Comment</span></button>
-          </form><br>
+          </form>
+          <button type="button"  data-toggle="modal" data-target="#myModal" class="btn btn-link" style="float:left;"><span style="color:blue;">'.$row_count.'</span></button>
+          
+          <br>
 
                                 
                             </div>

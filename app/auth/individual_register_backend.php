@@ -62,10 +62,10 @@ if(isset($status,$current_address,$current_position,$past_position,$past_name,$c
    
        // Insert record
       //here query check weather if user already registered so can't register again.   
-$sql = "INSERT INTO profile_individual (first_name,last_name,email,password,gender,dob,photo,employement_current_status,
+$sql = "INSERT INTO profile_individual (first_name,last_name,email,gender,dob,photo,employement_current_status,
 employement_position,employement_name,current_address,employement_past_position,employement_past_name,employement_past_address,specialisties,
 education,marital_status,user_id,logo)
-VALUES ( '$fname', '$lname','$user_email','$password','$gender','$dob','$photo','$status','$current_position','$current_name',
+VALUES ( '$fname', '$lname','$user_email','$gender','$dob','$photo','$status','$current_position','$current_name',
 '$current_address','$past_position','$past_name','$past_address','$specialisties','$education','$marital_status','$user_id','$logo')";
 
 $query="mysql_num_rows($sql)";

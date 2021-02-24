@@ -142,25 +142,7 @@ if(!$_POST['id']){
 </div>
      
      </div>
-     <!-- <div class="col-md-4">
-     <table class="table">
-  <thead>
-    <tr class="bg-info">
-     
-      <th scope="col" style="color: green;">Timeline</th>
-      <th scope="col"  style="color: green;">Projects</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr class="bg-info">
-     
-      <td  style="color: white;">Otto</td>
-      <td  style="color: white;">@mdo</td>
-    </tr>
     
-  </tbody>
-</table>
-     </div> -->
  </div></div></div>
 <!-- project section -->
      <div class="row">
@@ -238,7 +220,7 @@ the possibility of manipulating the table styles. -->
        
         //   $user_id = $_SESSION['user_id'];
         $pro_id =$_SESSION['project_id'];
-          $check_partner="select * from project_team  WHERE project_id='$pro_id'";   
+          $check_partner="select * from project_team  WHERE project_id='$pro_id' AND status=1";   
          
 
           if($project_data = mysqli_query($dbC,$check_partner)){

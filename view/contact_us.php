@@ -1,5 +1,6 @@
 
 <?php 
+include_once('../config/config.php');
 session_start();//session starts here   
 // echo $_SESSION['email']
 if (!isset($_SESSION['user_id'])) {
@@ -9,6 +10,15 @@ $_SESSION['index'] = 'index';
 $user_type =$_SESSION['user_type'];
 $user_id =$_SESSION['user_id'];
 $who_posted = '';
+
+$check_user_ind="select *  from contact_us WHERE user_id='$user_id'";   
+            // $count=mysqli_num_rows($result);
+        $run_ind=mysqli_query($dbC,$check_user_ind);  
+        $count_us=mysqli_num_rows($run_ind);
+        if(!$count_us == 1)
+            echo "<script>window.open('contact_us_form.php','_self')</script>";  
+
+
 ?>
 <html>   
 <head lang="en">   
@@ -159,12 +169,12 @@ input[type="radio"]:checked + input {
         <?php $user_type = $_SESSION['user_type'];
         if($user_type === 'individual'){
 echo'
-<a href="view/individual_profile.php">My Profile</a><br>
+<a href="individual_profile.php">My Profile</a><br>
 
 ';
         }else{
             echo'
-            <a href="view/non_individual_profile.php">My Profile</a><br>
+            <a href="non_individual_profile.php">My Profile</a><br>
             
             ';
         }
@@ -299,9 +309,10 @@ google.maps.event.addListener(marker, 'click', (function (marker, count) {
         </div>
 
         <div >
+        <div class="row" style="margin-left:100px;">
+
         <?php
                 echo'
-                <div class="row" style="margin-left:100px;">
 
                         <div class="col-6"  >
                       <strong>  '.$district.'</strong><br>
@@ -316,13 +327,10 @@ google.maps.event.addListener(marker, 'click', (function (marker, count) {
                        Hours of Business  '.$hours.'<br>
                         </div>
                         
-                        <div class="col-6" >
-                        '.$district.'
-                        </div>
-                        </div>
                 ';
 
         ?>
+                        </div>
         
                  
 

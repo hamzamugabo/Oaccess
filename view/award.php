@@ -24,7 +24,7 @@ if(isset($_POST['submit'])){
   $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 
   // Valid file extensions
-  $extensions_arr = array("jpg","jpeg","png","gif");
+  $extensions_arr = array("jpg","jpeg","png","gif","PNG");
 
   // Check extension
   if( in_array($imageFileType,$extensions_arr) ){

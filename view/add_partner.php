@@ -243,7 +243,11 @@ if($run){
       $userid = $row['user_id'];
       $user_type = $row['user_type'];
       // $user_photo = $row['user_id'];
+      $check_partner="select * from relatioship_partners WHERE project_id='$pro_id' AND user_id='$userid'";   
       
+$run_partner=mysqli_query($dbC,$check_partner);  
+$exists = mysqli_num_rows($run_partner); 
+if($exists=0){
      
             
             $sql1 = "INSERT INTO relatioship_partners (name,project_id,date,user_id,user_type,add_by)
@@ -263,8 +267,9 @@ if($run){
                  
             
             }else{ echo "ERROR: Could not able to execute $sql1. " . mysqli_error($dbC);}
-      
-      
+        }
+        // }
+        else{echo'<span style="text-align:center;color:red;"><h4>Partner Already Exists on the same project</h4></span>';}
      
 }else{
       echo "ERROR: Could not able to execute $check_user. " . mysqli_error($dbC);

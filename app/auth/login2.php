@@ -1,8 +1,17 @@
 <?php   
 session_start();//session starts here   
-   
-?>   
-   
+
+if(isset($_POST['fname'],$_POST['lname'],$_POST['email'],$_POST['pass'])){
+    $fname =$_POST['fname'];
+    $lname =$_POST['lname'];
+    $email =$_POST['email'];
+    $pass =$_POST['pass'];
+}else{
+    echo "<script>window.history.go(-1)</script>";  
+
+}
+ 
+  ?> 
 <html>   
 <head lang="en">   
     <meta charset="UTF-8">   
@@ -74,22 +83,22 @@ session_start();//session starts here
                 </div>
 
                 <div class="card-body">
-                    <form method="POST" action="login2.php">
+                    <form method="POST" action="register_backend.php">
                   
 
                     <div class="form-group row">
-                            <label for="email" class="col-md-3 col-form-label text-md-right">First Name</label>
+                            <!-- <label for="email" class="col-md-3 col-form-label text-md-right">First Name</label> -->
 
                             <div class="col-md-3">
-                                <input   type="text" class="form-control " name="fname" required autocomplete="fname" autofocus>
+                                <input hidden value="<?php echo $fname  ?>"  type="text" class="form-control " name="fname" required autocomplete="fname" autofocus>
 
                              
                                   
                             </div>
-                            <label for="email" class="col-md-3 col-form-label text-md-right">Last Name</label>
+                            <!-- <label for="email" class="col-md-3 col-form-label text-md-right">Last Name</label> -->
 
                             <div class="col-md-3">
-                                <input  type="text" class="form-control" name="lname" required autocomplete="lname" autofocus>
+                                <input   hidden value="<?php echo $lname  ?>"  type="text" class="form-control" name="lname" required autocomplete="lname" autofocus>
 
                              
                                   
@@ -98,18 +107,18 @@ session_start();//session starts here
                         </div>
 
                         <div class="form-group row">
-                            <label for="email" class="col-md-3 col-form-label text-md-right">E-Mail</label>
+                            <!-- <label for="email" class="col-md-3 col-form-label text-md-right">E-Mail</label> -->
 
                             <div class="col-md-3">
-                                <input  type="email" class="form-control" name="email" required autocomplete="email" autofocus>
+                                <input  hidden value="<?php echo $email  ?>"  type="email" class="form-control" name="email" required autocomplete="email" autofocus>
 
                              
                                   
                             </div>
-                            <label for="password" class="col-md-3 col-form-label text-md-right">Password</label>
+                            <!-- <label for="password" class="col-md-3 col-form-label text-md-right">Password</label> -->
 
 <div class="col-md-3">
-    <input id="password" type="password" class="form-control " name="pass" required autocomplete="current-password">
+    <input  hidden value="<?php echo $pass  ?>" id="password" type="password" class="form-control " name="pass" required autocomplete="current-password">
 
   
         
@@ -118,7 +127,7 @@ session_start();//session starts here
                             
                         </div>
 
-                        <!-- <div class="form-check">
+                        <div class="form-check">
                         <label for="email" class="col-md-3 col-form-label text-md-right">Gender:</label>
 
                             <input class="check-form-input" type="radio" name="gender" value="male">
@@ -157,14 +166,14 @@ session_start();//session starts here
                             <label for="male" class="form-check-lebel">Non Individual</label>
 
 
-                        </div> -->
+                        </div>
 
                         <div class="form-group row mb-0">
                         <label for="password" class="col-md-4 col-form-label text-md-right"></label>
 
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                   Next
+                                   Register
                                 </button>
 
                                
@@ -182,7 +191,3 @@ session_start();//session starts here
 </div>
 </body>   
 </html>
-
-
-
-?>

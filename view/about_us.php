@@ -1,5 +1,6 @@
 
 <?php 
+include_once('../config/config.php');
 session_start();//session starts here   
 // echo $_SESSION['email']
 if (!isset($_SESSION['user_id'])) {
@@ -9,7 +10,19 @@ $_SESSION['index'] = 'index';
 $user_type =$_SESSION['user_type'];
 $user_id =$_SESSION['user_id'];
 $who_posted = '';
+
+
+$check_user_ind="select *  from about_us WHERE user_id='$user_id'";   
+            // $count=mysqli_num_rows($result);
+        $run_ind=mysqli_query($dbC,$check_user_ind);  
+        $count__=mysqli_num_rows($run_ind);
+        // echo $count__;
+        if(!$count__ == 1)
+            echo "<script>window.open('about_us_form.php','_self')</script>";  
+
+
 ?>
+
 <html>   
 <head lang="en">   
     <meta charset="UTF-8">   
@@ -159,12 +172,12 @@ input[type="radio"]:checked + input {
         <?php $user_type = $_SESSION['user_type'];
         if($user_type === 'individual'){
 echo'
-<a href="view/individual_profile.php">My Profile</a><br>
+<a href="individual_profile.php">My Profile</a><br>
 
 ';
         }else{
             echo'
-            <a href="view/non_individual_profile.php">My Profile</a><br>
+            <a href="non_individual_profile.php">My Profile</a><br>
             
             ';
         }
@@ -173,36 +186,36 @@ echo'
        <h6 style="color: green;"> You and East African Community share thefollowing in common</h6>
 
         <?php
-        echo '
-        <div class ="row">
-<h5><a href="">Annversiries Today 11</a></h5>
+//         echo '
+//         <div class ="row">
+// <h5><a href="">Annversiries Today 11</a></h5>
 
 
-</div>
-<hr style="height:2px;border-width:0;color:black;background-color:black">
+// </div>
+// <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-<div class ="row">
-<h5><a href="">Subscribe to the Following </a></h5>
-
-
-</div>
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-<div class ="row">
-<h5><a href="">Pontential Connections 10</a></h5>
+// <div class ="row">
+// <h5><a href="">Subscribe to the Following </a></h5>
 
 
-</div>
+// </div>
+// <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-<div class ="row">
-<h5><a href="">New Application for Efficiency 7</a></h5>
+// <div class ="row">
+// <h5><a href="">Pontential Connections 10</a></h5>
 
 
-</div>
-<hr style="height:2px;border-width:0;color:black;background-color:black">
+// </div>
 
-        ';
+// <hr style="height:2px;border-width:0;color:black;background-color:black">
+// <div class ="row">
+// <h5><a href="">New Application for Efficiency 7</a></h5>
+
+
+// </div>
+// <hr style="height:2px;border-width:0;color:black;background-color:black">
+
+//         ';
         ?>
         </div>
        
@@ -222,22 +235,20 @@ echo'
            
             <?php
             include_once('../config/config.php');
-            $contact_us="select * from contact_us WHERE user_id='$user_id'";   
+            $contact_us="select * from about_us WHERE user_id='$user_id'";   
        
             $run_conatct_us=mysqli_query($dbC,$contact_us);   
             $row_ind_contact_us = mysqli_fetch_assoc($run_conatct_us);
-            $web = $row_ind_contact_us['website'];
-            $district = $row_ind_contact_us['district_city'];
-            $name = $row_ind_contact_us['business_building_name'];
-            $street = $row_ind_contact_us['business_street_name'];
-            $city = $row_ind_contact_us['city'];
-            $tel = $row_ind_contact_us['tel'];
-            $fax = $row_ind_contact_us['fax'];
-            $mobile = $row_ind_contact_us['mobile'];
-            $pobox = $row_ind_contact_us['p_o_box'];
-            $plot = $row_ind_contact_us['business_plot_number'];
-            $contact = $row_ind_contact_us['contact_person'];
-            $hours = $row_ind_contact_us['work_hours'];
+            $status = $row_ind_contact_us['type'];
+            $formed = $row_ind_contact_us['date'];
+            $mandate = $row_ind_contact_us['classification'];
+            $vision = $row_ind_contact_us['statement_of_business_mission'];
+            $head = $row_ind_contact_us['headquarters'];
+            $location = $row_ind_contact_us['number_of_locations'];
+            $area = $row_ind_contact_us['area_served'];
+            $key_name = $row_ind_contact_us['key_people_name'];
+            $key_title = $row_ind_contact_us['key_people_title'];
+            $key_no = $row_ind_contact_us['key_people_official_contact'];;
             
             ?>
           
@@ -255,7 +266,7 @@ echo'
                 <strong>Status</strong>
                 </div>
                 <div class="col-9">
-                Sponsered Company
+               '.$status.'
                 </div>
                   </div> <br>
 
@@ -264,7 +275,7 @@ echo'
                 <strong>Formed</strong>
                 </div>
                 <div class="col-9">
-                1st October 1962
+                '.$formed.'
                 </div>
                   </div> <br>
 
@@ -273,7 +284,7 @@ echo'
                 <strong>Mandate</strong>
                 </div>
                 <div class="col-9">
-               To coordinate and act as a focal point on all East african Community matters in Uganda.
+               '.$mandate.'
                 </div>
                   </div> <br>
 
@@ -282,7 +293,7 @@ echo'
                 <strong>Vision</strong>
                 </div>
                 <div class="col-9">
-                A prosperous,stable and politically united East Africa
+                '.$mission.'
                 </div>
                   </div> <br>
 
@@ -291,7 +302,7 @@ echo'
                 <strong>Mission</strong>
                 </div>
                 <div class="col-9">
-                A prosperous,stable and politically united East Africa
+                '.$mission.'
 
                 </div>
                   </div> <br>
@@ -311,32 +322,14 @@ echo'
                 </div>
                   </div> <br>
 
-                  <div class="row" style="margin-left:100px;">
-                <div class="col-3">
-                <strong>Institutional</strong>
-                </div>
-                <div class="col-9">
-                "For God And My Country"
-
-                </div>
-                  </div> <br>
-
-                  <div class="row" style="margin-left:100px;">
-                <div class="col-3">
-                <strong>Mission</strong>
-                </div>
-                <div class="col-9">
-                A prosperous,stable and politically united East Africa
-
-                </div>
-                  </div> <br>
+                 
 
                   <div class="row" style="margin-left:100px;">
                 <div class="col-3">
                 <strong>HeadQuarters</strong>
                 </div>
                 <div class="col-9">
-                Kampala Uganda.
+               '.$head.'
 
                 </div>
                   </div> <br>
@@ -345,7 +338,7 @@ echo'
                 <strong>Area Served</strong>
                 </div>
                 <div class="col-9">
-              East Africa
+             '.$area.'
 
                 </div>
                   </div> <br>
@@ -354,7 +347,34 @@ echo'
                 <strong>Number of Locations</strong>
                 </div>
                 <div class="col-9">
-                6(January 2010)
+               '.$location.'
+
+                </div>
+                  </div> <br>
+                  <div class="row" style="margin-left:100px;">
+                <div class="col-3">
+                <strong>Key Person</strong>
+                </div>
+                <div class="col-9">
+               '.$key_name.'
+
+                </div>
+                  </div> <br>
+                  <div class="row" style="margin-left:100px;">
+                <div class="col-3">
+                <strong>Key Person Official Contact</strong>
+                </div>
+                <div class="col-9">
+               '.$key_no.'
+
+                </div>
+                  </div> <br>
+                  <div class="row" style="margin-left:100px;">
+                <div class="col-3">
+                <strong>Key Person Title</strong>
+                </div>
+                <div class="col-9">
+               '.$key_title.'
 
                 </div>
                   </div> <br>
@@ -421,39 +441,94 @@ $adder_photo = "../images/dp/".$adder_profile_row_['photo'];
       
 
 
+  $connection_requests="select * from connection_requests WHERE reciever_id='$user_id' AND status=0";   
+  $run_requests=mysqli_query($dbC,$connection_requests);
+  $count_requests=mysqli_num_rows($run_requests);
+   
+
+
 
 echo '
 <div class ="row">
-<h5><a href="">Official Connection Requests '.$count_requests.'</a></h5>
-
-
-</div>
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-<div class ="row">
-<h5><a href="">Annversiries Today 11</a></h5>
-
+<button type="button" class="btn btn-link" >
+       <a href=connection_requests_reply.php">Connection Requests
+       <span class="badge badge-light">'.$count_requests.'</span>
+  <span class="sr-only">unread messages</span> </a>
+</button><br>
 
 </div>
 <hr style="height:2px;border-width:0;color:black;background-color:black">
+';
+$anniversary = "select * from profile_non_individual";
+       
+$run_anniversary=mysqli_query($dbC,$anniversary);  
+while( $all_row_anniversary = mysqli_fetch_array($run_anniversary)){ 
+
+$name = $all_row_anniversary['name'];
+$date = $all_row_anniversary['date'];
+$photo_ann = $all_row_anniversary['photo'];
+$photo_url="images/dp/".$photo_ann;
+// echo $photo;
+  $from = new DateTime($date);
+  $from_date =$from->format('m-d');
+  $to   = new DateTime('today');
+  $to_date = $to->format('m-d');
+ $years= $from->diff($to)->y;
+  if($from_date ===  $to_date){
+if(mysqli_num_rows($run_anniversary)!=0){
+    $number_of_anniversaries = json_encode(mysqli_num_rows($run_anniversary));
+    // echo $number_of_anniversaries;
+  }
+  else{
+      $num = 0;
+  $number_of_anniversaries= json_encode($num) ;
+
+    // echo $num;
+  }
+    
+
+  }else{
+    $num = 0;
+  $number_of_anniversaries= json_encode($num) ;
+}
+}
+
+$users = "select user_id from user WHERE user_id!='$user_id'";
+$conn_query = mysqli_query($dbC,$users);
+$user_conn_number = mysqli_num_rows($conn_query);
+
+
+$app = "select * from application ";
+$app_query = mysqli_query($dbC,$app);
+$app_number = mysqli_num_rows($app_query);
+
+echo'
+<div class ="row">
+
+<button type="button" class="btn btn-link" >
+       <a href="non_individual_profile.php">Annversiries Today
+       <span class="badge badge-light">'. $number_of_anniversaries.'</span>
+  <span class="sr-only">unread messages</span> </a>
+</button><br>
+</div>
+<hr style="height:2px;border-width:0;color:black;background-color:black">';
+echo'
 
 <div class ="row">
-<h5><a href="">Subscribe to the Following </a></h5>
-
+<a href="connections.php">Pontential Connections
+       <span class="badge badge-light">'. $user_conn_number.'</span>
+  <span class="sr-only">unread messages</span> </a>
+</button><br>
 
 </div>
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-<div class ="row">
-<h5><a href="">Pontential Connections 10</a></h5>
-
-
-</div>
 
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 <div class ="row">
-<h5><a href="">New Application for Efficiency 7</a></h5>
 
+<a href="applications.php">Applications for Efficiency
+       <span class="badge badge-light">'. $app_number.'</span>
+  <span class="sr-only">unread messages</span> </a>
+</button><br>
 
 </div>
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -467,7 +542,9 @@ echo '
 
 }
             ?>
+<?php
 
+?>
          
         </div>
     </div>

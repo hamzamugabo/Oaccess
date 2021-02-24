@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 17, 2021 at 03:21 PM
+-- Generation Time: Feb 24, 2021 at 02:48 PM
 -- Server version: 10.3.16-MariaDB
 -- PHP Version: 7.3.6
 
@@ -82,7 +82,7 @@ CREATE TABLE `about_us` (
 --
 
 INSERT INTO `about_us` (`id`, `classification`, `type`, `name`, `abbrevation_name`, `business_reg_doc`, `date`, `statement_of_business_mission`, `area_served`, `area_served_continent`, `area_served_country`, `revenue_year`, `revenue_currency`, `revenue_amount`, `key_people_name`, `key_people_title`, `key_people_official_contact`, `headquarters`, `user_id`, `number_of_locations`) VALUES
-(0, 'Government Organisation', 'Government sponsered', 'Uganda National Roads Authority', 'UNRA', NULL, '1992-12-15', 'UNRA', 'Uganda', 'Uganda', 'Uganda', '2020', 'UGX', 100, 'Kagyina', 'Minister', '+256789562345', 'kampala Uganda', 3, 'All districts');
+(1, 'Government Organisation', 'Government sponsered', 'Uganda National Roads Authority', 'UNRA', NULL, '1992-12-15', 'UNRA', 'Uganda', 'Uganda', 'Uganda', '2020', 'UGX', 100, 'Kagyina', 'Minister', '+256789562345', 'kampala Uganda', 3, 'All districts');
 
 -- --------------------------------------------------------
 
@@ -139,7 +139,9 @@ CREATE TABLE `award` (
 INSERT INTO `award` (`id`, `name_of_award`, `award_from`, `award_picture`, `user_id`) VALUES
 (1, 'second runners up university league', 'Makerere University', 'award.jpg', 1),
 (2, 'second runners up university league', 'Makerere University', 'award.jpg', 1),
-(3, 'best devloper award', 'the developers hub', 'award2.jpg', 1);
+(3, 'best devloper award', 'the developers hub', 'award2.jpg', 1),
+(4, 'Best Software solutions company', 'RAN', 'award3.jpg', 3),
+(5, 'Award', 'awards ceremony', 'award.jpg', 3);
 
 -- --------------------------------------------------------
 
@@ -204,6 +206,30 @@ CREATE TABLE `configuration` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `connection_requests`
+--
+
+CREATE TABLE `connection_requests` (
+  `connection_id` int(255) NOT NULL,
+  `sender_id` int(255) NOT NULL,
+  `reciever_id` int(255) NOT NULL,
+  `status` int(3) NOT NULL,
+  `date` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `connection_requests`
+--
+
+INSERT INTO `connection_requests` (`connection_id`, `sender_id`, `reciever_id`, `status`, `date`) VALUES
+(1, 5, 1, 1, '10:52 AM Monday February 22nd '),
+(2, 1, 3, 1, '11:37 AM Monday February 22nd '),
+(5, 11, 1, 1, '01:04 PM Monday February 22nd '),
+(7, 11, 5, 0, '01:54 PM Monday February 22nd ');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `contact_us`
 --
 
@@ -228,15 +254,17 @@ CREATE TABLE `contact_us` (
   `goods_services` varchar(255) NOT NULL,
   `user_id` int(255) NOT NULL,
   `contact_person` varchar(255) NOT NULL,
-  `work_hours` varchar(255) NOT NULL
+  `work_hours` varchar(255) NOT NULL,
+  `lat` float(10,6) NOT NULL,
+  `log` float(10,6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `contact_us`
 --
 
-INSERT INTO `contact_us` (`id`, `p_o_box`, `district_city`, `place_of_business`, `business_plot_number`, `business_street_name`, `business_building_name`, `city`, `state_province`, `zip_postal_code`, `tel`, `fax`, `mobile`, `email_address`, `website`, `postal_address`, `physical_address`, `goods_services`, `user_id`, `contact_person`, `work_hours`) VALUES
-(1, '15222', 'kampala ', 'Kireka', '14556', 'jinja high way', 'kireka shopping center', 'kampala city', 'nakawa  division', '54555', '+256709686326', '+256789526412', '+256789264512', 'admin@admin.com', 'www.officialaccess.com', '15222', 'kireka shopping center rm 108', 'IT and civil services', 3, 'Katerega Micheal', 'mon-fri 8am-5pm');
+INSERT INTO `contact_us` (`id`, `p_o_box`, `district_city`, `place_of_business`, `business_plot_number`, `business_street_name`, `business_building_name`, `city`, `state_province`, `zip_postal_code`, `tel`, `fax`, `mobile`, `email_address`, `website`, `postal_address`, `physical_address`, `goods_services`, `user_id`, `contact_person`, `work_hours`, `lat`, `log`) VALUES
+(1, '15222', 'kampala ', 'Kireka', '14556', 'jinja high way', 'kireka shopping center', 'kampala city', 'nakawa  division', '54555', '+256709686326', '+256789526412', '+256789264512', 'admin@admin.com', 'www.officialaccess.com', '15222', 'kireka shopping center rm 108', 'IT and civil services', 3, 'Katerega Micheal', 'mon-fri 8am-5pm', 0.342165, 32.499996);
 
 -- --------------------------------------------------------
 
@@ -325,7 +353,7 @@ CREATE TABLE `individual` (
 
 CREATE TABLE `likes` (
   `like_id` int(255) NOT NULL,
-  `date` date NOT NULL,
+  `date` varchar(255) NOT NULL,
   `wall_id` int(255) NOT NULL,
   `user_id` int(255) NOT NULL,
   `status` varchar(255) NOT NULL
@@ -336,10 +364,7 @@ CREATE TABLE `likes` (
 --
 
 INSERT INTO `likes` (`like_id`, `date`, `wall_id`, `user_id`, `status`) VALUES
-(0, '0000-00-00', 2, 1, 'liked'),
-(0, '0000-00-00', 1, 1, 'liked'),
-(0, '0000-00-00', 3, 1, 'liked'),
-(0, '0000-00-00', 4, 1, 'liked');
+(1, '0000-00-00', 1, 3, 'liked');
 
 -- --------------------------------------------------------
 
@@ -352,6 +377,44 @@ CREATE TABLE `location_activation` (
   `activation_log` int(255) NOT NULL,
   `date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `message`
+--
+
+CREATE TABLE `message` (
+  `message_id` int(255) NOT NULL,
+  `sender_id` int(255) NOT NULL,
+  `reciever_id` int(255) NOT NULL,
+  `message` text NOT NULL,
+  `date` varchar(255) NOT NULL,
+  `status` int(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `message`
+--
+
+INSERT INTO `message` (`message_id`, `sender_id`, `reciever_id`, `message`, `date`, `status`) VALUES
+(1, 1, 3, 'helo there', '06:42 PM Friday February 19th ', 1),
+(2, 1, 3, 'how are you', '06:43 PM Friday February 19th ', 1),
+(3, 1, 3, 'tell me about your company\r\n', '06:43 PM Friday February 19th ', 1),
+(4, 3, 1, 'im okay mr\r\n', '07:16 PM Friday February 19th ', 1),
+(5, 3, 1, 'how are you', '07:17 PM Friday February 19th ', 1),
+(6, 3, 1, 'our company is about alot of things..i will send you the website link', '07:17 PM Friday February 19th ', 1),
+(7, 3, 1, 'hey there', '07:05 PM Sunday February 21st ', 1),
+(8, 1, 3, 'hey nastar..how are you', '07:41 PM Sunday February 21st ', 1),
+(9, 3, 1, 'im okay, how are you', '07:42 PM Sunday February 21st ', 1),
+(10, 1, 3, 'im okay..', '07:48 PM Sunday February 21st ', 1),
+(11, 3, 1, 'Alright then', '07:49 PM Sunday February 21st ', 1),
+(12, 3, 1, '', '07:55 PM Sunday February 21st ', 1),
+(13, 3, 1, '', '07:56 PM Sunday February 21st ', 1),
+(14, 1, 3, 'jj\r\n', '07:59 PM Sunday February 21st ', 1),
+(15, 1, 5, 'hi mtn', '02:52 PM Monday February 22nd ', 1),
+(16, 5, 1, 'hi hamza', '03:17 PM Monday February 22nd ', 1),
+(17, 1, 5, 'tell me about senkyu', '03:21 PM Monday February 22nd ', 1);
 
 -- --------------------------------------------------------
 
@@ -403,18 +466,6 @@ CREATE TABLE `non_individual` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `potential_connection`
---
-
-CREATE TABLE `potential_connection` (
-  `connection_id` int(255) NOT NULL,
-  `countconn` int(255) NOT NULL,
-  `date` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `profile_individual`
 --
 
@@ -445,7 +496,8 @@ CREATE TABLE `profile_individual` (
 --
 
 INSERT INTO `profile_individual` (`profile_individual_id`, `first_name`, `last_name`, `email`, `gender`, `dob`, `photo`, `employement_current_status`, `employement_position`, `employement_name`, `current_address`, `employement_past_position`, `employement_past_name`, `employement_past_address`, `specialisties`, `education`, `marital_status`, `user_id`, `logo`) VALUES
-(1, 'hamza', 'mugabo', 'ham@gmail.com', 'male', '2021-02-04', 'hamza.jpg', 'Employed', 'web  developer', '  developer', '  kireka', 'android developer', '  developer', '  bukoto', 'software development', 'makerere univesity', 'single', 1, 'design this web page.jpg,bou.jpg,dba.jpg,upolice.png');
+(1, 'hamza', 'mugabo', 'ham@gmail.com', 'male', '2021-02-04', 'hamza.jpg', 'Employed', 'web  developer', '  developer', '  kireka', 'android developer', '  developer', '  bukoto', 'software development', 'makerere univesity', 'single', 1, 'design this web page.jpg,bou.jpg,dba.jpg,upolice.png'),
+(2, 'Tumusiime', 'Mpoza', 'mpoza@gmail.com', 'male', '1993-02-02', 'count1.png', 'Employed', 'supervisor', 'civil eng supervisor', 'kawempe', 'filed civil', 'civil eng', 'kireka', 'civil engineering', 'makerere univesity', 'single', 11, 'civil.jpg');
 
 -- --------------------------------------------------------
 
@@ -470,7 +522,8 @@ CREATE TABLE `profile_non_individual` (
 --
 
 INSERT INTO `profile_non_individual` (`profile_non_individual_id`, `name`, `division`, `license_no`, `photo`, `user_id`, `tin`, `mission`, `date`) VALUES
-(1, 'Nastar ', 'Kireka Shopping mall', '15548', 'logo.png', 3, '1111111', 'the future of tech', '2009-02-17');
+(1, 'Nastar ', 'Kireka Shopping mall', '15548', 'logo.png', 3, '1111111', 'the future of tech', '2009-02-19'),
+(2, 'mtn', 'nakasero', '157855', 'mtn.png', 5, '158556', 'Everywhere you go', '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -568,6 +621,29 @@ CREATE TABLE `recommendation` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `regards`
+--
+
+CREATE TABLE `regards` (
+  `regard_id` int(255) NOT NULL,
+  `regard` text NOT NULL,
+  `date` varchar(255) NOT NULL,
+  `user_id` int(255) NOT NULL,
+  `sender_id` int(255) NOT NULL,
+  `status` int(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `regards`
+--
+
+INSERT INTO `regards` (`regard_id`, `regard`, `date`, `user_id`, `sender_id`, `status`) VALUES
+(1, 'regards', '01:31 PM Thursday February 18th ', 3, 3, 1),
+(2, 'regards', '02:38 PM Thursday February 18th ', 3, 1, 0);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `relatioship_partners`
 --
 
@@ -631,8 +707,21 @@ CREATE TABLE `settings` (
 CREATE TABLE `share` (
   `share_id` int(255) NOT NULL,
   `content_id` int(255) NOT NULL,
-  `date` date NOT NULL
+  `date` datetime NOT NULL,
+  `shared_from_id` int(255) NOT NULL,
+  `shared_to_id` int(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `share`
+--
+
+INSERT INTO `share` (`share_id`, `content_id`, `date`, `shared_from_id`, `shared_to_id`) VALUES
+(1, 5, '2021-02-23 14:36:29', 3, 1),
+(2, 5, '2021-02-23 14:36:29', 3, 5),
+(3, 5, '2021-02-23 14:36:29', 3, 11),
+(4, 6, '2021-02-24 07:00:36', 3, 1),
+(5, 1, '2021-02-24 07:53:17', 1, 3);
 
 -- --------------------------------------------------------
 
@@ -683,7 +772,9 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`user_id`, `first_name`, `last_name`, `email`, `password`, `user_type`, `gender`, `dob`, `contact`) VALUES
 (1, 'Hamza', 'Mugabo', 'ham@gmail.com', '1234', 'individual', 'male', '2021-02-08', '123'),
-(3, 'Nastar', 'Kireka', 'nastar@gmail.com', '123', 'non_individual', '', '2021-02-09', '123');
+(3, 'Nastar', 'Kireka', 'nastar@gmail.com', '123', 'non_individual', '', '2021-02-09', '123'),
+(5, 'Mtn ', 'Uganda', 'mtn@gmail.com', '123', 'non_individual', '', '1882-06-07', '+256789523642'),
+(11, 'Tumusiime', 'Mpoza', 'mpoza@gmail.com', '123', 'individual', 'male', '1993-02-02', '+236775652315');
 
 -- --------------------------------------------------------
 
@@ -725,20 +816,23 @@ CREATE TABLE `wall` (
   `user_id` int(255) NOT NULL,
   `date` varchar(255) NOT NULL,
   `photo` varchar(1000) DEFAULT NULL,
-  `message` text NOT NULL
+  `message` text NOT NULL,
+  `status` int(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `wall`
 --
 
-INSERT INTO `wall` (`wall_id`, `user_id`, `date`, `photo`, `message`) VALUES
-(1, 1, '11:21 AM Friday February 5th ', 'Capture1.PNG', 'HTML is the standard markup language for creating Web pages'),
-(2, 1, '11:52 AM Friday February 5th ', 'freezer_truck.png', 'php is pretty good'),
-(3, 1, '11:55 AM Friday February 5th ', 'freezer_truck.png', 'java is good'),
-(4, 1, '02:35 PM Friday February 5th ', 'pro.png', 'how about react native'),
-(5, 3, '12:26 PM Wednesday February 10th ', '', 'im loving this wall'),
-(6, 3, '12:30 PM Wednesday February 10th ', '', 'testing again');
+INSERT INTO `wall` (`wall_id`, `user_id`, `date`, `photo`, `message`, `status`) VALUES
+(1, 1, '11:21 AM Friday February 5th ', 'Capture1.PNG', 'HTML is the standard markup language for creating Web pages', 1),
+(2, 1, '11:52 AM Friday February 5th ', 'freezer_truck.png', 'php is pretty good', 0),
+(3, 1, '11:55 AM Friday February 5th ', 'freezer_truck.png', 'java is good', 0),
+(4, 1, '02:35 PM Friday February 5th ', 'pro.png', 'how about react native', 0),
+(5, 3, '12:26 PM Wednesday February 10th ', '', 'im loving this wall', 0),
+(6, 3, '12:30 PM Wednesday February 10th ', '', 'testing again', 0),
+(7, 5, '08:30 AM Monday February 22nd ', 'senkyu.jpg', 'Mtn Senkyu', 0),
+(8, 11, '01:00 PM Monday February 22nd ', 'civil.jpg', 'Im a Civil eng', 0);
 
 --
 -- Indexes for dumped tables
@@ -754,6 +848,7 @@ ALTER TABLE `about_me`
 -- Indexes for table `about_us`
 --
 ALTER TABLE `about_us`
+  ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`);
 
 --
@@ -802,6 +897,14 @@ ALTER TABLE `configuration`
   ADD KEY `user_id` (`user_id`);
 
 --
+-- Indexes for table `connection_requests`
+--
+ALTER TABLE `connection_requests`
+  ADD PRIMARY KEY (`connection_id`),
+  ADD KEY `reciever_id` (`reciever_id`),
+  ADD KEY `sender_id` (`sender_id`);
+
+--
 -- Indexes for table `contact_us`
 --
 ALTER TABLE `contact_us`
@@ -841,10 +944,25 @@ ALTER TABLE `individual`
   ADD KEY `profile_type` (`profile_type`);
 
 --
+-- Indexes for table `likes`
+--
+ALTER TABLE `likes`
+  ADD PRIMARY KEY (`like_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- Indexes for table `location_activation`
 --
 ALTER TABLE `location_activation`
   ADD PRIMARY KEY (`location_activation_id`);
+
+--
+-- Indexes for table `message`
+--
+ALTER TABLE `message`
+  ADD PRIMARY KEY (`message_id`),
+  ADD KEY `reciever_id` (`reciever_id`),
+  ADD KEY `sender_id` (`sender_id`);
 
 --
 -- Indexes for table `news_feed_individual`
@@ -864,12 +982,6 @@ ALTER TABLE `news_feed_non_individual`
 ALTER TABLE `non_individual`
   ADD PRIMARY KEY (`non_individual_id`),
   ADD KEY `profile_type` (`profile_type`);
-
---
--- Indexes for table `potential_connection`
---
-ALTER TABLE `potential_connection`
-  ADD PRIMARY KEY (`connection_id`);
 
 --
 -- Indexes for table `profile_individual`
@@ -917,6 +1029,14 @@ ALTER TABLE `recommendation`
   ADD PRIMARY KEY (`recommendation_id`);
 
 --
+-- Indexes for table `regards`
+--
+ALTER TABLE `regards`
+  ADD PRIMARY KEY (`regard_id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `sender_id` (`sender_id`);
+
+--
 -- Indexes for table `relatioship_partners`
 --
 ALTER TABLE `relatioship_partners`
@@ -941,7 +1061,9 @@ ALTER TABLE `settings`
 --
 ALTER TABLE `share`
   ADD PRIMARY KEY (`share_id`),
-  ADD KEY `content_id` (`content_id`);
+  ADD KEY `share_ibfk_1` (`content_id`),
+  ADD KEY `shared_from_id` (`shared_from_id`),
+  ADD KEY `shared_to_id` (`shared_to_id`);
 
 --
 -- Indexes for table `subscriber`
@@ -980,6 +1102,12 @@ ALTER TABLE `about_me`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `about_us`
+--
+ALTER TABLE `about_us`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `anniversaries`
 --
 ALTER TABLE `anniversaries`
@@ -995,7 +1123,7 @@ ALTER TABLE `application`
 -- AUTO_INCREMENT for table `award`
 --
 ALTER TABLE `award`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `comment`
@@ -1008,6 +1136,12 @@ ALTER TABLE `comment`
 --
 ALTER TABLE `comment_comment`
   MODIFY `comment_comment_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `connection_requests`
+--
+ALTER TABLE `connection_requests`
+  MODIFY `connection_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `contact_us`
@@ -1046,10 +1180,22 @@ ALTER TABLE `individual`
   MODIFY `individual_id` int(255) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `likes`
+--
+ALTER TABLE `likes`
+  MODIFY `like_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `location_activation`
 --
 ALTER TABLE `location_activation`
   MODIFY `location_activation_id` int(255) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `message`
+--
+ALTER TABLE `message`
+  MODIFY `message_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `news_feed_individual`
@@ -1070,22 +1216,16 @@ ALTER TABLE `non_individual`
   MODIFY `non_individual_id` int(255) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `potential_connection`
---
-ALTER TABLE `potential_connection`
-  MODIFY `connection_id` int(255) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `profile_individual`
 --
 ALTER TABLE `profile_individual`
-  MODIFY `profile_individual_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `profile_individual_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `profile_non_individual`
 --
 ALTER TABLE `profile_non_individual`
-  MODIFY `profile_non_individual_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `profile_non_individual_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `projects`
@@ -1112,6 +1252,12 @@ ALTER TABLE `recommendation`
   MODIFY `recommendation_id` int(255) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `regards`
+--
+ALTER TABLE `regards`
+  MODIFY `regard_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `relatioship_partners`
 --
 ALTER TABLE `relatioship_partners`
@@ -1133,7 +1279,7 @@ ALTER TABLE `settings`
 -- AUTO_INCREMENT for table `share`
 --
 ALTER TABLE `share`
-  MODIFY `share_id` int(255) NOT NULL AUTO_INCREMENT;
+  MODIFY `share_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `subscriber`
@@ -1151,13 +1297,13 @@ ALTER TABLE `theme_switch`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `user_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `wall`
 --
 ALTER TABLE `wall`
-  MODIFY `wall_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `wall_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables
@@ -1209,6 +1355,13 @@ ALTER TABLE `configuration`
   ADD CONSTRAINT `configuration_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
 
 --
+-- Constraints for table `connection_requests`
+--
+ALTER TABLE `connection_requests`
+  ADD CONSTRAINT `connection_requests_ibfk_1` FOREIGN KEY (`reciever_id`) REFERENCES `user` (`user_id`),
+  ADD CONSTRAINT `connection_requests_ibfk_2` FOREIGN KEY (`sender_id`) REFERENCES `user` (`user_id`);
+
+--
 -- Constraints for table `contact_us`
 --
 ALTER TABLE `contact_us`
@@ -1225,6 +1378,19 @@ ALTER TABLE `gallery`
 --
 ALTER TABLE `individual`
   ADD CONSTRAINT `individual_ibfk_1` FOREIGN KEY (`profile_type`) REFERENCES `profile_individual` (`profile_individual_id`);
+
+--
+-- Constraints for table `likes`
+--
+ALTER TABLE `likes`
+  ADD CONSTRAINT `likes_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
+
+--
+-- Constraints for table `message`
+--
+ALTER TABLE `message`
+  ADD CONSTRAINT `message_ibfk_1` FOREIGN KEY (`reciever_id`) REFERENCES `user` (`user_id`),
+  ADD CONSTRAINT `message_ibfk_2` FOREIGN KEY (`sender_id`) REFERENCES `user` (`user_id`);
 
 --
 -- Constraints for table `non_individual`
@@ -1264,6 +1430,13 @@ ALTER TABLE `project_team`
   ADD CONSTRAINT `project_team_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
 
 --
+-- Constraints for table `regards`
+--
+ALTER TABLE `regards`
+  ADD CONSTRAINT `regards_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
+  ADD CONSTRAINT `regards_ibfk_2` FOREIGN KEY (`sender_id`) REFERENCES `user` (`user_id`);
+
+--
 -- Constraints for table `relatioship_partners`
 --
 ALTER TABLE `relatioship_partners`
@@ -1274,7 +1447,9 @@ ALTER TABLE `relatioship_partners`
 -- Constraints for table `share`
 --
 ALTER TABLE `share`
-  ADD CONSTRAINT `share_ibfk_1` FOREIGN KEY (`content_id`) REFERENCES `content` (`content_id`);
+  ADD CONSTRAINT `share_ibfk_1` FOREIGN KEY (`content_id`) REFERENCES `wall` (`wall_id`),
+  ADD CONSTRAINT `share_ibfk_2` FOREIGN KEY (`shared_from_id`) REFERENCES `user` (`user_id`),
+  ADD CONSTRAINT `share_ibfk_3` FOREIGN KEY (`shared_to_id`) REFERENCES `user` (`user_id`);
 
 --
 -- Constraints for table `subscriber`

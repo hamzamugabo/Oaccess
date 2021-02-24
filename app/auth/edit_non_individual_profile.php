@@ -12,6 +12,7 @@ if($_SESSION['user_type'] != 'non_individual'){
 }
 include_once('../../config/config.php');
 $user_id = $_SESSION['user_id'];
+$user_type = $_SESSION['user_type'];
 
 $check_user="select * from profile_non_individual WHERE user_id='$user_id'";   
       
@@ -29,7 +30,7 @@ $date = $row['date'];
 // }else{
 //     echo "ERROR: Could not able to execute $check_user. " . mysqli_error($dbC);
 // }
-echo $mission;
+// echo $mission;
 ?>
 <html>   
 <head lang="en">   
@@ -82,6 +83,16 @@ input[type="radio"]:checked + input {
 <div class="container">
     <div class="row justify-content-center" style="padding-top: 0px;">
         <div class="col-md-9">
+        <a href="../../index.php">Home</a>
+        &nbsp&nbsp
+        <?php
+        if($user_type === 'individual')
+        echo '<a href="../../view/individual_profile.php">Profile</a>';
+        else
+        echo '<a href="../../view/non_individual_profile.php">Profile</a>';
+        ?>
+        
+
             <div class="card">
                 <div class="card-header">Update Profile</div>
 
@@ -173,6 +184,8 @@ input[type="radio"]:checked + input {
                             </div>
                         </div>
                     </form>
+                    <br>
+                    
                 </div>
             </div>
         </div>

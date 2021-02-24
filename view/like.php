@@ -14,6 +14,15 @@ if($_POST['wall_id']){
 $comment_date=  date('h:i A l F jS ');
 $comment = 'liked';
 $wall_id = $_POST['wall_id'];
+$check_user="select * from likes WHERE wall_id='$wall_id' AND user_id='$user_id'";   
+      
+$run=mysqli_query($dbC,$check_user);  
+
+if(mysqli_num_rows($run))   
+{
+    echo "<script>window.history.go(-1)</script>";  
+
+}else{
 $sql = "INSERT INTO likes(date,wall_id,user_id,status) VALUES('$comment_date','$wall_id','$user_id','$comment')";
    //  mysqli_query($con,$query);
  
@@ -37,5 +46,7 @@ $sql = "INSERT INTO likes(date,wall_id,user_id,status) VALUES('$comment_date','$
 }
 else{
    echo "ERROR: Could not able to execute $sql. " . mysqli_error($dbC);
-}}
+}
+}
+}
 ?>
