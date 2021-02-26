@@ -63,6 +63,9 @@ input[type="radio"]:checked + input {
 <div class="container">
     <div class="row justify-content-center" style="padding-top: 0px;">
         <div class="col-md-9">
+        <a href="../index.php">Home</a>
+        &nbsp&nbsp&nbsp
+        <a href="non_individual_profile.php">Profile</a>
             <div class="card">
                 <div class="card-header">
                 
@@ -224,17 +227,19 @@ input[type="radio"]:checked + input {
         echo "ERROR: Could not able to execute $commented_users. " . mysqli_error($dbC);
        
        }
-       if($photo_name !=''){
-         echo'        
-       <img src='.$news_photo.' width=80 height=80>';
-       }else{
-         // echo '<a href="pass.php?link=' . $a . '>Link 1</a>';
-         echo'     ';
-       }
+       
        echo'
                  </div>
                  
-                 <div class="col-8">'.$message.'.<br>
+                 <div>'.$message.'.<br>';
+                 if($photo_name !=''){
+                   echo'        
+                 <img src='.$news_photo.'>';
+                 }else{
+                   // echo '<a href="pass.php?link=' . $a . '>Link 1</a>';
+                   echo'     ';
+                 }
+                 echo'
               <span style="font-size:12px"> <strong> posted at</strong>  '.$date.' </span>&nbsp&nbsp&nbsp<br>
                <form  method="POST" action="comment.php" style="float:left;">
        <input type="text" name="wall_id" value="'.$wall_id.'" hidden>

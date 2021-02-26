@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
     
 }
 if($_SESSION['user_type'] != 'individual'){
-    echo "<script>window.open('../../view/non_individual_profile.php','_self')</script>";  
+    echo "<script>window.open('non_individual_profile.php','_self')</script>";  
 
 }
 $current_user_type =$_SESSION['user_type'];
@@ -171,8 +171,15 @@ Connection Requests <span class="badge badge-light">'.$row_count_requests.'</spa
         <div style="margin-top: 40px;">
         <a href="../index.php"> Home</a><br>
         <a href="connections.php"> Potential Connections</a><br>
-        About Me<br>
-        Documents & Reports 23<br>
+        <a href="about_me.php">About Me</a><br>
+        <?php
+         
+         $doc ="select * from documents where reciever_id='$current_user_id'";
+         $query=mysqli_query($dbC,$doc);
+         $count=mysqli_num_rows($query);
+        ?>
+        <a href="documents.php"> Documents <?php echo $count; ?></a><br>
+        <!-- Documents Share<br> -->
         Work Applications<br>
         Subscription
         </div>
@@ -342,197 +349,463 @@ Connection Requests <span class="badge badge-light">'.$row_count_requests.'</spa
         <div style="padding-left:50px;">
         
         <?php
-$id=$_SESSION['user_id'];
-// $wall="select * from wall ";   
-$check_user_conn="select sender_id,reciever_id from connection_requests WHERE (sender_id ='$current_user_id' OR reciever_id ='$current_user_id') AND status = 1";   
-//   if($check_user)  {}  
- $run_conn=mysqli_query($dbC,$check_user_conn);
- $num=mysqli_num_rows($run_conn);
- if($num != 0){
-    //  echo 'connection';
- while($row_conn = mysqli_fetch_array($run_conn)){ 
-   
-     $senderid =$row_conn['sender_id'];
-     $recieverid =$row_conn['reciever_id'];
-
-     $json = [$senderid, $recieverid];
-if($current_user_id === $recieverid)
-$wall="select * from wall WHERE user_id IN ($current_user_id,$senderid)  AND status=0";   
-elseif($current_user_id === $senderid)
-$wall="select * from wall WHERE user_id IN ($recieverid)  AND status=0";   
-// else
-// $wall="select * from wall WHERE user_id='$recieverid' OR  user_id='$senderid' ";   
-
-$result = mysqli_query($dbC,$wall);
-if($result){
-
-  while($row_ = mysqli_fetch_array($result)){
-      $photo_name = $row_['photo'];
-  $news_photo = "../images/wall/".$row_['photo'];
-$date = $row_['date'];
-$message = $row_['message'];
-$poster = $row_['user_id'];
-$wall_id = $row_['wall_id'];
-$wall_user = $row_['user_id'];
-
-
-
-
-// like section
-$count_likes = "SELECT wall_id FROM likes WHERE wall_id = $wall_id"; 
-    
-  // Execute the query and store the result set 
-  $count_result_like = mysqli_query($dbC, $count_likes); 
-    
-   
-      $row_count_like = mysqli_num_rows($count_result_like); 
-
-
+     $id=$_SESSION['user_id'];
+     // $wall="select * from wall ";   
+     $check_user_conn="select sender_id,reciever_id from connection_requests WHERE (sender_id ='$current_user_id' OR reciever_id ='$current_user_id') AND status = 1";   
+     //   if($check_user)  {}  
+      $run_conn=mysqli_query($dbC,$check_user_conn);
+      $num=mysqli_num_rows($run_conn);
+     $arry=[];
+     
+      if($num != 0){
+         //  echo 'connection';
+      while($row_conn = mysqli_fetch_array($run_conn)){ 
         
-  //    comment section
-  $count_comments = "SELECT wall_id FROM comment WHERE wall_id = $wall_id"; 
-    
-  // Execute the query and store the result set 
-  $count_result = mysqli_query($dbC, $count_comments); 
-    
-   
-      $row_count = mysqli_num_rows($count_result); 
-  
+          $senderid =$row_conn['sender_id'];
+          $recieverid =$row_conn['reciever_id'];
+          
+         // if($recieverid === $current_user_id)
+         // $id1=$senderid;
+         // else
+         // $id2=$recieverid;
+     
+         $arry[] =$senderid;
+         $arry[] =$recieverid;
+         // $arry[] =$current_user_id;
+     
+     $json1=json_encode($arry, JSON_FORCE_OBJECT);
+      }
+      $wallid=[];
+      $privacy="select * from privacy where user_id='$current_user_id' ";
+      $query_privacy = mysqli_query($dbC,$privacy);
+      while($row_privacy=mysqli_fetch_array($query_privacy)){
+     $privacy_user_ids=$row_privacy['user_id'];
+     $privacy_wall_ids=$row_privacy['wall_id'];
+     $wallid[]= $privacy_wall_ids;
+    //  if($wallid)
+     $wall_ids_to_json =json_encode($wallid, JSON_FORCE_OBJECT);
+    //  else
+    //  $wall_ids_to_json =json_encode(0, JSON_FORCE_OBJECT);
 
+      }
+     //  echo $wall_ids_to_json;
+     if(!empty($wall_ids_to_json))
+     {
+     $wallidss =$wall_ids_to_json;
 
-
-$all="select * from user WHERE user_id='$poster' ";   
-$all_result = mysqli_query($dbC,$all);
-$all_row_ = mysqli_fetch_array($all_result);
-$poster_fname = $all_row_['first_name'];
-$poster_lname = $all_row_['last_name'];
-$user_type = $all_row_['user_type'];
-
-$space = '';
-if($user_type === 'individual'){
-  $_="select * from user WHERE user_id='$current_user_id' ";   
-$__result = mysqli_query($dbC,$_);
-$__row_ = mysqli_fetch_array($__result);
-$fnm = $__row_['first_name'];
-$lnm = $__row_['last_name'];
-// echo $fnm;
-  if($fnm == $poster_fname && $lnm == $poster_lname){
-      echo '
-      <a href=""> You </a>Posted on your wall <br>
-      <div class="row" style="margin-top:10px;">
-      <div class="col-2">';
-  }else{
-      echo '
-      <a href=""> '.$poster_fname.'  '.$poster_lname.' </a>Posted on his wall <br>
-      <div class="row" style="margin-top:10px;">
-      <div class="col-2">';
-  }
-  
+      $wallids = json_decode($wallidss, TRUE );
+      $new_wallids =array_unique($wallids);
+      // echo '$wall_ids_to_json';
+     //  echo '<br>';
+     //  echo $current_user_id;
+      $data=$json1;
+     $array = json_decode( $data, TRUE );
+     $new_array=array_unique($array);
+     // echo $json1 ;
+     
+     //      $json = [$senderid, $recieverid];
+     // if($current_user_id === $recieverid)
+     // $wall="select * from wall WHERE user_id IN ($current_user_id,$senderid) AND status=0";   
+     // elseif($current_user_id === $senderid)
  
-}else{
-$_="select * from user WHERE user_id='$current_user_id' ";   
-$__result = mysqli_query($dbC,$_);
-$__row_ = mysqli_fetch_array($__result);
-$fnm = $__row_['first_name'];
-$lnm = $__row_['last_name'];
-// echo $fnm;
-    if($fnm == $poster_fname && $lnm == $poster_lname){
-        echo '
-        <a href=""> Your Company </a>Posted on your wall <br>
-        <div class="row" style="margin-top:10px;">
-        <div class="col-2">';
+  
+     foreach($new_wallids as $wall){
+     
+     foreach($new_array as $val){
+     
+     $wall="select * from wall WHERE (user_id = $val OR wall_id!=$wall) AND status=0";   
+     // else
+     // $wall="select * from wall WHERE user_id='$recieverid' OR  user_id='$senderid' ";   
+     
+     $result = mysqli_query($dbC,$wall);
+     if($result){
+     
+       while($row_ = mysqli_fetch_array($result)){
+           $photo_name = $row_['photo'];
+       $news_photo = "../images/wall/".$row_['photo'];
+     $date = $row_['date'];
+     $message = $row_['message'];
+     $poster = $row_['user_id'];
+     $wall_id = $row_['wall_id'];
+     $wall_user = $row_['user_id'];
+     
+     
+     
+     
+     
+     
+     // like section
+     $count_likes = "SELECT wall_id FROM likes WHERE wall_id = $wall_id"; 
+         
+       // Execute the query and store the result set 
+       $count_result_like = mysqli_query($dbC, $count_likes); 
+         
+        
+           $row_count_like = mysqli_num_rows($count_result_like); 
+     
+     
+             
+       //    comment section
+       $count_comments = "SELECT wall_id FROM comment WHERE wall_id = $wall_id"; 
+         
+       // Execute the query and store the result set 
+       $count_result = mysqli_query($dbC, $count_comments); 
+         
+        
+           $row_count = mysqli_num_rows($count_result); 
+       
+     
+     
+     
+     $all="select * from user WHERE user_id='$poster' ";   
+     $all_result = mysqli_query($dbC,$all);
+     $all_row_ = mysqli_fetch_array($all_result);
+     $poster_fname = $all_row_['first_name'];
+     $poster_lname = $all_row_['last_name'];
+     $user_type = $all_row_['user_type'];
+     
+     $space = '';
+     if($user_type === 'individual'){
+       $_="select * from user WHERE user_id='$current_user_id' ";   
+     $__result = mysqli_query($dbC,$_);
+     $__row_ = mysqli_fetch_array($__result);
+     $fnm = $__row_['first_name'];
+     $lnm = $__row_['last_name'];
+     // echo $fnm;
+       if($fnm == $poster_fname && $lnm == $poster_lname){
+           echo '
+           <a href=""> You </a>Posted on your wall <br>
+           <div class="row" style="margin-top:10px;">
+           <div class="col-2">';
+       }else{
+           echo '
+           <a href=""> '.$poster_fname.'  '.$poster_lname.' </a>Posted on his wall <br>
+           <div class="row" style="margin-top:10px;">
+           <div class="col-2">';
+       }
+       
+      
+     }else{
+     $_="select * from user WHERE user_id='$current_user_id' ";   
+     $__result = mysqli_query($dbC,$_);
+     $__row_ = mysqli_fetch_array($__result);
+     $fnm = $__row_['first_name'];
+     $lnm = $__row_['last_name'];
+     // echo $fnm;
+         if($fnm == $poster_fname && $lnm == $poster_lname){
+             echo '
+             <a href=""> Your Company </a>Posted on your wall <br>
+             <div class="row" style="margin-top:10px;">
+             <div class="col-2">';
+         }else{
+             echo '
+             <a href=""> '.$poster_fname.'  '.$poster_lname.' </a>Posted on his wall <br>
+             <div class="row" style="margin-top:10px;">
+             <div class="col-2">';
+         }
+     }
+     // get comments
+     $commented_users="select user_id from comment WHERE wall_id='$wall_id'";   
+     if($commented_users_result = mysqli_query($dbC,$commented_users)){
+     
+       while($commented_users_row_ = mysqli_fetch_array($commented_users_result)){
+           $commented_users_ids = $commented_users_row_['user_id'];
+           // $ids = json_encode($commented_users_ids);
+       // echo $ids;
+       // echo  ;
+     
+     $commented_user_names="select first_name,last_name from user WHERE user_id='$commented_users_ids'";   
+     if($commented_users_names_result = mysqli_query($dbC,$commented_user_names)){
+     
+       while($commented_users_names_row_ = mysqli_fetch_array($commented_users_names_result)){
+           $commented_users_fname = $commented_users_names_row_['first_name'];
+           $commented_users_lname = $commented_users_names_row_['last_name'];
+     // echo $commented_users_fname;
+     
+     // $ids = json_encode($commented_users_fname,$commented_users_lname );
+     //     echo $ids;
+     
+     
+     
+       }
+     }else{
+       echo "ERROR: Could not able to execute $commented_user_names. " . mysqli_error($dbC);
+     
+     }
+     }
+     
+     }else{
+      echo "ERROR: Could not able to execute $commented_users. " . mysqli_error($dbC);
+     
+     }
+     
+     echo'
+               </div>
+               
+               <div>'.$message.'.<br>';
+               if($photo_name !=''){
+                 echo'        
+               <img src='.$news_photo.'>';
+               }else{
+                 // echo '<a href="pass.php?link=' . $a . '>Link 1</a>';
+                 echo'     ';
+               }
+     
+     echo'
+            <span style="font-size:12px"> <strong> posted at</strong>  '.$date.' </span>&nbsp&nbsp&nbsp<br>
+             <form  method="POST" action="comment.php" style="float:left;">
+     <input type="text" name="wall_id" value="'.$wall_id.'" hidden>
+     <button type="submit" class="btn btn-link"><span style="color:blue;">Comment</span></button>
+             </form>
+             <button type="button"  data-toggle="modal" data-target="#myModal" class="btn btn-link" style="float:left;"><span style="color:blue;">'.$row_count.'</span></button>
+             
+             <form  method="POST" action="like.php" style="float:left;">
+             <input type="text" name="wall_id" value="'.$wall_id.'" hidden>
+             <button type="submit" class="btn btn-link"><span style="color:blue;">Like</span></button>
+                       </form>
+             <button type="submit" class="btn btn-link" style="float:left;"><span style="color:blue;">'.$row_count_like.'</span></button>
+     ';
+             if($current_user_id === $wall_user){
+               // echo $current_user_id;
+               // echo $user_id;
+               
+              echo '
+                                <form  method="POST" action="share.php" style="float:left;">
+                                <input type="text" name="wall_id" value="'.$wall_id.'" hidden>
+                                <button type="submit" class="btn btn-link"><span style="color:blue;">Share</span></button>
+                                          </form >
+                                          
+                                          <form  method="POST" action="wall_privacy.php" style="float:left;">
+                                          <input type="text" name="wall_id" value="'.$wall_id.'" hidden>
+                                          <button type="submit" class="btn btn-link"><span style="color:blue;">Privacy</span></button>
+                                                    </form >
+     
+                                                    <form  method="POST" action="share.php" style="float:left;">
+                                                    <input type="text" name="wall_id" value="'.$wall_id.'" hidden>
+                                                    <button type="submit" class="btn btn-link"><span style="color:blue;">Approve</span></button>
+                                                              </form >
+                                                    
+                                          
+                                          '
+                                          ;}else{echo '';}
+                                          echo'
+                </div>
+                
+                </div>
+                <hr/>
+              ';
+     // echo $row_['message'];
+       }
+     }
+     
+     else{
+     error_reporting(E_ALL & ~E_NOTICE);
+     
+       // echo "ERROR: Could not able to execute $wall. " . mysqli_error($dbC);
+       }
+     }
+     }
     }else{
-        echo '
-        <a href=""> '.$poster_fname.'  '.$poster_lname.' </a>Posted on his wall <br>
-        <div class="row" style="margin-top:10px;">
-        <div class="col-2">';
-    }
-}
-// get comments
-$commented_users="select user_id from comment WHERE wall_id='$wall_id'";   
-if($commented_users_result = mysqli_query($dbC,$commented_users)){
-
-  while($commented_users_row_ = mysqli_fetch_array($commented_users_result)){
-      $commented_users_ids = $commented_users_row_['user_id'];
-      // $ids = json_encode($commented_users_ids);
-  // echo $ids;
-  // echo  ;
-
-$commented_user_names="select first_name,last_name from user WHERE user_id='$commented_users_ids'";   
-if($commented_users_names_result = mysqli_query($dbC,$commented_user_names)){
-
-  while($commented_users_names_row_ = mysqli_fetch_array($commented_users_names_result)){
-      $commented_users_fname = $commented_users_names_row_['first_name'];
-      $commented_users_lname = $commented_users_names_row_['last_name'];
-// echo $commented_users_fname;
-
-// $ids = json_encode($commented_users_fname,$commented_users_lname );
-//     echo $ids;
-
-
-
-  }
-}else{
-  echo "ERROR: Could not able to execute $commented_user_names. " . mysqli_error($dbC);
-
-}
-}
-
-}else{
- echo "ERROR: Could not able to execute $commented_users. " . mysqli_error($dbC);
-
-}
-if($photo_name !=''){
-  echo'        
-<img src='.$news_photo.' width=80 height=80>';
-}else{
-  // echo '<a href="pass.php?link=' . $a . '>Link 1</a>';
-  echo'     ';
-}
-echo'
-          </div>
-          
-          <div class="col-8">'.$message.'.<br>
-       <span style="font-size:12px"> <strong> posted at</strong>  '.$date.' </span>&nbsp&nbsp&nbsp<br>
-        <form  method="POST" action="comment.php" style="float:left;">
-<input type="text" name="wall_id" value="'.$wall_id.'" hidden>
-<button type="submit" class="btn btn-link"><span style="color:blue;">Comment</span></button>
-        </form>
-        <button type="button"  data-toggle="modal" data-target="#myModal" class="btn btn-link" style="float:left;"><span style="color:blue;">'.$row_count.'</span></button>
+      $data=$json1;
+     $array = json_decode( $data, TRUE );
+     $new_array=array_unique($array);
+      foreach($new_array as $val){
+     
+        $wall="select * from wall WHERE user_id = $val AND status=0";   
+        // else
+        // $wall="select * from wall WHERE user_id='$recieverid' OR  user_id='$senderid' ";   
         
-        <form  method="POST" action="like.php" style="float:left;">
-        <input type="text" name="wall_id" value="'.$wall_id.'" hidden>
-        <button type="submit" class="btn btn-link"><span style="color:blue;">Like</span></button>
-                  </form>
-        <button type="submit" class="btn btn-link" style="float:left;"><span style="color:blue;">'.$row_count_like.'</span></button>
-
-        ';
-        if($current_user_id === $wall_user){
-          // echo $current_user_id;
-          // echo $user_id;
-          
-         echo '
-                                
-         <form  method="POST" action="share.php" style="float:left;">
-         <input type="text" name="wall_id" value="'.$wall_id.'" hidden>
-         <button type="submit" class="btn btn-link"><span style="color:blue;">Share</span></button>
-                   </form >';}else{echo '';}
-                                     echo'
-           </div>
+        $result = mysqli_query($dbC,$wall);
+        if($result){
+        
+          while($row_ = mysqli_fetch_array($result)){
+              $photo_name = $row_['photo'];
+          $news_photo = "../images/wall/".$row_['photo'];
+        $date = $row_['date'];
+        $message = $row_['message'];
+        $poster = $row_['user_id'];
+        $wall_id = $row_['wall_id'];
+        $wall_user = $row_['user_id'];
+        
+        
+        
+        
+        
+        
+        // like section
+        $count_likes = "SELECT wall_id FROM likes WHERE wall_id = $wall_id"; 
+            
+          // Execute the query and store the result set 
+          $count_result_like = mysqli_query($dbC, $count_likes); 
+            
            
-           </div>
-           <hr/>
-         ';
-// echo $row_['message'];
-  }
-}
-else{
-  echo "ERROR: Could not able to execute $wall. " . mysqli_error($dbC);
-  }
- }
-
- }
- 
+              $row_count_like = mysqli_num_rows($count_result_like); 
+        
+        
+                
+          //    comment section
+          $count_comments = "SELECT wall_id FROM comment WHERE wall_id = $wall_id"; 
+            
+          // Execute the query and store the result set 
+          $count_result = mysqli_query($dbC, $count_comments); 
+            
+           
+              $row_count = mysqli_num_rows($count_result); 
+          
+        
+        
+        
+        $all="select * from user WHERE user_id='$poster' ";   
+        $all_result = mysqli_query($dbC,$all);
+        $all_row_ = mysqli_fetch_array($all_result);
+        $poster_fname = $all_row_['first_name'];
+        $poster_lname = $all_row_['last_name'];
+        $user_type = $all_row_['user_type'];
+        
+        $space = '';
+        if($user_type === 'individual'){
+          $_="select * from user WHERE user_id='$current_user_id' ";   
+        $__result = mysqli_query($dbC,$_);
+        $__row_ = mysqli_fetch_array($__result);
+        $fnm = $__row_['first_name'];
+        $lnm = $__row_['last_name'];
+        // echo $fnm;
+          if($fnm == $poster_fname && $lnm == $poster_lname){
+              echo '
+              <a href=""> You </a>Posted on your wall <br>
+              <div class="row" style="margin-top:10px;">
+              <div class="col-2">';
+          }else{
+              echo '
+              <a href=""> '.$poster_fname.'  '.$poster_lname.' </a>Posted on his wall <br>
+              <div class="row" style="margin-top:10px;">
+              <div class="col-2">';
+          }
+          
+         
+        }else{
+        $_="select * from user WHERE user_id='$current_user_id' ";   
+        $__result = mysqli_query($dbC,$_);
+        $__row_ = mysqli_fetch_array($__result);
+        $fnm = $__row_['first_name'];
+        $lnm = $__row_['last_name'];
+        // echo $fnm;
+            if($fnm == $poster_fname && $lnm == $poster_lname){
+                echo '
+                <a href=""> Your Company </a>Posted on your wall <br>
+                <div class="row" style="margin-top:10px;">
+                <div class="col-2">';
+            }else{
+                echo '
+                <a href=""> '.$poster_fname.'  '.$poster_lname.' </a>Posted on his wall <br>
+                <div class="row" style="margin-top:10px;">
+                <div class="col-2">';
+            }
+        }
+        // get comments
+        $commented_users="select user_id from comment WHERE wall_id='$wall_id'";   
+        if($commented_users_result = mysqli_query($dbC,$commented_users)){
+        
+          while($commented_users_row_ = mysqli_fetch_array($commented_users_result)){
+              $commented_users_ids = $commented_users_row_['user_id'];
+              // $ids = json_encode($commented_users_ids);
+          // echo $ids;
+          // echo  ;
+        
+        $commented_user_names="select first_name,last_name from user WHERE user_id='$commented_users_ids'";   
+        if($commented_users_names_result = mysqli_query($dbC,$commented_user_names)){
+        
+          while($commented_users_names_row_ = mysqli_fetch_array($commented_users_names_result)){
+              $commented_users_fname = $commented_users_names_row_['first_name'];
+              $commented_users_lname = $commented_users_names_row_['last_name'];
+        // echo $commented_users_fname;
+        
+        // $ids = json_encode($commented_users_fname,$commented_users_lname );
+        //     echo $ids;
+        
+        
+        
+          }
+        }else{
+          echo "ERROR: Could not able to execute $commented_user_names. " . mysqli_error($dbC);
+        
+        }
+        }
+        
+        }else{
+         echo "ERROR: Could not able to execute $commented_users. " . mysqli_error($dbC);
+        
+        }
+        
+        echo'
+                  </div>
+                  
+                  <div>'.$message.'.<br>';
+                  if($photo_name !=''){
+                    echo'        
+                  <img src='.$news_photo.'>';
+                  }else{
+                    // echo '<a href="pass.php?link=' . $a . '>Link 1</a>';
+                    echo'     ';
+                  }
+        
+        echo'
+               <span style="font-size:12px"> <strong> posted at</strong>  '.$date.' </span>&nbsp&nbsp&nbsp<br>
+                <form  method="POST" action="comment.php" style="float:left;">
+        <input type="text" name="wall_id" value="'.$wall_id.'" hidden>
+        <button type="submit" class="btn btn-link"><span style="color:blue;">Comment</span></button>
+                </form>
+                <button type="button"  data-toggle="modal" data-target="#myModal" class="btn btn-link" style="float:left;"><span style="color:blue;">'.$row_count.'</span></button>
+                
+                <form  method="POST" action="like.php" style="float:left;">
+                <input type="text" name="wall_id" value="'.$wall_id.'" hidden>
+                <button type="submit" class="btn btn-link"><span style="color:blue;">Like</span></button>
+                          </form>
+                <button type="submit" class="btn btn-link" style="float:left;"><span style="color:blue;">'.$row_count_like.'</span></button>
+        ';
+                if($current_user_id === $wall_user){
+                  // echo $current_user_id;
+                  // echo $user_id;
+                  
+                 echo '
+                                   <form  method="POST" action="share.php" style="float:left;">
+                                   <input type="text" name="wall_id" value="'.$wall_id.'" hidden>
+                                   <button type="submit" class="btn btn-link"><span style="color:blue;">Share</span></button>
+                                             </form >
+                                             
+                                             <form  method="POST" action="wall_privacy.php" style="float:left;">
+                                             <input type="text" name="wall_id" value="'.$wall_id.'" hidden>
+                                             <button type="submit" class="btn btn-link"><span style="color:blue;">Privacy</span></button>
+                                                       </form >
+        
+                                                       <form  method="POST" action="share.php" style="float:left;">
+                                                       <input type="text" name="wall_id" value="'.$wall_id.'" hidden>
+                                                       <button type="submit" class="btn btn-link"><span style="color:blue;">Approve</span></button>
+                                                                 </form >
+                                                       
+                                             
+                                             '
+                                             ;}else{echo '';}
+                                             echo'
+                   </div>
+                   
+                   </div>
+                   <hr/>
+                 ';
+        // echo $row_['message'];
+          }
+        }
+        
+        else{
+        error_reporting(E_ALL & ~E_NOTICE);
+        
+          // echo "ERROR: Could not able to execute $wall. " . mysqli_error($dbC);
+          }
+        }
+    }
+     //  }
+     
+      }
 //  if theres no connection
  else{
   
